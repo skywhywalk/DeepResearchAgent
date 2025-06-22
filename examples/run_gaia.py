@@ -100,7 +100,7 @@ async def answer_single_question(example, answers_file):
         # Run agent 🚀
         final_result = await agent.run(task=augmented_question)
 
-        agent_memory = agent.write_memory_to_messages(summary_mode=True)
+        agent_memory = await agent.write_memory_to_messages(summary_mode=True)
 
         final_result = await prepare_response(augmented_question, agent_memory, reformulation_model=model_manager.registed_models["o3"])
 
@@ -164,13 +164,16 @@ async def main():
     # Load answers
     tasks_to_run = get_tasks_to_run(config.save_path, dataset)
     logger.info(f"Loaded {len(tasks_to_run)} tasks to run.")
-    
-    # # Run tasks
-    batch_size = getattr(config, "concurrency", 4)
-    for i in range(0, len(tasks_to_run), batch_size):
-        batch = tasks_to_run[i:min(i + batch_size, len(tasks_to_run))]
-        await asyncio.gather(*[answer_single_question(task, config.save_path) for task in batch])
-        logger.info(f"Batch {i // batch_size + 1} done.")
+
+    tasks = [task for task in tasks_to_run if task["task_id"] == "b7f857e4-d8aa-4387-af2a-0e844df5b9d8"]
+    await answer_single_question(tasks[0], config.save_path)
+
+    # # # Run tasks
+    # batch_size = getattr(config, "concurrency", 4)
+    # for i in range(0, len(tasks_to_run), batch_size):
+    #     batch = tasks_to_run[i:min(i + batch_size, len(tasks_to_run))]
+    #     await asyncio.gather(*[answer_single_question(task, config.save_path) for task in batch])
+    #     logger.info(f"Batch {i // batch_size + 1} done.")
 
 if __name__ == '__main__':
     asyncio.run(main())

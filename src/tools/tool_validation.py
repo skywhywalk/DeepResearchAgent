@@ -1,13 +1,9 @@
 import ast
 import builtins
 from itertools import zip_longest
-from typing import Set
 
-from src.utils import (
-    BASE_BUILTIN_MODULES,
-    get_source,
-    is_valid_name,
-)
+from src.utils import BASE_BUILTIN_MODULES, get_source, is_valid_name
+
 
 _BUILTIN_NAMES = set(vars(builtins))
 
@@ -19,7 +15,7 @@ class MethodChecker(ast.NodeVisitor):
     - contains no local imports (e.g. numpy is ok but local_script is not)
     """
 
-    def __init__(self, class_attributes: Set[str], check_imports: bool = True):
+    def __init__(self, class_attributes: set[str], check_imports: bool = True):
         self.undefined_names = set()
         self.imports = {}
         self.from_imports = {}
@@ -29,6 +25,7 @@ class MethodChecker(ast.NodeVisitor):
         self.errors = []
         self.check_imports = check_imports
         self.typing_names = {"Any"}
+        self.defined_classes = set()
 
     def visit_arguments(self, node):
         """Collect function arguments"""
@@ -119,6 +116,11 @@ class MethodChecker(ast.NodeVisitor):
         if not (isinstance(node.value, ast.Name) and node.value.id == "self"):
             self.generic_visit(node)
 
+    def visit_ClassDef(self, node):
+        """Track class definitions"""
+        self.defined_classes.add(node.name)
+        self.generic_visit(node)
+
     def visit_Name(self, node):
         if isinstance(node.ctx, ast.Load):
             if not (
@@ -131,6 +133,7 @@ class MethodChecker(ast.NodeVisitor):
                 or node.id in self.from_imports
                 or node.id in self.assigned_names
                 or node.id in self.typing_names
+                or node.id in self.defined_classes
             ):
                 self.errors.append(f"Name '{node.id}' is undefined.")
 
@@ -145,6 +148,7 @@ class MethodChecker(ast.NodeVisitor):
                 or node.func.id in self.imports
                 or node.func.id in self.from_imports
                 or node.func.id in self.assigned_names
+                or node.func.id in self.defined_classes
             ):
                 self.errors.append(f"Name '{node.func.id}' is undefined.")
         self.generic_visit(node)

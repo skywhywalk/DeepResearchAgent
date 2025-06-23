@@ -3,7 +3,7 @@ from typing import Optional, Dict, Any
 from PIL import Image
 
 from src.tools import AsyncTool, ToolResult
-from src.models import model_manager
+from src.models import model_manager, ChatMessage
 from src.models.base import MessageRole
 from src.tools.markdown.mdconvert import MarkitdownConverter
 from src.logger import logger
@@ -115,6 +115,8 @@ class DeepAnalyzerTool(AsyncTool):
             }
         ]
 
+        messages = [ChatMessage.from_dict(msg) for msg in messages]
+
         response = await model(
             messages=messages,
         )
@@ -152,6 +154,8 @@ class DeepAnalyzerTool(AsyncTool):
              "content": content,
             }
         ]
+
+        messages = [ChatMessage.from_dict(msg) for msg in messages]
 
         response = await model(
             messages=messages,

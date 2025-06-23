@@ -29,7 +29,8 @@ from functools import lru_cache
 from io import BytesIO
 from pathlib import Path
 from textwrap import dedent
-from typing import TYPE_CHECKING, Any, Dict, Tuple
+from typing import TYPE_CHECKING, Any, Dict, List, Tuple
+
 
 
 @lru_cache
@@ -78,7 +79,7 @@ def make_json_serializable(obj: Any) -> Any:
         if isinstance(obj, str):
             try:
                 if (obj.startswith("{") and obj.endswith("}")) or (obj.startswith("[") and obj.endswith("]")):
-                    parsed = json5.loads(obj)
+                    parsed = json.loads(obj)
                     return make_json_serializable(parsed)
             except json.JSONDecodeError:
                 pass
@@ -105,10 +106,6 @@ def parse_json_blob(json_blob: str) -> Tuple[Dict[str, str], str]:
         last_accolade_index = [a.start() for a in list(re.finditer("}", json_blob))][-1]
         json_data = json_blob[first_accolade_index: last_accolade_index + 1]
 
-        print("*" * 50)
-        print(json_data)
-        print("*" * 50)
-
         json_data = json5.loads(json_data, strict=False)
         json_data = json_data['function']
 
@@ -128,6 +125,15 @@ def parse_json_blob(json_blob: str) -> Tuple[Dict[str, str], str]:
         )
 
 
+def extract_code_from_text(text: str) -> str | None:
+    """Extract code from the LLM's output."""
+    pattern = r"<code>(.*?)</code>"
+    matches = re.findall(pattern, text, re.DOTALL)
+    if matches:
+        return "\n\n".join(match.strip() for match in matches)
+    return None
+
+
 def parse_code_blobs(text: str) -> str:
     """Extract code blocs from the LLM's output.
 
@@ -142,10 +148,9 @@ def parse_code_blobs(text: str) -> str:
     Raises:
         ValueError: If no valid code block is found in the text.
     """
-    pattern = r"```(?:py|python)?\s*\n(.*?)\n```"
-    matches = re.findall(pattern, text, re.DOTALL)
+    matches = extract_code_from_text(text)
     if matches:
-        return "\n\n".join(match.strip() for match in matches)
+        return matches
     # Maybe the LLM outputted a code blob directly
     try:
         ast.parse(text)
@@ -157,29 +162,27 @@ def parse_code_blobs(text: str) -> str:
         raise ValueError(
             dedent(
                 f"""
-                Your code snippet is invalid, because the regex pattern {pattern} was not found in it.
+                Your code snippet is invalid, because the regex pattern <code>(.*?)</code> was not found in it.
                 Here is your code snippet:
                 {text}
                 It seems like you're trying to return the final answer, you can do it as follows:
-                Code:
-                ```py
+                <code>
                 final_answer("YOUR FINAL ANSWER HERE")
-                ```<end_code>
+                </code>
                 """
             ).strip()
         )
     raise ValueError(
         dedent(
             f"""
-            Your code snippet is invalid, because the regex pattern {pattern} was not found in it.
+            Your code snippet is invalid, because the regex pattern <code>(.*?)</code> was not found in it.
             Here is your code snippet:
             {text}
             Make sure to include code with the correct pattern, for instance:
             Thoughts: Your thoughts
-            Code:
-            ```py
+            <code>
             # Your python code here
-            ```<end_code>
+            </code>
             """
         ).strip()
     )
@@ -278,7 +281,7 @@ def instance_to_source(instance, base_cls=None):
                 escaped_value = value.replace('"""', r"\"\"\"")  # Escape triple quotes
                 class_lines.append(f'    {name} = """{escaped_value}"""')
             else:
-                class_lines.append(f"    {name} = {json5.dumps(value)}")
+                class_lines.append(f"    {name} = {json.dumps(value)}")
         else:
             class_lines.append(f"    {name} = {repr(value)}")
 
@@ -287,15 +290,14 @@ def instance_to_source(instance, base_cls=None):
 
     # Add methods
     methods = {
-        name: func
+        name: func.__wrapped__ if hasattr(func, "__wrapped__") else func
         for name, func in cls.__dict__.items()
         if callable(func)
         and (
             not base_cls
             or not hasattr(base_cls, name)
             or (
-                isinstance(func, staticmethod)
-                or isinstance(func, classmethod)
+                isinstance(func, (staticmethod, classmethod))
                 or (getattr(base_cls, name).__code__.co_code != func.__code__.co_code)
             )
         )

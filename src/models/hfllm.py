@@ -2,10 +2,13 @@ import warnings
 from typing import Dict, List, Optional, Any
 from dataclasses import asdict, dataclass
 import os
+from collections.abc import Generator
 from src.models.base import (ApiModel,
                              ChatMessage,
                              tool_role_conversions,
-                             )
+                             TokenUsage,
+                             ChatMessageStreamDelta,
+                             ChatMessageToolCallStreamDelta)
 from src.models.message_manager import (
     MessageManager
 )
@@ -97,6 +100,7 @@ class InferenceClientModel(ApiModel):
         token = token if token is not None else api_key
         if token is None:
             token = os.getenv("HUGGINEFACE_API_KEY")
+
         self.client_kwargs = {
             **(client_kwargs or {}),
             "model": model_id,
@@ -116,53 +120,53 @@ class InferenceClientModel(ApiModel):
 
     def _prepare_completion_kwargs(
             self,
-            messages: List[Dict[str, str]],
-            stop_sequences: Optional[List[str]] = None,
-            grammar: Optional[str] = None,
-            tools_to_call_from: Optional[List[Any]] = None,
-            custom_role_conversions: Optional[Dict[str, str]] = None,
+            messages: list[ChatMessage],
+            stop_sequences: list[str] | None = None,
+            response_format: dict[str, str] | None = None,
+            tools_to_call_from: list[Any] | None = None,
+            custom_role_conversions: dict[str, str] | None = None,
             convert_images_to_image_urls: bool = False,
+            tool_choice: str | dict | None = "required",  # Configurable tool_choice parameter
             http_client=None,
             **kwargs,
-    ) -> Dict:
+    ) -> dict[str, Any]:
         """
         Prepare parameters required for model invocation, handling parameter priorities.
 
         Parameter priority from high to low:
         1. Explicitly passed kwargs
-        2. Specific parameters (stop_sequences, grammar, etc.)
+        2. Specific parameters (stop_sequences, response_format, etc.)
         3. Default values in self.kwargs
         """
         # Clean and standardize the message list
-        messages = self.message_manager.get_clean_message_list(
+        flatten_messages_as_text = kwargs.pop("flatten_messages_as_text", self.flatten_messages_as_text)
+        messages_as_dicts = self.message_manager.get_clean_message_list(
             messages,
             role_conversions=custom_role_conversions or tool_role_conversions,
             convert_images_to_image_urls=convert_images_to_image_urls,
-            flatten_messages_as_text=self.flatten_messages_as_text,
+            flatten_messages_as_text=flatten_messages_as_text,
         )
-
         # Use self.kwargs as the base configuration
         completion_kwargs = {
             **self.kwargs,
-            "messages": messages,
+            "messages": messages_as_dicts,
         }
 
         # Handle specific parameters
         if stop_sequences is not None:
             completion_kwargs["stop"] = stop_sequences
-        if grammar is not None:
-            completion_kwargs["grammar"] = grammar
+        if response_format is not None:
+            completion_kwargs["response_format"] = response_format
 
         # Handle tools parameter
         if tools_to_call_from:
-            completion_kwargs.update(
-                {
-                    "tools": [self.message_manager.get_tool_json_schema(tool,
-                                                                        model_id=self.model_id) for tool in
-                              tools_to_call_from],
-                    "tool_choice": "required",
-                }
-            )
+            tools_config = {
+                "tools": [self.message_manager.get_tool_json_schema(tool, model_id=self.model_id) for tool in
+                          tools_to_call_from],
+            }
+            if tool_choice is not None:
+                tools_config["tool_choice"] = tool_choice
+            completion_kwargs.update(tools_config)
 
         # Finally, use the passed-in kwargs to override all settings
         completion_kwargs.update(kwargs)
@@ -174,9 +178,62 @@ class InferenceClientModel(ApiModel):
 
         return completion_kwargs
 
-    async def __call__(
+    def generate_stream(
         self,
-        messages: list[dict[str, str | list[dict]] | ChatMessage],
+        messages: list[ChatMessage],
+        stop_sequences: list[str] | None = None,
+        response_format: dict[str, str] | None = None,
+        tools_to_call_from: list[Any] | None = None,
+        **kwargs,
+    ) -> Generator[ChatMessageStreamDelta]:
+        completion_kwargs = self._prepare_completion_kwargs(
+            messages=messages,
+            stop_sequences=stop_sequences,
+            response_format=response_format,
+            tools_to_call_from=tools_to_call_from,
+            model=self.model_id,
+            custom_role_conversions=self.custom_role_conversions,
+            http_client=self.http_client,
+            convert_images_to_image_urls=True,
+            **kwargs,
+        )
+        for event in self.client.chat.completions.create(
+            **completion_kwargs, stream=True, stream_options={"include_usage": True}
+        ):
+            if getattr(event, "usage", None):
+                self._last_input_token_count = event.usage.prompt_tokens
+                self._last_output_token_count = event.usage.completion_tokens
+                yield ChatMessageStreamDelta(
+                    content="",
+                    token_usage=TokenUsage(
+                        input_tokens=event.usage.prompt_tokens,
+                        output_tokens=event.usage.completion_tokens,
+                    ),
+                )
+            if event.choices:
+                choice = event.choices[0]
+                if choice.delta:
+                    yield ChatMessageStreamDelta(
+                        content=choice.delta.content,
+                        tool_calls=[
+                            ChatMessageToolCallStreamDelta(
+                                index=delta.index,
+                                id=delta.id,
+                                type=delta.type,
+                                function=delta.function,
+                            )
+                            for delta in choice.delta.tool_calls
+                        ]
+                        if choice.delta.tool_calls
+                        else None,
+                    )
+                else:
+                    if not getattr(choice, "finish_reason", None):
+                        raise ValueError(f"No content or tool calls in event: {event}")
+
+    async def generate(
+        self,
+        messages: list[ChatMessage],
         stop_sequences: list[str] | None = None,
         response_format: dict[str, str] | None = None,
         tools_to_call_from: list[Any] | None = None,
@@ -192,8 +249,8 @@ class InferenceClientModel(ApiModel):
             stop_sequences=stop_sequences,
             tools_to_call_from=tools_to_call_from,
             # response_format=response_format,
-            http_client=self.http_client,
             convert_images_to_image_urls=True,
+            http_client=self.http_client,
             custom_role_conversions=self.custom_role_conversions,
             **kwargs,
         )
@@ -201,9 +258,19 @@ class InferenceClientModel(ApiModel):
 
         self._last_input_token_count = response.usage.prompt_tokens
         self._last_output_token_count = response.usage.completion_tokens
-        first_message = ChatMessage.from_dict(
+        return ChatMessage.from_dict(
             asdict(response.choices[0].message),
             raw=response,
+            token_usage=TokenUsage(
+                input_tokens=response.usage.prompt_tokens,
+                output_tokens=response.usage.completion_tokens,
+            ),
         )
-        return self.postprocess_message(first_message, tools_to_call_from)
+
+    async def __call__(self, *args, **kwargs) -> ChatMessage:
+        """
+        Call the model with the given arguments.
+        This is a convenience method that calls `generate` with the same arguments.
+        """
+        return await self.generate(*args, **kwargs)
 

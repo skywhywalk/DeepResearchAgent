@@ -7,8 +7,7 @@ from src.memory.memory import (
     SystemPromptStep,
     UserPromptStep,
     FinalAnswerStep,
-    ToolCall,
-    Message
+    ToolCall
 )
 
 __all__ = [
@@ -20,6 +19,5 @@ __all__ = [
     "SystemPromptStep",
     "UserPromptStep",
     "FinalAnswerStep",
-    "ToolCall",
-    "Message"
+    "ToolCall"
 ]

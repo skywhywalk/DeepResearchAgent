@@ -1,10 +1,11 @@
 import json
+import json5
 import re
 import time
 from typing import List, Optional, Set, Tuple
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from src.models import model_manager
+from src.models import model_manager, ChatMessage
 from src.tools.web_searcher import WebSearcherTool, SearchResult
 from src.tools import AsyncTool, ToolResult
 from src.config import config
@@ -286,20 +287,20 @@ class DeepResearcherTool(AsyncTool):
         context = ResearchContext(query=query, max_depth=max_depth)
         deadline = time.time() + self.time_limit_seconds
 
-        try:
-            optimized_query, filter_year = await self._generate_optimized_query(query)
-            await self._research_graph(context=context,
-                                 query=optimized_query,
-                                 filter_year=filter_year,
-                                 deadline=deadline
-                                 )
-        except Exception as e:
-            res_str = f"DeepResearchTool failed to complete the research cycle: {str(e)}"
-            logger.error(res_str)
-            return ToolResult(
-                output=None,
-                error=res_str,
-            )
+        # try:
+        optimized_query, filter_year = await self._generate_optimized_query(query)
+        await self._research_graph(context=context,
+                             query=optimized_query,
+                             filter_year=filter_year,
+                             deadline=deadline
+                             )
+        # except Exception as e:
+        #     res_str = f"DeepResearchTool failed to complete the research cycle: {str(e)}"
+        #     logger.error(res_str)
+        #     return ToolResult(
+        #         output=None,
+        #         error=res_str,
+        #     )
 
         # Prepare final summary reference
         reference = ResearchSummary(
@@ -326,6 +327,7 @@ class DeepResearcherTool(AsyncTool):
             messages = [
                 {"role": "user", "content": prompt}
             ]
+            messages = [ChatMessage.from_dict(m) for m in messages]  # Convert to ChatMessage format
             tools = [
                 OptimizedQueryTool()
             ]
@@ -335,11 +337,11 @@ class DeepResearcherTool(AsyncTool):
                 tools_to_call_from=tools
             )
 
-            logger.info(f"DeepResearchTool Optimized query - Input tokens: {self.model.last_input_token_count}, Output tokens: {self.model.last_output_token_count}")
+            logger.info(f"DeepResearchTool Optimized query - Input tokens: {self.model._last_input_token_count}, Output tokens: {self.model._last_output_token_count}")
 
             # Extract the query from the tool_call response
             if response and response.tool_calls and len(response.tool_calls) > 0:
-                arguments = response.tool_calls[0].function.arguments
+                arguments = json5.loads(response.tool_calls[0].function.arguments)
                 optimized_query = arguments.get("query", "")
                 filter_year = arguments.get("filter_year", None)
             else:
@@ -488,6 +490,7 @@ class DeepResearcherTool(AsyncTool):
         messages = [
             {"role": "user", "content": prompt}
         ]
+        messages = [ChatMessage.from_dict(m) for m in messages]  # Convert to ChatMessage format
         tools = [
             GenerateFollowUpsTool()
         ]
@@ -498,12 +501,12 @@ class DeepResearcherTool(AsyncTool):
             tools_to_call_from=tools
         )
 
-        logger.info(f"DeepResearchTool Generate follow-ups - Input tokens: {self.model.last_input_token_count}, Output tokens: {self.model.last_output_token_count}")
+        logger.info(f"DeepResearchTool Generate follow-ups - Input tokens: {self.model._last_input_token_count}, Output tokens: {self.model._last_output_token_count}")
 
         # Extract queries from the tool response
         queries = []
         if response and response.tool_calls and len(response.tool_calls) > 0:
-            arguments = response.tool_calls[0].function.arguments
+            arguments = json5.loads(response.tool_calls[0].function.arguments)
             queries = arguments.get("follow_up_queries", [])
 
         return queries[:min(len(queries), self.max_follow_ups)]
@@ -519,6 +522,7 @@ class DeepResearcherTool(AsyncTool):
         messages = [
             {"role": "user", "content": prompt}
         ]
+        messages = [ChatMessage.from_dict(m) for m in messages]  # Convert to ChatMessage format
         tools = [
             ExtractInsightsTool()
         ]
@@ -528,13 +532,13 @@ class DeepResearcherTool(AsyncTool):
             tools_to_call_from=tools
         )
 
-        logger.info(f"DeepResearchTool Extract insights - Input tokens: {self.model.last_input_token_count}, Output tokens: {self.model.last_output_token_count}")
+        logger.info(f"DeepResearchTool Extract insights - Input tokens: {self.model._last_input_token_count}, Output tokens: {self.model._last_output_token_count}")
 
         insights = []
 
         # Process structured JSON response
         if response and response.tool_calls and len(response.tool_calls) > 0:
-            arguments = response.tool_calls[0].function.arguments
+            arguments = json5.loads(response.tool_calls[0].function.arguments)
             extracted_insights = arguments.get("insights", [])
 
             for insight_data in extracted_insights:
@@ -572,6 +576,7 @@ class DeepResearcherTool(AsyncTool):
         messages = [
             {"role": "user", "content": query}
         ]
+        messages = [ChatMessage.from_dict(m) for m in messages] # Convert to ChatMessage format
         response = await model(
             messages=messages,
         )

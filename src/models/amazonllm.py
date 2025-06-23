@@ -6,6 +6,7 @@ from src.models.base import (ApiModel,
                              ChatMessage,
                              MessageRole,
                              tool_role_conversions,
+                             TokenUsage
                              )
 from src.models.message_manager import (
     MessageManager
@@ -103,11 +104,13 @@ class AmazonBedrockServerModel(ApiModel):
 
     def _prepare_completion_kwargs(
         self,
-        messages: list[dict[str, str | list[dict]]],
+        messages: list[ChatMessage],
         stop_sequences: list[str] | None = None,
-        tools_to_call_from: list[Any] | None = None,
+        response_format: dict[str, str] | None = None,
+        tools_to_call_from: list[Tool] | None = None,
         custom_role_conversions: dict[str, str] | None = None,
         convert_images_to_image_urls: bool = False,
+        tool_choice: str | dict[Any, Any] | None = None,
         **kwargs,
     ) -> dict:
         """
@@ -152,13 +155,13 @@ class AmazonBedrockServerModel(ApiModel):
 
         return boto3.client("bedrock-runtime", **self.client_kwargs)
 
-    async def __call__(
-        self,
-        messages: list[dict[str, str | list[dict]] | ChatMessage],
-        stop_sequences: list[str] | None = None,
-        response_format: dict[str, str] | None = None,
-        tools_to_call_from: list[Any] | None = None,
-        **kwargs,
+    async def generate(
+            self,
+            messages: list[ChatMessage],
+            stop_sequences: list[str] | None = None,
+            response_format: dict[str, str] | None = None,
+            tools_to_call_from: list[Any] | None = None,
+            **kwargs,
     ) -> ChatMessage:
         if response_format is not None:
             raise ValueError("Amazon Bedrock does not support response_format")
@@ -178,8 +181,18 @@ class AmazonBedrockServerModel(ApiModel):
 
         self._last_input_token_count = response["usage"]["inputTokens"]
         self._last_output_token_count = response["usage"]["outputTokens"]
-
         return ChatMessage.from_dict(
             response["output"]["message"],
             raw=response,
+            token_usage=TokenUsage(
+                input_tokens=response["usage"]["inputTokens"],
+                output_tokens=response["usage"]["outputTokens"],
+            ),
         )
+
+    async def __call__(self, *args, **kwargs) -> ChatMessage:
+        """
+        Call the model with the given arguments.
+        This is a convenience method that calls `generate` with the same arguments.
+        """
+        return await self.generate(*args, **kwargs)

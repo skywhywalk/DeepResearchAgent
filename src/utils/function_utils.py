@@ -26,24 +26,37 @@ import inspect
 import json
 import re
 import types
+from collections.abc import Callable
 from copy import copy
 from typing import (
     Any,
-    Callable,
-    Dict,
-    List,
     Literal,
-    Optional,
-    Tuple,
     Union,
     get_args,
     get_origin,
     get_type_hints,
 )
-from src.exception import DocstringParsingException, TypeHintParsingException
 
 
-def get_imports(code: str) -> List[str]:
+IMPORT_TO_PACKAGE_MAPPING = {
+    "wikipediaapi": "wikipedia-api",
+}
+
+
+def get_package_name(import_name: str) -> str:
+    """
+    Return the package name for a given import name.
+
+    Args:
+        import_name (`str`): Import name to get the package name for.
+
+    Returns:
+        `str`: Package name for the given import name.
+    """
+    return IMPORT_TO_PACKAGE_MAPPING.get(import_name, import_name)
+
+
+def get_imports(code: str) -> list[str]:
     """
     Extracts all the libraries (not relative imports) that are imported in a code.
 
@@ -70,10 +83,18 @@ def get_imports(code: str) -> List[str]:
     imports += re.findall(r"^\s*from\s+(\S+)\s+import", code, flags=re.MULTILINE)
     # Only keep the top-level module
     imports = [imp.split(".")[0] for imp in imports if not imp.startswith(".")]
-    return list(set(imports))
+    return [get_package_name(import_name) for import_name in set(imports)]
 
 
-def get_json_schema(func: Callable) -> Dict:
+class TypeHintParsingException(Exception):
+    """Exception raised for errors in parsing type hints to generate JSON schemas"""
+
+
+class DocstringParsingException(Exception):
+    """Exception raised for errors in parsing docstrings to generate JSON schemas"""
+
+
+def get_json_schema(func: Callable) -> dict:
     """
     This function generates a JSON schema for a given function, based on its docstring and type hints. This is
     mostly used for passing lists of tools to a chat template. The JSON schema contains the name and description of
@@ -234,7 +255,7 @@ returns_re = re.compile(
 
 def _parse_google_format_docstring(
     docstring: str,
-) -> Tuple[Optional[str], Optional[Dict], Optional[str]]:
+) -> tuple[str | None, dict | None, str | None]:
     """
     Parses a Google-style docstring to extract the function description,
     argument descriptions, and return description.
@@ -267,7 +288,7 @@ def _parse_google_format_docstring(
     return description, args_dict, returns
 
 
-def _convert_type_hints_to_json_schema(func: Callable, error_on_missing_type_hints: bool = True) -> Dict:
+def _convert_type_hints_to_json_schema(func: Callable, error_on_missing_type_hints: bool = True) -> dict:
     type_hints = get_type_hints(func)
     signature = inspect.signature(func)
 
@@ -287,6 +308,14 @@ def _convert_type_hints_to_json_schema(func: Callable, error_on_missing_type_hin
         else:
             properties[param_name]["nullable"] = True
 
+    # Return: multi‐type union -> treat as any
+    if (
+        "return" in properties
+        and (return_type := properties["return"].get("type"))
+        and not isinstance(return_type, str)
+    ):
+        properties["return"]["type"] = "any"
+
     schema = {"type": "object", "properties": properties}
     if required:
         schema["required"] = required
@@ -294,7 +323,7 @@ def _convert_type_hints_to_json_schema(func: Callable, error_on_missing_type_hin
     return schema
 
 
-def _parse_type_hint(hint: str) -> Dict:
+def _parse_type_hint(hint: str) -> dict:
     origin = get_origin(hint)
     args = get_args(hint)
 
@@ -355,7 +384,7 @@ def _parse_type_hint(hint: str) -> Dict:
     raise TypeHintParsingException("Couldn't parse this type hint, likely due to a custom class or object: ", hint)
 
 
-def _parse_union_type(args: tuple[Any, ...]) -> Dict:
+def _parse_union_type(args: tuple[Any, ...]) -> dict:
     subtypes = [_parse_type_hint(t) for t in args if t is not type(None)]
     if len(subtypes) == 1:
         # A single non-null type can be expressed directly
@@ -381,7 +410,7 @@ _BASE_TYPE_MAPPING = {
 }
 
 
-def _get_json_schema_type(param_type: str) -> Dict[str, str]:
+def _get_json_schema_type(param_type: str) -> dict[str, str]:
     if param_type in _BASE_TYPE_MAPPING:
         return copy(_BASE_TYPE_MAPPING[param_type])
     if str(param_type) == "Image":

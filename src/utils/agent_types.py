@@ -23,8 +23,6 @@ import PIL.Image
 import requests
 
 from src.utils import _is_package_available
-from src.logger import logger
-
 
 class AgentType:
     """
@@ -44,15 +42,9 @@ class AgentType:
         return self.to_string()
 
     def to_raw(self):
-        logger.error(
-            "This is a raw AgentType of unknown type. Display in notebooks and string conversion will be unreliable"
-        )
         return self._value
 
     def to_string(self) -> str:
-        logger.error(
-            "This is a raw AgentType of unknown type. Display in notebooks and string conversion will be unreliable"
-        )
         return str(self._value)
 
 

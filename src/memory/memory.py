@@ -4,16 +4,12 @@ from typing import TYPE_CHECKING, Any, Dict, List, TypedDict, Union, Optional
 from src.models import ChatMessage, MessageRole
 from src.exception import AgentError
 from src.utils import make_json_serializable
-from src.logger import LogLevel, AgentLogger
+from src.logger import LogLevel, AgentLogger, Timing, TokenUsage
+
 
 
 if TYPE_CHECKING:
     import PIL.Image
-
-
-class Message(TypedDict):
-    role: MessageRole
-    content: str | list[dict]
 
 
 @dataclass
@@ -38,53 +34,54 @@ class MemoryStep:
     def dict(self):
         return asdict(self)
 
-    def to_messages(self, **kwargs) -> List[Dict[str, Any]]:
+    def to_messages(self, summary_mode: bool = False) -> list[ChatMessage]:
         raise NotImplementedError
 
 
 @dataclass
 class ActionStep(MemoryStep):
-    model_input_messages: List[Message] | None = None
-    tool_calls: List[ToolCall] | None = None
-    start_time: float | None = None
-    end_time: float | None = None
-    step_number: int | None = None
+    step_number: int
+    timing: Timing
+    model_input_messages: list[ChatMessage] | None = None
+    tool_calls: list[ToolCall] | None = None
     error: AgentError | None = None
-    duration: float | None = None
-    model_output_message: ChatMessage = None
+    model_output_message: ChatMessage | None = None
     model_output: str | None = None
     observations: str | None = None
-    observations_images: List["PIL.Image.Image"] | None = None
+    observations_images: list["PIL.Image.Image"] | None = None
     action_output: Any = None
+    token_usage: TokenUsage | None = None
+    is_final_answer: bool = False
 
     def dict(self):
         # We overwrite the method to parse the tool_calls and action_output manually
         return {
+            "step_number": self.step_number,
+            "timing": self.timing.dict(),
             "model_input_messages": self.model_input_messages,
             "tool_calls": [tc.dict() for tc in self.tool_calls] if self.tool_calls else [],
-            "start_time": self.start_time,
-            "end_time": self.end_time,
-            "step": self.step_number,
             "error": self.error.dict() if self.error else None,
-            "duration": self.duration,
-            "model_output_message": self.model_output_message,
+            "model_output_message": self.model_output_message.dict() if self.model_output_message else None,
             "model_output": self.model_output,
             "observations": self.observations,
+            "observations_images": [image.tobytes() for image in self.observations_images]
+            if self.observations_images
+            else None,
             "action_output": make_json_serializable(self.action_output),
+            "token_usage": asdict(self.token_usage) if self.token_usage else None,
+            "is_final_answer": self.is_final_answer,
         }
 
-    def to_messages(self, summary_mode: bool = False, show_model_input_messages: bool = False) -> List[Message]:
+    def to_messages(self, summary_mode: bool = False) -> list[ChatMessage]:
         messages = []
-        if self.model_input_messages is not None and show_model_input_messages:
-            messages.append(Message(role=MessageRole.SYSTEM, content=self.model_input_messages))
         if self.model_output is not None and not summary_mode:
             messages.append(
-                Message(role=MessageRole.ASSISTANT, content=[{"type": "text", "text": self.model_output.strip()}])
+                ChatMessage(role=MessageRole.ASSISTANT, content=[{"type": "text", "text": self.model_output.strip()}])
             )
 
         if self.tool_calls is not None:
             messages.append(
-                Message(
+                ChatMessage(
                     role=MessageRole.TOOL_CALL,
                     content=[
                         {
@@ -97,7 +94,7 @@ class ActionStep(MemoryStep):
 
         if self.observations_images:
             messages.append(
-                Message(
+                ChatMessage(
                     role=MessageRole.USER,
                     content=[
                         {
@@ -111,7 +108,7 @@ class ActionStep(MemoryStep):
 
         if self.observations is not None:
             messages.append(
-                Message(
+                ChatMessage(
                     role=MessageRole.TOOL_RESPONSE,
                     content=[
                         {
@@ -130,71 +127,75 @@ class ActionStep(MemoryStep):
             message_content = f"Call id: {self.tool_calls[0].id}\n" if self.tool_calls else ""
             message_content += error_message
             messages.append(
-                Message(role=MessageRole.TOOL_RESPONSE, content=[{"type": "text", "text": message_content}])
+                ChatMessage(role=MessageRole.TOOL_RESPONSE, content=[{"type": "text", "text": message_content}])
             )
 
         return messages
 
-
 @dataclass
 class PlanningStep(MemoryStep):
-    model_input_messages: List[Message]
+    model_input_messages: list[ChatMessage]
     model_output_message: ChatMessage
     plan: str
+    timing: Timing
+    token_usage: TokenUsage | None = None
 
-    def to_messages(self, summary_mode: bool, **kwargs) -> List[Message]:
+    def to_messages(self, summary_mode: bool = False) -> list[ChatMessage]:
         if summary_mode:
             return []
         return [
-            Message(role=MessageRole.ASSISTANT, content=[{"type": "text", "text": self.plan.strip()}]),
-            Message(role=MessageRole.USER, content=[{"type": "text", "text": "Now proceed and carry out this plan."}]),
+            ChatMessage(role=MessageRole.ASSISTANT, content=[{"type": "text", "text": self.plan.strip()}]),
+            ChatMessage(
+                role=MessageRole.USER, content=[{"type": "text", "text": "Now proceed and carry out this plan."}]
+            ),
             # This second message creates a role change to prevent models models from simply continuing the plan message
         ]
-
 
 @dataclass
 class TaskStep(MemoryStep):
     task: str
-    task_images: List["PIL.Image.Image"] | None = None
+    task_images: list["PIL.Image.Image"] | None = None
 
-    def to_messages(self, summary_mode: bool = False, **kwargs) -> List[Message]:
+    def to_messages(self, summary_mode: bool = False) -> list[ChatMessage]:
         content = [{"type": "text", "text": f"New task:\n{self.task}"}]
         if self.task_images:
-            for image in self.task_images:
-                content.append({"type": "image", "image": image})
+            content.extend([{"type": "image", "image": image} for image in self.task_images])
 
-        return [Message(role=MessageRole.USER, content=content)]
+        return [ChatMessage(role=MessageRole.USER, content=content)]
 
 
 @dataclass
 class SystemPromptStep(MemoryStep):
     system_prompt: str
 
-    def to_messages(self, summary_mode: bool = False, **kwargs) -> List[Message]:
+    def to_messages(self, summary_mode: bool = False) -> list[ChatMessage]:
         if summary_mode:
             return []
-        return [Message(role=MessageRole.SYSTEM, content=[{"type": "text", "text": self.system_prompt}])]
+        return [ChatMessage(role=MessageRole.SYSTEM, content=[{"type": "text", "text": self.system_prompt}])]
+
+
+@dataclass
+class FinalAnswerStep(MemoryStep):
+    output: Any
     
 @dataclass
 class UserPromptStep(MemoryStep):
     user_prompt: str
 
-    def to_messages(self, summary_mode: bool = False, **kwargs) -> List[Message]:
+    def to_messages(self, summary_mode: bool = False, **kwargs) -> List[ChatMessage]:
         if summary_mode:
             return []
-        return [Message(role=MessageRole.USER, content=[{"type": "text", "text": self.user_prompt}])]
-
-    
-@dataclass
-class FinalAnswerStep(MemoryStep):
-    final_answer: Any
+        return [ChatMessage(role=MessageRole.USER, content=[{"type": "text", "text": self.user_prompt}])]
 
 
 class AgentMemory:
     def __init__(self, system_prompt: str, user_prompt: Optional[str] = None):
         self.system_prompt = SystemPromptStep(system_prompt=system_prompt)
-        self.user_prompt = UserPromptStep(user_prompt=user_prompt)
-        self.steps: List[Union[TaskStep, ActionStep, PlanningStep]] = []
+        if user_prompt is not None:
+            self.user_prompt = UserPromptStep(user_prompt=user_prompt)
+        else:
+            self.user_prompt = None
+        self.steps: list[TaskStep | ActionStep | PlanningStep] = []
 
     def reset(self):
         self.steps = []
@@ -216,23 +217,23 @@ class AgentMemory:
                 Careful: will increase log length exponentially. Use only for debugging.
         """
         logger.console.log("Replaying the agent's steps:")
+        logger.log_markdown(title="System prompt", content=self.system_prompt.system_prompt, level=LogLevel.ERROR)
+        if self.user_prompt is not None:
+            logger.log_markdown(title="User prompt", content=self.user_prompt.user_prompt, level=LogLevel.ERROR)
         for step in self.steps:
-            if isinstance(step, SystemPromptStep) and detailed:
-                logger.log_markdown(title="System prompt", content=step.system_prompt, level=LogLevel.ERROR)
-            elif isinstance(step, UserPromptStep) and detailed:
-                logger.log_markdown(title="User prompt", content=step.user_prompt, level=LogLevel.ERROR)
-            elif isinstance(step, TaskStep):
-                logger.log_task(step.task, "Task", level=LogLevel.ERROR)
+            if isinstance(step, TaskStep):
+                logger.log_task(step.task, "", level=LogLevel.ERROR)
             elif isinstance(step, ActionStep):
                 logger.log_rule(f"Step {step.step_number}", level=LogLevel.ERROR)
-                if detailed:
-                    logger.log_messages(step.model_input_messages)
-                logger.log_markdown(title="Agent output:", content=step.model_output, level=LogLevel.ERROR)
+                if detailed and step.model_input_messages is not None:
+                    logger.log_messages(step.model_input_messages, level=LogLevel.ERROR)
+                if step.model_output is not None:
+                    logger.log_markdown(title="Agent output:", content=step.model_output, level=LogLevel.ERROR)
             elif isinstance(step, PlanningStep):
                 logger.log_rule("Planning step", level=LogLevel.ERROR)
-                if detailed:
+                if detailed and step.model_input_messages is not None:
                     logger.log_messages(step.model_input_messages, level=LogLevel.ERROR)
-                logger.log_markdown(title="Agent output:", content=step.facts + "\n" + step.plan, level=LogLevel.ERROR)
+                logger.log_markdown(title="Agent output:", content=step.plan, level=LogLevel.ERROR)
 
 
 __all__ = ["AgentMemory"]

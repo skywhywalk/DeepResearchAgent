@@ -1,5 +1,5 @@
 import os
-from openai import OpenAI
+from openai import OpenAI, AsyncOpenAI
 from typing import Dict, Any, Tuple
 
 from dotenv import load_dotenv
@@ -11,6 +11,7 @@ from src.logger import logger
 from src.models.litellm import LiteLLMModel
 from src.models.openaillm import OpenAIServerModel
 from src.models.hfllm import InferenceClientModel
+from src.models.restful import RestfulModel
 from src.utils import Singleton
 from src.proxy.local_proxy import HTTP_CLIENT, ASYNC_HTTP_CLIENT
 
@@ -29,6 +30,7 @@ class ModelManager(metaclass=Singleton):
         self._register_qwen_models(use_local_proxy=use_local_proxy)
         self._register_langchain_models(use_local_proxy=use_local_proxy)
         self._register_vllm_models(use_local_proxy=use_local_proxy)
+
     def _check_local_api_key(self, local_api_key_name: str, remote_api_key_name: str) -> str:
         api_key = os.getenv(local_api_key_name, PLACEHOLDER)
         if api_key == PLACEHOLDER:
@@ -53,11 +55,11 @@ class ModelManager(metaclass=Singleton):
             # gpt-4o
             model_name = "gpt-4o"
             model_id = "openai/gpt-4o"
-            client = OpenAI(
+            client = AsyncOpenAI(
                 api_key=api_key,
                 base_url=self._check_local_api_base(local_api_base_name="SKYWORK_API_BASE", 
                                                     remote_api_base_name="OPENAI_API_BASE"),
-                http_client=HTTP_CLIENT,
+                http_client=ASYNC_HTTP_CLIENT,
             )
             model = LiteLLMModel(
                 model_id=model_id,
@@ -69,11 +71,11 @@ class ModelManager(metaclass=Singleton):
             # gpt-4.1
             model_name = "gpt-4.1"
             model_id = "openai/gpt-4.1"
-            client = OpenAI(
+            client = AsyncOpenAI(
                 api_key=api_key,
                 base_url=self._check_local_api_base(local_api_base_name="SKYWORK_API_BASE", 
                                                     remote_api_base_name="OPENAI_API_BASE"),
-                http_client=HTTP_CLIENT,
+                http_client=ASYNC_HTTP_CLIENT,
             )
             model = LiteLLMModel(
                 model_id=model_id,
@@ -85,11 +87,11 @@ class ModelManager(metaclass=Singleton):
             # o1
             model_name = "o1"
             model_id = "openai/o1"
-            client = OpenAI(
+            client = AsyncOpenAI(
                 api_key=api_key,
                 base_url=self._check_local_api_base(local_api_base_name="SKYWORK_API_BASE", 
                                                     remote_api_base_name="OPENAI_API_BASE"),
-                http_client=HTTP_CLIENT,
+                http_client=ASYNC_HTTP_CLIENT,
             )
             model = LiteLLMModel(
                 model_id=model_id,
@@ -101,15 +103,13 @@ class ModelManager(metaclass=Singleton):
             # o3
             model_name = "o3"
             model_id = "openai/o3"
-            client = OpenAI(
-                api_key=api_key,
-                base_url=self._check_local_api_base(local_api_base_name="SKYWORK_AZURE_HK_API_BASE", 
+
+            model = RestfulModel(
+                api_base=self._check_local_api_base(local_api_base_name="SKYWORK_AZURE_US_API_BASE",
                                                     remote_api_base_name="OPENAI_API_BASE"),
-                http_client=HTTP_CLIENT,
-            )
-            model = LiteLLMModel(
+                api_key=api_key,
                 model_id=model_id,
-                http_client=client,
+                http_client=ASYNC_HTTP_CLIENT,
                 custom_role_conversions=custom_role_conversions,
             )
             self.registed_models[model_name] = model
@@ -117,11 +117,11 @@ class ModelManager(metaclass=Singleton):
             # gpt-4o-search-preview
             model_name = "gpt-4o-search-preview"
             model_id = "gpt-4o-search-preview"
-            client = OpenAI(
+            client = AsyncOpenAI(
                 api_key=api_key,
                 base_url=self._check_local_api_base(local_api_base_name="SKYWORK_OPENROUTER_US_API_BASE", 
                                                     remote_api_base_name="OPENAI_API_BASE"),
-                http_client=HTTP_CLIENT,
+                http_client=ASYNC_HTTP_CLIENT,
             )
             model = LiteLLMModel(
                 model_id=model_id,
@@ -182,11 +182,11 @@ class ModelManager(metaclass=Singleton):
             # claude37-sonnet
             model_name = "claude37-sonnet"
             model_id = "claude-3.7-sonnet"
-            client = OpenAI(
+            client = AsyncOpenAI(
                 api_key=api_key,
                 base_url=self._check_local_api_base(local_api_base_name="SKYWORK_API_BASE", 
                                                     remote_api_base_name="ANTHROPIC_API_BASE"),
-                http_client=HTTP_CLIENT,
+                http_client=ASYNC_HTTP_CLIENT,
             )
             model = OpenAIServerModel(
                 model_id=model_id,
@@ -198,11 +198,11 @@ class ModelManager(metaclass=Singleton):
             # claude37-sonnet-thinking
             model_name = "claude37-sonnet-thinking"
             model_id = "claude-3.7-sonnet-thinking"
-            client = OpenAI(
+            client = AsyncOpenAI(
                 api_key=api_key,
                 base_url=self._check_local_api_base(local_api_base_name="SKYWORK_OPENROUTER_US_API_BASE", 
                                                     remote_api_base_name="ANTHROPIC_API_BASE"),
-                http_client=HTTP_CLIENT,
+                http_client=ASYNC_HTTP_CLIENT,
             )
             model = OpenAIServerModel(
                 model_id=model_id,
@@ -214,11 +214,11 @@ class ModelManager(metaclass=Singleton):
             # claude-4-sonnet
             model_name = "claude-4-sonnet"
             model_id = "claude-4-sonnet"
-            client = OpenAI(
+            client = AsyncOpenAI(
                 api_key=api_key,
                 base_url=self._check_local_api_base(local_api_base_name="SKYWORK_OPENROUTER_US_API_BASE",
                                                     remote_api_base_name="ANTHROPIC_API_BASE"),
-                http_client=HTTP_CLIENT,
+                http_client=ASYNC_HTTP_CLIENT,
             )
             model = OpenAIServerModel(
                 model_id=model_id,
@@ -266,11 +266,11 @@ class ModelManager(metaclass=Singleton):
             # gemini-2.5-pro
             model_name = "gemini-2.5-pro"
             model_id = "gemini-2.5-pro-preview-05-06"
-            client = OpenAI(
+            client = AsyncOpenAI(
                 api_key=api_key,
                 base_url=self._check_local_api_base(local_api_base_name="SKYWORK_GOOGLE_API_BASE", 
                                                     remote_api_base_name="GOOGLE_API_BASE"),
-                http_client=HTTP_CLIENT,
+                http_client=ASYNC_HTTP_CLIENT,
             )
             model = OpenAIServerModel(
                 model_id=model_id,
@@ -400,7 +400,7 @@ class ModelManager(metaclass=Singleton):
             model_name = model["model_name"]
             model_id = model["model_id"]
             
-            client = OpenAI(
+            client = AsyncOpenAI(
                 api_key=api_key,
                 base_url=api_base,
             )
@@ -426,7 +426,7 @@ class ModelManager(metaclass=Singleton):
             model_name = model["model_name"]
             model_id = model["model_id"]
 
-            client = OpenAI(
+            client = AsyncOpenAI(
                 api_key=api_key_VL,
                 base_url=api_base_VL,
             )

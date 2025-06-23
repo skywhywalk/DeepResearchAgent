@@ -39,10 +39,6 @@ from huggingface_hub import (
     metadata_update,
 )
 
-from src.exception import (
-    TypeHintParsingException,
-)
-
 from src.utils import (
     _convert_type_hints_to_json_schema,
     get_imports,
@@ -157,7 +153,7 @@ class Tool:
 
     name: str
     description: str
-    parameters: Dict[str, Dict[str, Union[str, type, bool]]]
+    parameters: dict[str, dict[str, str | type | bool]]
     output_type: str
 
     def __init__(self, *args, **kwargs):
@@ -169,15 +165,14 @@ class Tool:
 
     def validate_arguments(self):
         required_attributes = {
-            "name": str,
             "description": str,
+            "name": str,
             "parameters": dict,
             "output_type": str,
         }
         # Validate class attributes
         for attr, expected_type in required_attributes.items():
             attr_value = getattr(self, attr, None)
-
             if attr_value is None:
                 raise TypeError(f"You must set an attribute {attr}.")
             if not isinstance(attr_value, expected_type):
@@ -197,7 +192,6 @@ class Tool:
 
         # Validate inputs
         for input_name, input_content in properties.items():
-
             assert isinstance(input_content, dict), f"Input '{input_name}' should be a dictionary."
             assert "type" in input_content and "description" in input_content, (
                 f"Input '{input_name}' should have keys 'type' and 'description', has only {list(input_content.keys())}."
@@ -206,7 +200,6 @@ class Tool:
                 raise Exception(
                     f"Input '{input_name}': type '{input_content['type']}' is not an authorized value, should be one of {AUTHORIZED_TYPES}."
                 )
-
         # Validate output type
         assert getattr(self, "output_type", None) in AUTHORIZED_TYPES
 
@@ -230,7 +223,6 @@ class Tool:
             json_schema = _convert_type_hints_to_json_schema(self.forward, error_on_missing_type_hints=False)[
                 "properties"
             ]  # This function will not raise an error on missing docstrings, contrary to get_json_schema
-
             for key, value in self.parameters["properties"].items():
                 assert key in json_schema, (
                     f"Input '{key}' should be present in function signature, found only {json_schema.keys()}"
@@ -256,10 +248,9 @@ class Tool:
             potential_kwargs = args[0]
 
             # If the dictionary keys match our input parameters, convert it to kwargs
-            if all(key in self.inputs for key in potential_kwargs):
+            if all(key in self.parameters['properties'] for key in potential_kwargs):
                 args = ()
                 kwargs = potential_kwargs
-
 
         outputs = self.forward(*args, **kwargs)
 
@@ -388,8 +379,8 @@ class Tool:
         self,
         repo_id: str,
         commit_message: str = "Upload tool",
-        private: Optional[bool] = None,
-        token: Optional[Union[bool, str]] = None,
+        private: bool | None = None,
+        token: bool | str | None = None,
         create_pr: bool = False,
     ) -> str:
         """
@@ -424,7 +415,7 @@ class Tool:
         )
 
     @staticmethod
-    def _initialize_hub_repo(repo_id: str, token: Optional[Union[bool, str]], private: Optional[bool]) -> str:
+    def _initialize_hub_repo(repo_id: str, token: bool | str | None, private: bool | None) -> str:
         """Initialize repository on Hugging Face Hub."""
         repo_url = create_repo(
             repo_id=repo_id,
@@ -483,7 +474,7 @@ class Tool:
     def from_hub(
         cls,
         repo_id: str,
-        token: Optional[str] = None,
+        token: str | None = None,
         trust_remote_code: bool = False,
         **kwargs,
     ):
@@ -563,8 +554,8 @@ class Tool:
         space_id: str,
         name: str,
         description: str,
-        api_name: Optional[str] = None,
-        token: Optional[str] = None,
+        api_name: str | None = None,
+        token: str | None = None,
     ):
         """
         Creates a [`Tool`] from a Space given its id on the Hub.
@@ -612,8 +603,8 @@ class Tool:
                 space_id: str,
                 name: str,
                 description: str,
-                api_name: Optional[str] = None,
-                token: Optional[str] = None,
+                api_name: str | None = None,
+                token: str | None = None,
             ):
                 self.name = name
                 self.description = description
@@ -757,7 +748,7 @@ class AsyncTool(Tool):
             potential_kwargs = args[0]
 
             # If the dictionary keys match our input parameters, convert it to kwargs
-            if all(key in self.inputs for key in potential_kwargs):
+            if all(key in self.parameters["properties"] for key in potential_kwargs):
                 args = ()
                 kwargs = potential_kwargs
 

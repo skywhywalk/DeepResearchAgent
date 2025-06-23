@@ -1,6 +1,3 @@
-from dataclasses import dataclass
-from typing import Any, Dict, Optional
-
 from src.tools.executor.local_python_executor import (
     BASE_BUILTIN_MODULES,
     BASE_PYTHON_TOOLS,

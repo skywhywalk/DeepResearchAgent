@@ -9,10 +9,8 @@ load_dotenv(verbose=True)
 PROXY_URL = os.getenv('LOCAL_PROXY_BASE', None)
 
 if PROXY_URL:
-    TRANSPORT = httpx.HTTPTransport(proxy=httpx.Proxy(url=PROXY_URL))
-    HTTP_CLIENT = httpx.Client(transport=TRANSPORT)
-    ASYNC_TRANSPORT = httpx.AsyncHTTPTransport(proxy=httpx.Proxy(url=PROXY_URL))
-    ASYNC_HTTP_CLIENT = httpx.AsyncClient(transport=ASYNC_TRANSPORT)
+    HTTP_CLIENT = httpx.Client(proxy=PROXY_URL, timeout=httpx.Timeout(600.0, connect=60.0))
+    ASYNC_HTTP_CLIENT = httpx.AsyncClient(proxy=PROXY_URL, timeout=httpx.Timeout(600.0, connect=60.0))
 else:
     HTTP_CLIENT = httpx.Client()
     ASYNC_HTTP_CLIENT = httpx.AsyncClient()

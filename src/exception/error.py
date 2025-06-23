@@ -4,12 +4,12 @@ from typing import Dict
 class AgentError(Exception):
     """Base class for other agent-related exceptions"""
 
-    def __init__(self, message, logger=None):
+    def __init__(self, message, logger):
         super().__init__(message)
         self.message = message
-        logger.error(message)
+        logger.log_error(message)
 
-    def dict(self) -> Dict[str, str]:
+    def dict(self) -> dict[str, str]:
         return {"type": self.__class__.__name__, "message": str(self.message)}
 
 
@@ -47,10 +47,3 @@ class AgentGenerationError(AgentError):
     """Exception raised for errors in generation in the agent"""
 
     pass
-
-class TypeHintParsingException(Exception):
-    """Exception raised for errors in parsing type hints to generate JSON schemas"""
-
-
-class DocstringParsingException(Exception):
-    """Exception raised for errors in parsing docstrings to generate JSON schemas"""

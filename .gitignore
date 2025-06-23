@@ -172,3 +172,11 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+
+# Data
+data/
+.DS_Store
+
+# workdir
+workdir/

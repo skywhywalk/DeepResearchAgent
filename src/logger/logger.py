@@ -87,6 +87,10 @@ class AgentLogger(logging.Logger, metaclass=Singleton):
             kwargs.setdefault(
                 "stacklevel", 2
             )  # Adjust stack level to show the actual caller
+            if "style" in kwargs:
+                kwargs.pop("style")
+            if "level" in kwargs:
+                kwargs.pop("level")
             super().info(msg, *args, **kwargs)
 
     def warning(self, msg, *args, **kwargs):

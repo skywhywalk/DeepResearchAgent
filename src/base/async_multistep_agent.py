@@ -490,7 +490,7 @@ You have been provided with these additional arguments, that you can access usin
                 self.step_number += 1
 
         if not returned_final_answer and self.step_number == max_steps + 1:
-            final_answer = self._handle_max_steps_reached(task, images)
+            final_answer = await self._handle_max_steps_reached(task, images)
             yield action_step
         yield FinalAnswerStep(handle_agent_output_types(final_answer))
 
@@ -742,7 +742,10 @@ You have been provided with these additional arguments, that you can access usin
         ]
         if images:
             messages[0].content += [{"type": "image", "image": image} for image in images]
-        messages += self.write_memory_to_messages()[1:]
+
+        memory_messages = await self.write_memory_to_messages()
+        messages += memory_messages[1:]
+
         messages.append(
             ChatMessage(
                 role=MessageRole.USER,
@@ -757,7 +760,7 @@ You have been provided with these additional arguments, that you can access usin
             )
         )
         try:
-            chat_message: ChatMessage = self.model.generate(messages)
+            chat_message: ChatMessage = await self.model.generate(messages)
             return chat_message
         except Exception as e:
             return ChatMessage(role=MessageRole.ASSISTANT, content=f"Error in generating final LLM output:\n{e}")

@@ -1,6 +1,6 @@
 import copy
 
-from src.models import MessageRole, Model
+from src.models import MessageRole, Model, ChatMessage
 from src.logger import logger
 
 
@@ -62,6 +62,10 @@ ADDITIONALLY, your FINAL ANSWER MUST adhere to any formatting instructions speci
             ],
         }
     )
+
+    messages = [
+        ChatMessage.from_dict(msg) for msg in messages
+    ]
 
     response = await reformulation_model(messages)
     response = response.content

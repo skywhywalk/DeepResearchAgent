@@ -42,10 +42,17 @@ def filter_answers(answers_file):
         prediction = row['prediction']
         truth = row['true_answer']
 
-        if prediction is not None:
-            score = question_scorer(prediction, truth)
-            if score:
+        # Processing the test dataset that not contains the true answer
+        if truth == "?":
+            if prediction is not None:
                 filttered_df.append(row)
+        # Processing the validation dataset that contains the true answer
+        else:
+            if prediction is not None:
+                prediction = str(prediction)
+                score = question_scorer(prediction, truth)
+                if score:
+                    filttered_df.append(row)
 
     filttered_df = pd.DataFrame(filttered_df)
     filttered_df.to_json(answers_file, lines=True, orient='records')
@@ -65,12 +72,10 @@ def get_tasks_to_run(answers_file, dataset) -> List[dict]:
 
             df = pd.read_json(answers_file, lines=True)
             if "task_id" not in df.columns:
-                logger.warning(f"Answers file {answers_file} does not contain 'task_id' column. "
-                               "Please check the file format.")
+                logger.warning(f"Answers file {answers_file} does not contain 'task_id' column. Please check the file format.")
                 return []
             done_questions = df["task_id"].tolist()
             logger.info(f"Found {len(done_questions)} previous results!")
-            
         else:
             done_questions = []
     except Exception as e:
@@ -102,7 +107,9 @@ async def answer_single_question(example, answers_file):
 
         agent_memory = await agent.write_memory_to_messages(summary_mode=True)
 
-        final_result = await prepare_response(augmented_question, agent_memory, reformulation_model=model_manager.registed_models["o3"])
+        final_result = await prepare_response(augmented_question,
+                                              agent_memory,
+                                              reformulation_model=model_manager.registed_models["gpt-4.1"])
 
         output = str(final_result)
         for memory_step in agent.memory.steps:
@@ -163,17 +170,16 @@ async def main():
 
     # Load answers
     tasks_to_run = get_tasks_to_run(config.save_path, dataset)
+    tasks_to_run = [task for task in tasks_to_run if task["task"] == "1"]
+
     logger.info(f"Loaded {len(tasks_to_run)} tasks to run.")
 
-    tasks = [task for task in tasks_to_run if task["task_id"] == "b7f857e4-d8aa-4387-af2a-0e844df5b9d8"]
-    await answer_single_question(tasks[0], config.save_path)
-
-    # # # Run tasks
-    # batch_size = getattr(config, "concurrency", 4)
-    # for i in range(0, len(tasks_to_run), batch_size):
-    #     batch = tasks_to_run[i:min(i + batch_size, len(tasks_to_run))]
-    #     await asyncio.gather(*[answer_single_question(task, config.save_path) for task in batch])
-    #     logger.info(f"Batch {i // batch_size + 1} done.")
+    # Run tasks
+    batch_size = getattr(config, "concurrency", 4)
+    for i in range(0, len(tasks_to_run), batch_size):
+        batch = tasks_to_run[i:min(i + batch_size, len(tasks_to_run))]
+        await asyncio.gather(*[answer_single_question(task, config.save_path) for task in batch])
+        logger.info(f"Batch {i // batch_size + 1} done.")
 
 if __name__ == '__main__':
     asyncio.run(main())

@@ -345,7 +345,7 @@ class GeneralAgent(AsyncMultiStepAgent):
                 error_msg = (
                     f"Invalid call to tool '{tool_name}' with arguments {json.dumps(arguments)}: {e}\n"
                     "You should call this tool with correct input arguments.\n"
-                    f"Expected inputs: {json.dumps(tool.inputs)}\n"
+                    f"Expected parameters: {json.dumps(tool.parameters)}\n"
                     f"Returns output type: {tool.output_type}\n"
                     f"Tool description: '{description}'"
                 )

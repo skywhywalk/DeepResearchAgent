@@ -181,7 +181,7 @@ class ModelManager(metaclass=Singleton):
             
             # claude37-sonnet
             model_name = "claude37-sonnet"
-            model_id = "claude-3.7-sonnet"
+            model_id = "claude37-sonnet"
             client = AsyncOpenAI(
                 api_key=api_key,
                 base_url=self._check_local_api_base(local_api_base_name="SKYWORK_API_BASE", 
@@ -196,7 +196,7 @@ class ModelManager(metaclass=Singleton):
             self.registed_models[model_name] = model
             
             # claude37-sonnet-thinking
-            model_name = "claude37-sonnet-thinking"
+            model_name = "claude-3.7-sonnet-thinking"
             model_id = "claude-3.7-sonnet-thinking"
             client = AsyncOpenAI(
                 api_key=api_key,

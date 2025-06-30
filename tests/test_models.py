@@ -28,22 +28,32 @@ if __name__ == "__main__":
         ChatMessage(role="user", content="What is the capital of France?"),
     ]
 
-    response = asyncio.run(model_manager.registed_models["gpt-4.1"](
-        messages=messages,
-    ))
-    print(response)
-
     response = asyncio.run(model_manager.registed_models["o3"](
         messages=messages,
     ))
     print(response)
 
-    response = asyncio.run(model_manager.registed_models["gemini-2.5-pro"](
+    response = asyncio.run(model_manager.registed_models["gpt-4.1"](
+        messages=messages,
+    ))
+    print(response)
+
+    response = asyncio.run(model_manager.registed_models["claude37-sonnet"](
+        messages=messages,
+    ))
+    print(response)
+
+    response = asyncio.run(model_manager.registed_models["claude-3.7-sonnet-thinking"](
         messages=messages,
     ))
     print(response)
 
     response = asyncio.run(model_manager.registed_models["claude-4-sonnet"](
+        messages=messages,
+    ))
+    print(response)
+
+    response = asyncio.run(model_manager.registed_models["gemini-2.5-pro"](
         messages=messages,
     ))
     print(response)

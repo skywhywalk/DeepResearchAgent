@@ -273,6 +273,7 @@ class RestfulModel(ApiModel):
             **kwargs,
         )
 
+
         # Async call to the LiteLLM client for completion
         response = await self.client.acompletion(**completion_kwargs)
 

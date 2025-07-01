@@ -86,22 +86,22 @@ def get_tasks_to_run(answers_file, dataset) -> List[dict]:
 
 async def answer_single_question(example, answers_file):
 
-    agent = await create_agent()
-
-    logger.info(f"Task Id: {example['task_id']}, Final Answer: {example['true_answer']}")
-
-    augmented_question = example["question"]
-
-    if example["file_name"]:
-
-        prompt_use_files = "\n\nTo solve the task above, you will have to use these attached files:\n"
-        file_description = f" - Attached file: {example['file_name']}"
-        prompt_use_files += file_description
-
-        augmented_question += prompt_use_files
-
-    start_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     try:
+        agent = await create_agent()
+
+        logger.info(f"Task Id: {example['task_id']}, Final Answer: {example['true_answer']}")
+
+        augmented_question = example["question"]
+
+        if example["file_name"]:
+            prompt_use_files = "\n\nTo solve the task above, you will have to use these attached files:\n"
+            file_description = f" - Attached file: {example['file_name']}"
+            prompt_use_files += file_description
+
+            augmented_question += prompt_use_files
+
+        start_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
         # Run agent 🚀
         final_result = await agent.run(task=augmented_question)
 
@@ -174,12 +174,14 @@ async def main():
 
     logger.info(f"Loaded {len(tasks_to_run)} tasks to run.")
 
+    await answer_single_question(tasks_to_run[2], config.save_path)
+
     # Run tasks
-    batch_size = getattr(config, "concurrency", 4)
-    for i in range(0, len(tasks_to_run), batch_size):
-        batch = tasks_to_run[i:min(i + batch_size, len(tasks_to_run))]
-        await asyncio.gather(*[answer_single_question(task, config.save_path) for task in batch])
-        logger.info(f"Batch {i // batch_size + 1} done.")
+    # batch_size = getattr(config, "concurrency", 4)
+    # for i in range(0, len(tasks_to_run), batch_size):
+    #     batch = tasks_to_run[i:min(i + batch_size, len(tasks_to_run))]
+    #     await asyncio.gather(*[answer_single_question(task, config.save_path) for task in batch])
+    #     logger.info(f"Batch {i // batch_size + 1} done.")
 
 if __name__ == '__main__':
     asyncio.run(main())

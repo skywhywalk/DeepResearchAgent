@@ -1,6 +1,7 @@
 from typing import Dict, List, Optional, Any
 from collections.abc import Generator
 from openai.types.chat import ChatCompletion
+import requests
 
 from src.models.base import (ApiModel,
                              ChatMessage,
@@ -47,35 +48,7 @@ class RestfulClient():
         if kwargs:
             data.update(kwargs)
 
-        response = self.http_client.post(
-            f"{self.api_base}/{self.api_type}",
-            json=data,
-            headers=headers,
-        )
-
-        return response.json()
-
-    async def acompletion(self,
-                          model,
-                          messages,
-                          **kwargs):
-
-        headers = {
-            "app_key": self.api_key,
-            "Content-Type": "application/json"
-        }
-
-        model = model.split("/")[-1]
-        data = {
-            "model": model,
-            "messages": messages,
-        }
-
-        # Add any additional kwargs to the data
-        if kwargs:
-            data.update(kwargs)
-
-        response = await self.http_client.post(
+        response = requests.post(
             f"{self.api_base}/{self.api_type}",
             json=data,
             headers=headers,
@@ -273,9 +246,8 @@ class RestfulModel(ApiModel):
             **kwargs,
         )
 
-
         # Async call to the LiteLLM client for completion
-        response = await self.client.acompletion(**completion_kwargs)
+        response = self.client.completion(**completion_kwargs)
 
         response = ChatCompletion.model_validate(response)
 

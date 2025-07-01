@@ -120,12 +120,12 @@ task_instruction: |-
   You have one question to answer. It is paramount that you provide a correct answer. Give it all you can: I know for a fact that you have access to all the relevant tools and team members to solve it and find the correct answer (the answer does exist). 
   Failure or 'I cannot answer' or 'None found' will not be tolerated, success will be rewarded. 
   * You must begin by creating a detailed plan that explicitly incorporates the available TOOLS and TEAM MEMBERS. Then, follow the plan step by step to solve the complex task.
+  * If the task involves analyzing an ATTACHED FILE, a URL, performing CALCULATIONS, or playing GAME, please use `deep_analyzer_agent`.
   * If the task involves attached files, you are required to specify the absolute path in your plan and share it explicitly with your team members.
   * If the task need to use the team members, you are required to provide the ORIGINAL TASK as the `task` parameter for the agents to understand the task. DO NOT modify the task.
   * If the task involves interacting with web pages or conducting web searches, start with the `browser_use_agent` and follow up with the `deep_researcher_agent`.
       - Firstly, please use `browser_use_agent` to search and interact with the most relevant web pages to find the answer. If the answer is found, please output the answer directly.
       - Secondly, if the answer is not found, please use `deep_researcher_agent` to perform extensive web searches to find the answer.
-  * If the task involves analyzing an ATTACHED FILE, a URL, performing CALCULATIONS, or playing GAME, please use `deep_analyzer_agent`.
   * Run verification steps if that's needed, you must make sure you find the correct answer!
 
   Here is the task:

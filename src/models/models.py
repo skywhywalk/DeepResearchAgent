@@ -109,7 +109,7 @@ class ModelManager(metaclass=Singleton):
                                                     remote_api_base_name="OPENAI_API_BASE"),
                 api_key=api_key,
                 model_id=model_id,
-                http_client=ASYNC_HTTP_CLIENT,
+                http_client=HTTP_CLIENT,
                 custom_role_conversions=custom_role_conversions,
             )
             self.registed_models[model_name] = model

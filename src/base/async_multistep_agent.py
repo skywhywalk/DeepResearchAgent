@@ -363,6 +363,7 @@ class AsyncMultiStepAgent(ABC):
             self.task += f"""
 You have been provided with these additional arguments, that you can access using the keys as variables in your python code:
 {str(additional_args)}."""
+        self.task = self.initialize_task_instruction()
 
         self.system_prompt = self.initialize_system_prompt()
         self.memory.system_prompt = SystemPromptStep(system_prompt=self.system_prompt)

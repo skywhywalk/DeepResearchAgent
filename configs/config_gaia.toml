@@ -62,7 +62,7 @@ tools = ["python_interpreter"]
 mcp_tools = ["get_weather"]
 
 [agent.planning_agent_config]
-model_id = "claude37-sonnet"
+model_id = "claude-3.7-sonnet-thinking"
 name = "planning_agent"
 description = "A planning agent that can plan the steps to complete the task."
 max_steps = 20
@@ -72,10 +72,10 @@ managed_agents = ["deep_analyzer_agent", "browser_use_agent"]
 mcp_tools = []
 
 [agent.deep_analyzer_agent_config]
-model_id = "claude37-sonnet"
+model_id = "claude-3.7-sonnet-thinking"
 name = "deep_analyzer_agent"
 description = "A deep analyzer agent that can perform systematic, step-by-step analysis."
-max_steps = 1
+max_steps = 3
 template_path = "src/agent/deep_analyzer_agent/prompts/deep_analyzer_agent.yaml"
 tools = ["deep_analyzer", "python_interpreter"]
 mcp_tools = []
@@ -90,7 +90,7 @@ tools = ["auto_browser_use", "python_interpreter"]
 mcp_tools = []
 
 [agent.deep_researcher_agent_config]
-model_id = "claude37-sonnet"
+model_id = "claude-3.7-sonnet-thinking"
 name = "deep_researcher_agent"
 description = "A deep researcher agent that can conduct extensive web searches."
 max_steps = 3

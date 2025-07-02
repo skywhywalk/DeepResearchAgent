@@ -42,6 +42,10 @@ def filter_answers(answers_file):
         prediction = row['prediction']
         truth = row['true_answer']
 
+        # If the prediction is "Unable to determine", we set it to None
+        if str(prediction) == "Unable to determine":
+            prediction = None
+
         # Processing the test dataset that not contains the true answer
         if truth == "?":
             if prediction is not None:
@@ -170,18 +174,23 @@ async def main():
 
     # Load answers
     tasks_to_run = get_tasks_to_run(config.save_path, dataset)
-    tasks_to_run = [task for task in tasks_to_run if task["task"] == "1"]
+    tasks_to_run = [task for task in tasks_to_run if task["task"] == "2"]
 
     logger.info(f"Loaded {len(tasks_to_run)} tasks to run.")
 
-    await answer_single_question(tasks_to_run[2], config.save_path)
-
-    # Run tasks
+    # # await answer_single_question(tasks_to_run[5], config.save_path)
+    # tasks_to_run = tasks_to_run[4:]
+    #
+    # # Run tasks
     # batch_size = getattr(config, "concurrency", 4)
     # for i in range(0, len(tasks_to_run), batch_size):
     #     batch = tasks_to_run[i:min(i + batch_size, len(tasks_to_run))]
     #     await asyncio.gather(*[answer_single_question(task, config.save_path) for task in batch])
     #     logger.info(f"Batch {i // batch_size + 1} done.")
+
+    for task in tasks_to_run[2:]:
+        await answer_single_question(task, config.save_path)
+        logger.info(f"Task {task['task_id']} done.")
 
 if __name__ == '__main__':
     asyncio.run(main())

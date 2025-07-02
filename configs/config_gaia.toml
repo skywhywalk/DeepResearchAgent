@@ -44,7 +44,7 @@ username = "xxxx"
 password = "xxxx"
 
 [deep_analyzer_tool]
-analyzer_model_ids = ["gemini-2.5-pro", "o3"]
+analyzer_model_ids = ["gemini-2.5-pro"]
 summarizer_model_id = "gemini-2.5-pro"
 
 # Agent configs

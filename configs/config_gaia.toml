@@ -10,7 +10,7 @@ save_path = "dra.jsonl"
 
 # Tool Config
 [web_search_tool]
-engine = "Google"
+engine = "Firecrawl" # Options: "Firecrawl", "Google", "Bing", "DuckDuckGo", "Baidu"
 fallback_engines = ["DuckDuckGo", "Baidu", "Bing"]
 retry_delay = 10
 max_retries = 3
@@ -68,7 +68,7 @@ description = "A planning agent that can plan the steps to complete the task."
 max_steps = 20
 template_path = "src/agent/planning_agent/prompts/planning_agent.yaml"
 tools = ["planning"]
-managed_agents = ["deep_analyzer_agent", "browser_use_agent"]
+managed_agents = ["deep_analyzer_agent", "browser_use_agent", "deep_researcher_agent"]
 mcp_tools = []
 
 [agent.deep_analyzer_agent_config]

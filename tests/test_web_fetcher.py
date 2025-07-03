@@ -27,6 +27,6 @@ if __name__ == "__main__":
     logger.info("Registed models: %s", ", ".join(model_manager.registed_models.keys()))
     
     fetcher = WebFetcherTool()
-    url = "https://www.scientistsforxr.earth/2023-ipcc"
+    url = "https://www.quora.com/If-Eliud-Kipchoge-can-maintain-such-a-fast-pace-over-26-2-miles-why-can-t-he-manage-to-break-the-single-mile-world-record"
     content = asyncio.run(fetcher.forward(url))
     print(content)

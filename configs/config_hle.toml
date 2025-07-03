@@ -10,7 +10,7 @@ save_path = "ssa.jsonl"
 
 # Tool Config
 [web_search_tool]
-engine = "Google"
+engine = "Firecrawl" # Options: "Firecrawl", "Google", "Bing", "DuckDuckGo", "Baidu"
 fallback_engines = ["DuckDuckGo", "Baidu", "Bing"]
 retry_delay = 10
 max_retries = 3

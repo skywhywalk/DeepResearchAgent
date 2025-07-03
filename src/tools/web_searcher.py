@@ -8,6 +8,7 @@ from src.tools.web_fetcher import WebFetcherTool
 from src.config import config
 from src.tools.search import (
     GoogleSearchEngine,
+    FirecrawlSearchEngine,
     WebSearchEngine,
     SearchItem
 )
@@ -122,7 +123,7 @@ class WebSearcherTool(AsyncTool):
 
         self.searcher_config = config.web_search_tool
         self._search_engine: dict[str, WebSearchEngine] = {
-            "google": GoogleSearchEngine()
+            "firecrawl": FirecrawlSearchEngine()
         }
         self.max_length: int = (
             getattr(self.searcher_config, "max_length", 20000)
@@ -294,9 +295,9 @@ class WebSearcherTool(AsyncTool):
     def _get_engine_order(self) -> List[str]:
         """Determines the order in which to try search engines."""
         preferred = (
-            getattr(self.searcher_config, "engine", "google").lower()
+            getattr(self.searcher_config, "engine", "firecrawl").lower()
             if self.searcher_config
-            else "google"
+            else "firecrawl"
         )
         fallbacks = (
             [engine.lower() for engine in self.searcher_config.fallback_engines]

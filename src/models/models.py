@@ -199,7 +199,7 @@ class ModelManager(metaclass=Singleton):
             model_id = "claude37-sonnet"
             client = AsyncOpenAI(
                 api_key=api_key,
-                base_url=self._check_local_api_base(local_api_base_name="SKYWORK_API_BASE", 
+                base_url=self._check_local_api_base(local_api_base_name="SKYWORK_OPENROUTER_BJ_API_BASE",
                                                     remote_api_base_name="ANTHROPIC_API_BASE"),
                 http_client=ASYNC_HTTP_CLIENT,
             )
@@ -215,7 +215,7 @@ class ModelManager(metaclass=Singleton):
             model_id = "claude-3.7-sonnet-thinking"
             client = AsyncOpenAI(
                 api_key=api_key,
-                base_url=self._check_local_api_base(local_api_base_name="SKYWORK_OPENROUTER_US_API_BASE", 
+                base_url=self._check_local_api_base(local_api_base_name="SKYWORK_OPENROUTER_BJ_API_BASE",
                                                     remote_api_base_name="ANTHROPIC_API_BASE"),
                 http_client=ASYNC_HTTP_CLIENT,
             )
@@ -280,10 +280,10 @@ class ModelManager(metaclass=Singleton):
             
             # gemini-2.5-pro
             model_name = "gemini-2.5-pro"
-            model_id = "gemini-2.5-pro-preview-05-06"
+            model_id = "gemini-2.5-pro-preview-06-05"
             client = AsyncOpenAI(
                 api_key=api_key,
-                base_url=self._check_local_api_base(local_api_base_name="SKYWORK_GOOGLE_API_BASE", 
+                base_url=self._check_local_api_base(local_api_base_name="SKYWORK_OPENROUTER_BJ_API_BASE",
                                                     remote_api_base_name="GOOGLE_API_BASE"),
                 http_client=ASYNC_HTTP_CLIENT,
             )
@@ -304,7 +304,7 @@ class ModelManager(metaclass=Singleton):
             models = [
                 {
                     "model_name": "gemini-2.5-pro",
-                    "model_id": "gemini-2.5-pro-preview-05-06",
+                    "model_id": "gemini-2.5-pro-preview-06-05",
                 },
             ]
             

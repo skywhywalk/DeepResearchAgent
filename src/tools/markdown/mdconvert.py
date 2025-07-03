@@ -17,10 +17,11 @@ from markitdown._base_converter import DocumentConverterResult
 from markitdown._exceptions import MissingDependencyException, MISSING_DEPENDENCY_MESSAGE
 import pdfminer
 import pdfminer.high_level
+from litellm import transcription
+
 from src.models import model_manager
 from src.logger import logger
-from src.proxy import PROXY_URL, proxy_env
-from litellm import transcription
+
 
 def read_tables_from_stream(file_stream):
     with tempfile.NamedTemporaryFile(suffix=".pdf", delete=True) as temp_pdf:
@@ -30,18 +31,18 @@ def read_tables_from_stream(file_stream):
         return tables
 
 def transcribe_audio(file_stream, audio_format):
-    proxy_url = os.getenv("SKYWORK_WHISPER_BJ_API_BASE", None)
-    if proxy_url is not None:
-        with proxy_env(proxy_url):
-            files = {'file': file_stream}
-            headers = {
-                "app_key": os.getenv("SKYWORK_API_KEY"),
-            }
-            response = requests.post(proxy_url, headers=headers, files=files)
-    else:
-        response = transcription(model="gpt-4o-transcribe", file=file_stream)
 
-    return response.json()['text']
+    if "whisper" in model_manager.registed_models:
+        # Use the Whisper model for transcription
+        model = model_manager.registed_models["whisper"]
+        result = model(
+            file_stream=file_stream,
+        )
+    else:
+        response = transcription(model="gpt-4o-transcribe", file=file_stream).json()
+        result = response.get("text", "No transcription available.")
+
+    return result
 
 class AudioWhisperConverter(AudioConverter):
 

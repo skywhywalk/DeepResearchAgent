@@ -27,5 +27,5 @@ if __name__ == "__main__":
     logger.info("Registed models: %s", ", ".join(model_manager.registed_models.keys()))
     
     mdconvert = MarkitdownConverter()
-    md = mdconvert.convert(os.path.join(root, "data/GAIA/2023/validation/366e2f2b-8632-4ef2-81eb-bc3877489217.pdf"))
+    md = mdconvert.convert(os.path.join(root, "data/GAIA/2023/validation/2b3ef98c-cc05-450b-a719-711aee40ac65.mp3"))
     print(md)

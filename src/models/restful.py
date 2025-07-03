@@ -9,8 +9,6 @@ from src.models.base import (ApiModel,
                              ChatMessageStreamDelta,
                              ChatMessageToolCallStreamDelta)
 from src.models.message_manager import MessageManager
-
-from src.proxy.local_proxy import HTTP_CLIENT, ASYNC_HTTP_CLIENT
 from src.logger import TokenUsage
 
 
@@ -57,6 +55,33 @@ class RestfulClient():
         return response.json()
 
 
+class RestfulTranscribeClient():
+    def __init__(self,
+                 api_base: str,
+                 api_key: str,
+                 api_type: str = "wisper",
+                 model_id: str = "wisper",
+                 http_client=None):
+        self.api_base = api_base
+        self.api_key = api_key
+        self.api_type = api_type
+        self.model_id = model_id
+
+        self.http_client = http_client
+
+    def transcribe(self,
+                   model,
+                   file_stream,
+                   **kwargs):
+
+        files = {'file': file_stream}
+        headers = {
+            "app_key": self.api_key,
+        }
+        response = requests.post(f"{self.api_base}/{self.api_type}", headers=headers, files=files)
+
+        return response.json()
+
 class RestfulModel(ApiModel):
     """This model connects to an OpenAI-compatible API server.
 
@@ -86,6 +111,7 @@ class RestfulModel(ApiModel):
         self,
         model_id: str,
         api_base: Optional[str] = None,
+        api_type: str = "chat/completions",
         api_key: Optional[str] = None,
         custom_role_conversions: dict[str, str] | None = None,
         flatten_messages_as_text: bool = False,
@@ -95,6 +121,7 @@ class RestfulModel(ApiModel):
         self.model_id = model_id
         self.api_base = api_base
         self.api_key = api_key
+        self.api_type = api_type
         flatten_messages_as_text = (
             flatten_messages_as_text
             if flatten_messages_as_text is not None
@@ -115,6 +142,7 @@ class RestfulModel(ApiModel):
     def create_client(self):
         return RestfulClient(api_base=self.api_base,
                              api_key=self.api_key,
+                             api_type=self.api_type,
                              model_id=self.model_id,
                              http_client=self.http_client)
 
@@ -268,3 +296,71 @@ class RestfulModel(ApiModel):
         This is a convenience method that calls `generate` with the same arguments.
         """
         return await self.generate(*args, **kwargs)
+
+
+class RestfulTranscribeModel(ApiModel):
+    """This model connects to an OpenAI-compatible API server for transcription.
+
+    Parameters:
+        model_id (`str`):
+            The model identifier to use on the server (e.g. "whisper-1").
+        api_base (`str`, *optional*):
+            The base URL of the OpenAI-compatible API server.
+        api_key (`str`, *optional*):
+            The API key to use for authentication.
+        **kwargs:
+            Additional keyword arguments to pass to the OpenAI API.
+    """
+
+    def __init__(self,
+                 model_id: str,
+                 api_base: Optional[str] = None,
+                 api_key: Optional[str] = None,
+                 api_type: str = "wisper",
+                 http_client=None,
+                 **kwargs):
+        self.model_id = model_id
+        self.api_base = api_base
+        self.api_key = api_key
+        self.api_type = api_type
+
+        self.http_client = http_client
+
+        super().__init__(model_id=model_id, **kwargs)
+
+    def create_client(self):
+        return RestfulTranscribeClient(api_base=self.api_base,
+                                       api_key=self.api_key,
+                                       api_type=self.api_type,
+                                       model_id=self.model_id,
+                                       http_client=self.http_client)
+
+    def generate(
+        self,
+        file_stream: Any,
+        **kwargs,
+    ) -> str:
+        """
+        Generate a transcription from the given file stream.
+
+        Parameters:
+            file_stream (Any): The file stream to transcribe.
+            **kwargs: Additional keyword arguments for the transcription request.
+
+        Returns:
+            ChatMessage: The transcription result.
+        """
+        response = self.client.transcribe(
+            model=self.model_id,
+            file_stream=file_stream,
+            **kwargs,
+        )
+
+        return response.get("text", "No transcription available.")
+
+    def __call__(self, *args, **kwargs) -> str:
+        """
+        Call the model with the given arguments.
+        This is a convenience method that calls `generate` with the same arguments.
+        """
+        return self.generate(*args, **kwargs)

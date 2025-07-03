@@ -11,7 +11,7 @@ from src.logger import logger
 from src.models.litellm import LiteLLMModel
 from src.models.openaillm import OpenAIServerModel
 from src.models.hfllm import InferenceClientModel
-from src.models.restful import RestfulModel
+from src.models.restful import RestfulModel, RestfulTranscribeModel
 from src.utils import Singleton
 from src.proxy.local_proxy import HTTP_CLIENT, ASYNC_HTTP_CLIENT
 
@@ -107,6 +107,7 @@ class ModelManager(metaclass=Singleton):
             model = RestfulModel(
                 api_base=self._check_local_api_base(local_api_base_name="SKYWORK_AZURE_US_API_BASE",
                                                     remote_api_base_name="OPENAI_API_BASE"),
+                api_type="chat/completions",
                 api_key=api_key,
                 model_id=model_id,
                 http_client=HTTP_CLIENT,
@@ -126,6 +127,20 @@ class ModelManager(metaclass=Singleton):
             model = LiteLLMModel(
                 model_id=model_id,
                 http_client=client,
+                custom_role_conversions=custom_role_conversions,
+            )
+            self.registed_models[model_name] = model
+
+            # wisper
+            model_name = "whisper"
+            model_id = "whisper"
+            model = RestfulTranscribeModel(
+                api_base=self._check_local_api_base(local_api_base_name="SKYWORK_AZURE_BJ_API_BASE",
+                                                    remote_api_base_name="OPENAI_API_BASE"),
+                api_key=api_key,
+                api_type="whisper",
+                model_id=model_id,
+                http_client=HTTP_CLIENT,
                 custom_role_conversions=custom_role_conversions,
             )
             self.registed_models[model_name] = model

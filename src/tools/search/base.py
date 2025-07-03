@@ -13,7 +13,7 @@ class SearchItem(BaseModel):
 
     def __str__(self) -> str:
         """String representation of a search result item."""
-        return f"{self.title} - {self.url}"
+        return f"{self.title} - {self.url} - {self.description or 'No description available'}"
 
 class WebSearchEngine(BaseModel):
     """Base class for web search engines."""

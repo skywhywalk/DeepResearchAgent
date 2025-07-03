@@ -1,7 +1,7 @@
-from src.utils.path_utils import assemble_project_path
-from src.utils.token_utils import get_token_count
-from src.utils.image_utils import encode_image, download_image
-from src.utils.utils import (escape_code_brackets,
+from .path_utils import assemble_project_path
+from .token_utils import get_token_count
+from .image_utils import encode_image, download_image
+from .utils import (escape_code_brackets,
                              _is_package_available,
                              BASE_BUILTIN_MODULES,
                              get_source,
@@ -16,16 +16,17 @@ from src.utils.utils import (escape_code_brackets,
                              parse_code_blobs,
                              extract_code_from_text
                              )
-from src.utils.singleton import Singleton
-from src.utils.function_utils import (_convert_type_hints_to_json_schema,
+from .singleton import Singleton
+from .function_utils import (_convert_type_hints_to_json_schema,
                             get_imports,
                             get_json_schema)
-from src.utils.agent_types import (AgentType,
-                                   AgentText,
-                                   AgentAudio,
-                                   AgentImage,
-                                   handle_agent_output_types,
-                                   handle_agent_input_types)
+from .agent_types import (AgentType,
+                           AgentText,
+                           AgentAudio,
+                           AgentImage,
+                           handle_agent_output_types,
+                           handle_agent_input_types)
+from .url_utils import fetch_url
 
 __all__ = [
     "assemble_project_path",
@@ -56,4 +57,5 @@ __all__ = [
     "AgentAudio",
     "handle_agent_output_types",
     "handle_agent_input_types",
+    "fetch_url",
 ]

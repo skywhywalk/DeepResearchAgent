@@ -20,14 +20,14 @@ install:
 	pip install 'markitdown[all]'
 	pip install "browser-use[memory]"==0.1.48
 
-	# install playwright
+	@echo install playwright
 	pip install playwright
 	playwright install chromium --with-deps --no-shell
 
-	# install dependencies
+	@echo install dependencies
 	poetry install
 
-	# install xlrd
+	@echo install xlrd
 	pip install xlrd==2.0.1
 
 install-requirements:
@@ -36,14 +36,14 @@ install-requirements:
 	pip install 'markitdown[all]'
 	pip install "browser-use[memory]"==0.1.48
 
-	# install playwright
+	@echo install playwright
 	pip install playwright
 	playwright install chromium --with-deps --no-shell
 
-	# install dependencies
+	@echo install dependencies
 	pip install -r requirements.txt
 
-	# install xlrd
+	@echo install xlrd
 	pip install xlrd==2.0.1
 
 # 🛠️ Update dependencies using Poetry

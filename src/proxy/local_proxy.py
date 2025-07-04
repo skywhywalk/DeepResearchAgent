@@ -7,8 +7,12 @@ load_dotenv(verbose=True)
 
 PROXY_URL = os.getenv('LOCAL_PROXY_BASE', None)
 
-HTTP_CLIENT = httpx.Client()
-ASYNC_HTTP_CLIENT = httpx.AsyncClient()
+if PROXY_URL:
+    HTTP_CLIENT = httpx.Client(proxy=PROXY_URL, timeout=httpx.Timeout(600.0, connect=60.0))
+    ASYNC_HTTP_CLIENT = httpx.AsyncClient(proxy=PROXY_URL, timeout=httpx.Timeout(600.0, connect=60.0))
+else:
+    HTTP_CLIENT = httpx.Client()
+    ASYNC_HTTP_CLIENT = httpx.AsyncClient()
 
 @contextlib.contextmanager
 def proxy_env(proxy_url: str = PROXY_URL):

@@ -1,8 +1,10 @@
 import os
+import time
+
 from dotenv import load_dotenv
 load_dotenv(verbose=True)
+
 from typing import List
-from dotenv import load_dotenv
 from firecrawl import FirecrawlApp
 import asyncio
 
@@ -59,3 +61,18 @@ class FirecrawlSearchEngine(WebSearchEngine):
         results = search(params)
 
         return results
+
+
+if __name__ == '__main__':
+    # Example usage
+    start_time = time.time()
+    search_engine = FirecrawlSearchEngine()
+    query = "OpenAI GPT-4"
+    results = asyncio.run(search_engine.perform_search(query, num_results=5))
+
+    for item in results:
+        print(f"Title: {item.title}\nURL: {item.url}\nDescription: {item.description}\n")
+
+    end_time = time.time()
+
+    print(end_time - start_time, "seconds elapsed for search")

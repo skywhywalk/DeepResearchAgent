@@ -33,7 +33,7 @@ if __name__ == "__main__":
     ))
     print(response)
 
-    response = asyncio.run(model_manager.registed_models["gpt-4.1"](
+    response = asyncio.run(model_manager.registed_models["gpt-4o"](
         messages=messages,
     ))
     print(response)

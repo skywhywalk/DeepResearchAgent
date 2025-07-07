@@ -4,11 +4,11 @@ from src.tools.executor.local_python_executor import (
     evaluate_python_code,
 )
 from src.tools import AsyncTool, ToolResult
-from src.registry import register_tool
+from src.registry import TOOL
 
-@register_tool("python_interpreter")
+@TOOL.register_module(name="python_interpreter_tool", force=True)
 class PythonInterpreterTool(AsyncTool):
-    name = "python_interpreter"
+    name = "python_interpreter_tool"
     description = "This is a tool that evaluates python code. It can be used to perform calculations."
     parameters = {
         "type": "object",

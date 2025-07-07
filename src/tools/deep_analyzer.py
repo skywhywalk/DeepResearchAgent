@@ -1,5 +1,5 @@
 import os
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 from PIL import Image
 
 from src.tools import AsyncTool, ToolResult
@@ -7,7 +7,7 @@ from src.models import model_manager, ChatMessage
 from src.models.base import MessageRole
 from src.tools.markdown.mdconvert import MarkitdownConverter
 from src.logger import logger
-from src.registry import register_tool
+from src.registry import TOOL
 from src.config import config
 
 
@@ -33,9 +33,9 @@ Here is the task:
 
 _DEEP_ANALYZER_SUMMARY_DESCRIPTION = """Please conduct a step-by-step analysis of the outputs from different models. Compare their results, identify discrepancies, extract the accurate components, eliminate the incorrect ones, and synthesize a coherent summary."""
 
-@register_tool("deep_analyzer")
+@TOOL.register_module(name="deep_analyzer_tool", force=True)
 class DeepAnalyzerTool(AsyncTool):
-    name: str = "deep_analyzer"
+    name: str = "deep_analyzer_tool"
     description: str = _DEEP_ANALYZER_DESCRIPTION
     parameters: dict = {
         "type": "object",
@@ -56,23 +56,25 @@ class DeepAnalyzerTool(AsyncTool):
     }
     output_type = "any"
 
-    def __init__(self):
-
-        self.analyzer_config = config.deep_analyzer_tool
-
-        self.analyzer_models = {
-            model_id: model_manager.registed_models[model_id]
-            for model_id in self.analyzer_config.analyzer_model_ids
-        }
-        self.summary_model = model_manager.registed_models[self.analyzer_config.summarizer_model_id]
-
-        self.converter: MarkitdownConverter = MarkitdownConverter(
-            use_llm=False,
-            model_id="gpt-4.1",
-            timeout=30,
-        )
+    def __init__(self,
+                 *args,
+                 analyzer_model_ids: Optional[List[str]] = None,
+                 summarizer_model_id: Optional[str] = None,
+                 **kwargs
+                 ):
 
         super(DeepAnalyzerTool, self).__init__()
+
+        self.analyzer_model_ids = analyzer_model_ids
+        self.analyzer_models = {
+            model_id: model_manager.registed_models[model_id]
+            for model_id in self.analyzer_model_ids
+        }
+
+        self.summarizer_model_id = summarizer_model_id
+        self.summary_model = model_manager.registed_models[self.summarizer_model_id]
+
+        self.converter: MarkitdownConverter = MarkitdownConverter()
 
     async def _analyze(self,
                  model,

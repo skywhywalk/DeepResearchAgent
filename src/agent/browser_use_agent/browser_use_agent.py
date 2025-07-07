@@ -8,10 +8,10 @@ from src.base.async_multistep_agent import PromptTemplates
 
 from src.memory import AgentMemory
 from src.models import Model
-from src.registry import register_agent
+from src.registry import AGENT
 from src.utils import assemble_project_path
 
-@register_agent("browser_use_agent")
+@AGENT.register_module(name="browser_use_agent", force=True)
 class BrowserUseAgent(GeneralAgent):
     def __init__(
             self,

@@ -3,19 +3,17 @@
 This module contains the core functionality for the MCPAdapt library. It provides the
 basic interfaces and classes for adapting tools from MCP to the desired Agent framework.
 """
-
-from functools import partial
-from typing import Any, Dict
-from fastmcp import Client
 import asyncio
+from typing import Any, Dict, Optional
+from fastmcp import Client
 
 from src.mcp.adapter import AsyncToolAdapter, ToolAdapter
 
-class MCPAdapt:
+class MCPAdapt():
     def __init__(
         self,
         config: Dict[str, Any],
-        adapter: ToolAdapter,
+        adapter: Optional[ToolAdapter] = None,
     ):
         """
         Manage the MCP server / client lifecycle and expose tools adapted with the adapter.
@@ -30,8 +28,13 @@ class MCPAdapt:
         Raises:
             TimeoutError: When the connection to the mcp server time out.
         """
+
+        if adapter is None:
+            adapter = AsyncToolAdapter()
+
         self.config = config
         self.adapter = adapter
+
         self.client = Client(config)
 
     async def tools(self):
@@ -58,6 +61,7 @@ class MCPAdapt:
             tool.name: tool
             for tool in mcp_tools
         }
+
         return mcp_tools
 
 async def main():
@@ -81,7 +85,6 @@ async def main():
     for name, tool in tools.items():
         print(f"Tool Name: {name}")
         print(f"Tool Description: {tool.description}")
-        print(f"Tool Input Schema: {tool.inputSchema}")
         print("-" * 40)
 
 

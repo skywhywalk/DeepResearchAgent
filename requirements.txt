@@ -33,3 +33,4 @@ xlrd>=0.7.1
 googlesearch-python>=1.3.0
 fastmcp>=2.8.1
 httpx_aiohttp>=0.1.6
+inflection>=0.5.1

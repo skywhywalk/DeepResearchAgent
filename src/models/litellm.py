@@ -89,6 +89,7 @@ class LiteLLMModel(ApiModel):
         custom_role_conversions: dict[str, str] | None = None,
         convert_images_to_image_urls: bool = False,
         tool_choice: str | dict | None = "required",  # Configurable tool_choice parameter
+        http_client=None,
         **kwargs,
     ) -> dict[str, Any]:
         """
@@ -132,6 +133,9 @@ class LiteLLMModel(ApiModel):
         completion_kwargs.update(kwargs)
 
         completion_kwargs = self.message_manager.get_clean_completion_kwargs(completion_kwargs)
+
+        if http_client:
+            completion_kwargs["client"] = http_client
 
         return completion_kwargs
 
@@ -207,6 +211,7 @@ class LiteLLMModel(ApiModel):
             model=self.model_id,
             api_base=self.api_base,
             api_key=self.api_key,
+            http_client=self.http_client,
             convert_images_to_image_urls=True,
             custom_role_conversions=self.custom_role_conversions,
             **kwargs,

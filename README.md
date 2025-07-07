@@ -46,6 +46,7 @@ The system adopts a two-layer structure:
   
 
 ## Updates
+* **2025.07.07**: Due to the limited flexibility of TOML configuration files, we have switched to using the config format supported by mmengine.
 * **2025.06.20**: Add the support for the mcp (Both the local mcp and remote mcp).
 * **2025.06.17**: Update technical report https://arxiv.org/pdf/2506.12508.
 * **2025.06.01**: Update the browser-use to 0.1.48.
@@ -82,20 +83,9 @@ playwright install chromium --with-deps --no-shell
 
 ### Set Up `.env`
 
-```bash
-PYTHONWARNINGS=ignore
-ANONYMIZED_TELEMETRY=false
-HUGGINEFACE_API_KEY=abcabcabc
-OPENAI_API_BASE=https://api.openai.com/v1
-OPENAI_API_KEY=abcabcabc
-ANTHROPIC_API_BASE=https://api.anthropic.com
-ANTHROPIC_API_KEY=abcabcabc
-GOOGLE_APPLICATION_CREDENTIALS=/your/user/path/.config/gcloud/application_default_credentials.json
-GOOGLE_API_BASE=https://generativelanguage.googleapis.com
-GOOGLE_API_KEY=abcabcabc
-```
+Please refer to the `.env.template` file and create a `.env` file in the root directory of the project. This file is used to configure API keys and other environment variables.
 
-Refer to:
+Refer to the following instructions to obtain the necessary google gemini-2.5-pro API key and set it in the `.env` file:
 
 * [https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
 * [https://cloud.google.com/docs/authentication/application-default-credentials?hl=zh-cn](https://cloud.google.com/docs/authentication/application-default-credentials?hl=zh-cn)
@@ -108,13 +98,19 @@ gcloud auth application-default login
 
 ## Usage
 
-### Deep Researcher for "AI Agent"
-
+### Main Example
+A simple example to demonstrate the usage of the DeepResearchAgent framework.
 ```bash
-python examples/run_example.py
+python main.py
 ```
 
-### GAIA Evaluation Example
+### Run Single Agent Example
+A simple example to demonstrate the usage of a single agent, such as a general tool calling agent.
+```bash
+python examples/run_general.py
+```
+
+### RUN GAIA Evaluation Example
 
 ```bash
 # Download GAIA

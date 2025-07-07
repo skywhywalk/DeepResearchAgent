@@ -5,20 +5,17 @@ import signal
 from dotenv import load_dotenv
 load_dotenv(verbose=True)
 
-from contextlib import nullcontext
 from browser_use import Agent
 
-from src.proxy.local_proxy import PROXY_URL, proxy_env
 from src.tools import AsyncTool, ToolResult
 from src.tools.browser import Controller
 from src.utils import assemble_project_path
-from src.config import config
-from src.registry import register_tool
+from src.registry import TOOL
 from src.models import model_manager
 
-@register_tool("auto_browser_use")
+@TOOL.register_module(name="auto_browser_use_tool", force=True)
 class AutoBrowserUseTool(AsyncTool):
-    name = "auto_browser_use"
+    name = "auto_browser_use_tool"
     description = "A powerful browser automation tool that allows interaction with web pages through various actions. Automatically browse the web and extract information based on a given task."
     parameters = {
         "type": "object",
@@ -32,17 +29,18 @@ class AutoBrowserUseTool(AsyncTool):
     }
     output_type = "any"
 
-    def __init__(self):
+    def __init__(self,
+                 model_id: str = "gpt-4.1",
+                 ):
 
-        self.browser_tool_config = config.browser_tool
+        super(AutoBrowserUseTool, self).__init__()
 
+        self.model_id = model_id
         self.http_server_path = assemble_project_path("src/tools/browser/http_server")
         self.http_save_path = assemble_project_path("src/tools/browser/http_server/local")
         os.makedirs(self.http_save_path, exist_ok=True)
 
         self._init_pdf_server()
-
-        super(AutoBrowserUseTool, self).__init__()
 
     def _init_pdf_server(self):
 
@@ -67,12 +65,12 @@ class AutoBrowserUseTool(AsyncTool):
     async def _browser_task(self, task):
         controller = Controller(http_save_path=self.http_save_path)
 
-        model_id = self.browser_tool_config.model_id
+        assert self.model_id in ['gpt-4.1'], f"Model should be in [gpt-4.1, ], but got {self.model_id}. Please check your config file."
 
-        assert model_id in ['gpt-4.1'], f"Model should be in [gpt-4.1, ], but got {model_id}. Please check your config file."
-
-        if "langchain" not in model_id:
-            model_id = f"langchain-{model_id}"
+        if "langchain" not in self.model_id:
+            model_id = f"langchain-{self.model_id}"
+        else:
+            model_id = self.model_id
 
         model = model_manager.registed_models[model_id]
 

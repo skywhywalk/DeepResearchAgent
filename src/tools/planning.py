@@ -1,7 +1,7 @@
 from typing import Dict, List, Optional
 from typing_extensions import Literal
 
-from src.registry import register_tool
+from src.registry import TOOL
 from src.tools import AsyncTool, ToolResult
 from src.logger import logger
 
@@ -12,13 +12,13 @@ NOTE:
 - `create`: Create a new plan must include a unique plan_id.
 """
 
-@register_tool("planning")
+@TOOL.register_module(name="planning_tool", force=True)
 class PlanningTool(AsyncTool):
     """
     A tool that is used to plan tasks and manage plans.
     """
 
-    name: str = "planning"
+    name: str = "planning_tool"
     description: str = _PLANNING_TOOL_DESCRIPTION
     parameters: dict = {
         "type": "object",
@@ -77,6 +77,13 @@ class PlanningTool(AsyncTool):
 
     plans: dict = {}  # Dictionary to store plans by plan_id
     _current_plan_id: Optional[str] = None  # Track the current active plan
+
+    def __init__(self):
+        super(PlanningTool, self).__init__()
+
+        # Initialize plans dictionary
+        self.plans = {}
+        self._current_plan_id = None
 
     async def _create_plan(
         self,

@@ -8,9 +8,8 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from src.models import model_manager, ChatMessage
 from src.tools.web_searcher import WebSearcherTool, SearchResult
 from src.tools import AsyncTool, ToolResult
-from src.config import config
 from src.logger import logger
-from src.registry import register_tool
+from src.registry import TOOL
 
 
 _DEEP_RESEARCHER_DESCRIPTION = """Performs comprehensive research on a topic through multi-level web searches and content analysis. 
@@ -227,11 +226,11 @@ class ExtractInsightsTool(AsyncTool):
         # In a real implementation, this would involve LLM interactions
         return insights
 
-@register_tool("deep_researcher")
+@TOOL.register_module(name="deep_researcher_tool", force=True)
 class DeepResearcherTool(AsyncTool):
     """Advanced research tool that explores a topic through iterative web searches."""
 
-    name: str = "deep_researcher"
+    name: str = "deep_researcher_tool"
     description: str = _DEEP_RESEARCHER_DESCRIPTION
     parameters: dict = {
         "type": "object",
@@ -246,34 +245,26 @@ class DeepResearcherTool(AsyncTool):
     }
     output_type = "any"
 
-    def __init__(self):
-        self.deep_researcher_tool_config = config.deep_researcher_tool
+    def __init__(self,
+                 *args,
+                 model_id: str = "gpt-4.1",
+                 maxt_depth: int = 2,
+                 max_insights: int = 20,
+                 time_limit_seconds: int = 120,
+                 max_follow_ups: int = 3,
+                 **kwargs):
 
-        self.max_depth = (
-            getattr(self.deep_researcher_tool_config, "max_depth", 2)
-            if self.deep_researcher_tool_config
-            else 5
-        )
-        self.max_insights = (
-            getattr(self.deep_researcher_tool_config, "max_insights", 20)
-            if self.deep_researcher_tool_config
-            else 20
-        )
-        self.time_limit_seconds = (
-            getattr(self.deep_researcher_tool_config, "time_limit_seconds", 120)
-            if self.deep_researcher_tool_config
-            else 120
-        )
-        self.max_follow_ups = (
-            getattr(self.deep_researcher_tool_config, "max_follow_ups", 3)
-            if self.deep_researcher_tool_config
-            else 3
-        )
+        super(DeepResearcherTool, self).__init__()
 
-        self.model = model_manager.registed_models[self.deep_researcher_tool_config.model_id]
+        self.model_id = model_id
+        self.max_depth = maxt_depth
+        self.max_insights = max_insights
+        self.time_limit_seconds = time_limit_seconds
+        self.max_follow_ups = max_follow_ups
+
+        self.model = model_manager.registed_models[self.model_id]
         self.web_searcher = WebSearcherTool()
         self.web_searcher.fetch_content = True # Enable content fetching
-        super(DeepResearcherTool, self).__init__()
 
     async def forward(
         self,

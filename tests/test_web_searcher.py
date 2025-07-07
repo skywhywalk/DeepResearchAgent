@@ -1,41 +1,56 @@
-import warnings
-warnings.simplefilter("ignore", DeprecationWarning)
-
+import argparse
 import os
+import asyncio
 import sys
 from pathlib import Path
-import asyncio
+from mmengine import DictAction
 
 root = str(Path(__file__).resolve().parents[1])
 sys.path.append(root)
 
-from src.tools.web_searcher import WebSearcherTool
-from src.models import model_manager
 from src.logger import logger
 from src.config import config
-from src.utils import assemble_project_path
+from src.registry import TOOL
+
+def parse_args():
+    parser = argparse.ArgumentParser(description='main')
+    parser.add_argument("--config", default=os.path.join(root, "configs", "config_general.py"), help="config file path")
+
+    parser.add_argument(
+        '--cfg-options',
+        nargs='+',
+        action=DictAction,
+        help='override some settings in the used config, the key-value pair '
+        'in xxx=yyy format will be merged into config file. If the value to '
+        'be overwritten is a list, it should be like key="[a,b]" or key=a,b '
+        'It also allows nested list/tuple values, e.g. key="[(a,b),(c,d)]" '
+        'Note that the quotation marks are necessary and that no white space '
+        'is allowed.')
+    args = parser.parse_args()
+    return args
 
 if __name__ == "__main__":
-    # Init config and logger
-    config.init_config(config_path=assemble_project_path("configs/config_general.toml"))
-    logger.init_logger(config.log_path)
-    logger.info(f"Initializing logger: {config.log_path}")
-    logger.info(f"Load config: {config}")
 
-    # Registed models
-    model_manager.init_models(use_local_proxy=True)
-    logger.info("Registed models: %s", ", ".join(model_manager.registed_models.keys()))
+    # Parse command line arguments
+    args = parse_args()
+
+    # Initialize the configuration
+    config.init_config(args.config, args)
+
+    # Initialize the logger
+    logger.init_logger(log_path=config.log_path)
+    logger.info(f"| Logger initialized at: {config.log_path}")
+    logger.info(f"| Config:\n{config.pretty_text}")
+
+    # Registed tools
+    logger.info(f"| {TOOL}")
     
-    web_search = WebSearcherTool()
-    web_search.fetch_content = True
+    web_searcher_tool_config = config.web_searcher_tool_config
+    web_searcher_tool = TOOL.build(web_searcher_tool_config)
 
-    task = """
-    If Eliud Kipchoge could maintain his record-making marathon pace indefinitely, how many thousand hours would it take him to run the distance between the Earth and the Moon its closest approach? Please use the minimum perigee value on the Wikipedia page for the Moon when carrying out your calculation. Round your result to the nearest 1000 hours and do not use any comma separators if necessary.
-    """
-    instruct = "Please planning the solution step by step and return the final answer only. Do not include any intermediate steps in your final answer."
+    task = "OpenAI GPT-4.1"
 
-
-    search_response = asyncio.run(web_search.forward(
+    search_response = asyncio.run(web_searcher_tool.forward(
         query=task,
     ))
     print(search_response.output)

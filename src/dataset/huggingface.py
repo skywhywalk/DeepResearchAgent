@@ -5,7 +5,9 @@ import base64
 
 from src.utils import assemble_project_path
 from src.logger import logger
+from src.registry import DATASET
 
+@DATASET.register_module(name="gaia_dataset", force=True)
 class GAIADataset():
     def __init__(self, path, name, split):
         self.path = path
@@ -34,7 +36,7 @@ class GAIADataset():
     def __getitem__(self, index):
         return self.data.iloc[index]
 
-
+@DATASET.register_module(name="hle_dataset", force=True)
 class HLEDataset():
     def __init__(self, path, name, split):
         self.path = path

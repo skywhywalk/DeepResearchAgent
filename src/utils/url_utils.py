@@ -19,7 +19,6 @@ async def firecrawl_fetch_url(url: str):
 
         return result
     except Exception as e:
-        print(e)
         return None
 
 async def fetch_crawl4ai_url(url: str):

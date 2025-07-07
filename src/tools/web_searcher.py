@@ -1,11 +1,10 @@
-import asyncio
 from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from tenacity import retry, stop_after_attempt, wait_exponential
 import time
+import asyncio
 
 from src.tools.web_fetcher import WebFetcherTool
-from src.config import config
 from src.tools.search import (
     GoogleSearchEngine,
     FirecrawlSearchEngine,
@@ -14,6 +13,7 @@ from src.tools.search import (
 )
 from src.tools import AsyncTool, ToolResult
 from src.logger import logger
+from src.registry import TOOL
 
 _WEB_SEARCHER_DESCRIPTION = """Search the web for real-time information about any topic.
 This tool returns comprehensive search results with relevant information, URLs, titles, and descriptions.
@@ -96,10 +96,11 @@ class SearchResponse(ToolResult):
         self.output = "\n".join(result_text)
         return self
 
+@TOOL.register_module(name="web_searcher_tool", force=True)
 class WebSearcherTool(AsyncTool):
     """Search the web for information using various search engines."""
 
-    name: str = "web_searcher"
+    name: str = "web_searcher_tool"
     description: str = _WEB_SEARCHER_DESCRIPTION
     parameters: dict = {
         "type": "object",
@@ -118,51 +119,38 @@ class WebSearcherTool(AsyncTool):
     }
     output_type = 'any'
 
-    def __init__(self):
+    def __init__(self,
+                 *args,
+                 engine: str = "Firecrawl",
+                 fallback_engines=["DuckDuckGo", "Baidu", "Bing"],
+                 max_length: int = 16384,
+                 retry_delay: int = 10,
+                 max_retries: int = 3,
+                 lang: str = "en",
+                 country: str = "us",
+                 num_results: int = 5,
+                 fetch_content: bool = False,
+                 **kwargs
+                 ):
         super(WebSearcherTool, self).__init__()
 
-        self.searcher_config = config.web_search_tool
-        self._search_engine: dict[str, WebSearchEngine] = {
-            "firecrawl": FirecrawlSearchEngine()
-        }
-        self.max_length: int = (
-            getattr(self.searcher_config, "max_length", 20000)
-            if self.searcher_config
-            else 20000
-        )
-        # Get settings from config
-        self.retry_delay = (
-            getattr(self.searcher_config, "retry_delay", 10)
-            if self.searcher_config
-            else 10
-        )
-        self.max_retries = (
-            getattr(self.searcher_config, "max_retries", 3)
-            if self.searcher_config
-            else 3
-        )
-        # Use config values for lang and country if not specified
-        self.lang = (
-            getattr(self.searcher_config, "lang", "en")
-            if self.searcher_config
-            else "en"
-        )
-        self.country = (
-            getattr(self.searcher_config, "country", "us")
-            if self.searcher_config
-            else "us"
-        )
-        self.num_results = (
-            getattr(self.searcher_config, "num_results", 5)
-            if self.searcher_config
-            else 5
-        )
-        self.fetch_content = (
-            getattr(self.searcher_config, "fetch_content", False)
-            if self.searcher_config
-            else False
-        )
+        self.engine = engine.lower()
+        self.fallback_engines = [
+            fe.lower() for fe in fallback_engines if fe.lower() != self.engine
+        ]
 
+        self.max_length = max_length
+        self.retry_delay = retry_delay
+        self.max_retries = max_retries
+        self.lang = lang
+        self.country = country
+        self.num_results = num_results
+        self.fetch_content = fetch_content
+
+        self._search_engine: dict[str, WebSearchEngine] = {
+            "firecrawl": FirecrawlSearchEngine(),
+            "google": GoogleSearchEngine(),
+        }
         self.content_fetcher: WebFetcherTool = WebFetcherTool()
 
     async def forward(
@@ -269,7 +257,10 @@ class WebSearcherTool(AsyncTool):
             return []
 
         # Create tasks for each result
-        fetched_results = [await self._fetch_single_result_content(result) for result in results]
+        # fetched_results = [await self._fetch_single_result_content(result) for result in results]
+        fetched_results = await asyncio.gather(
+            *[self._fetch_single_result_content(result) for result in results]
+        )
 
         # Explicit validation of return type
         return [
@@ -295,16 +286,9 @@ class WebSearcherTool(AsyncTool):
     def _get_engine_order(self) -> List[str]:
         """Determines the order in which to try search engines."""
         preferred = (
-            getattr(self.searcher_config, "engine", "firecrawl").lower()
-            if self.searcher_config
-            else "firecrawl"
+            self.engine if self.engine else "firecrawl"
         )
-        fallbacks = (
-            [engine.lower() for engine in self.searcher_config.fallback_engines]
-            if self.searcher_config
-            and hasattr(self.searcher_config, "fallback_engines")
-            else []
-        )
+        fallbacks = [engine for engine in self.fallback_engines]
 
         # Start with preferred engine, then fallbacks, then remaining engines
         engine_order = [preferred] if preferred in self._search_engine else []

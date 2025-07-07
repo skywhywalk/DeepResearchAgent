@@ -10,6 +10,7 @@ from fastmcp.tools import Tool
 import json5
 import keyword
 import re
+import inflection
 
 from src.tools import AsyncTool
 
@@ -90,7 +91,7 @@ class AsyncToolAdapter(ToolAdapter):
 
                 return json5.loads(mcp_output[0].text)
 
-        name = tool.name
+        name = inflection.underscore(tool.name)  # Convert to snake_case, e.g., "GetWeatherTool" -> "get_weather_tool"
         description = tool.description or "No description."
 
         # make sure jsonref are resolved

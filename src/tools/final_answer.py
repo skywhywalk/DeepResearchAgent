@@ -1,8 +1,9 @@
-from src.tools.tools import AsyncTool, ToolResult
+from src.tools import AsyncTool, ToolResult
+from src.registry import TOOL
 
-
+@TOOL.register_module(name="final_answer_tool", force=True)
 class FinalAnswerTool(AsyncTool):
-    name = "final_answer"
+    name = "final_answer_tool"
     description = "Provides a final answer to the given problem."
     parameters = {
         "type": "object",

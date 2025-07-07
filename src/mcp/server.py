@@ -8,12 +8,12 @@ from aiohttp import ClientSession
 load_dotenv()
 
 # Initialize FastMCP
-mcp = FastMCP("weather-tool")
+mcp = FastMCP("LocalMCP")
 
 weather_api_url = "https://wttr.in"
 
-@mcp.tool(name = "get_weather", description="Get current weather information for a given city.")
-async def get_weather(city: str) -> Dict:
+@mcp.tool(name = "get_weather_tool", description="Get current weather information for a given city.")
+async def get_weather_tool(city: str) -> Dict:
     """
     Get current weather information for a given city.
 

@@ -49,7 +49,7 @@ class ModelManager(metaclass=Singleton):
         # gpt-4o, gpt-4.1, o1, o3, gpt-4o-search-preview
         if use_local_proxy:
             logger.info("Using local proxy for OpenAI models")
-            api_key = self._check_local_api_key(local_api_key_name="SKYWORK_API_KEY", 
+            api_key = self._check_local_api_key(local_api_key_name="SKYWORK_API_KEY",
                                                 remote_api_key_name="OPENAI_API_KEY")
             
             # gpt-4o
@@ -57,7 +57,7 @@ class ModelManager(metaclass=Singleton):
             model_id = "openai/gpt-4o"
             client = AsyncOpenAI(
                 api_key=api_key,
-                base_url=self._check_local_api_base(local_api_base_name="SKYWORK_API_BASE", 
+                base_url=self._check_local_api_base(local_api_base_name="SKYWORK_AZURE_US_API_BASE",
                                                     remote_api_base_name="OPENAI_API_BASE"),
                 http_client=ASYNC_HTTP_CLIENT,
             )
@@ -73,7 +73,7 @@ class ModelManager(metaclass=Singleton):
             model_id = "openai/gpt-4.1"
             client = AsyncOpenAI(
                 api_key=api_key,
-                base_url=self._check_local_api_base(local_api_base_name="SKYWORK_API_BASE", 
+                base_url=self._check_local_api_base(local_api_base_name="SKYWORK_AZURE_US_API_BASE",
                                                     remote_api_base_name="OPENAI_API_BASE"),
                 http_client=ASYNC_HTTP_CLIENT,
             )
@@ -89,7 +89,7 @@ class ModelManager(metaclass=Singleton):
             model_id = "openai/o1"
             client = AsyncOpenAI(
                 api_key=api_key,
-                base_url=self._check_local_api_base(local_api_base_name="SKYWORK_API_BASE", 
+                base_url=self._check_local_api_base(local_api_base_name="SKYWORK_AZURE_US_API_BASE",
                                                     remote_api_base_name="OPENAI_API_BASE"),
                 http_client=ASYNC_HTTP_CLIENT,
             )

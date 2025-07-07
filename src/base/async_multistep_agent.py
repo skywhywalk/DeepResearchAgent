@@ -309,10 +309,10 @@ class AsyncMultiStepAgent(ABC):
                 {
                     name: cls()
                     for name, cls in TOOL_MAPPING.items()
-                    if name != "python_interpreter" or self.__class__.__name__ == "ToolCallingAgent"
+                    if name != "python_interpreter_tool" or self.__class__.__name__ == "ToolCallingAgent"
                 }
             )
-        self.tools.setdefault("final_answer", FinalAnswerTool())
+        self.tools.setdefault("final_answer_tool", FinalAnswerTool())
 
     def _validate_tools_and_managed_agents(self, tools, managed_agents):
         tool_and_managed_agent_names = [tool.name for tool in tools]
@@ -895,7 +895,7 @@ You have been provided with these additional arguments, that you can access usin
 
             {{ agent_name }} = {{ class_name }}(
                 model=model,
-                tools=[{% for tool_name in tools.keys() if tool_name != "final_answer" %}{{ tool_name }}{% if not loop.last %}, {% endif %}{% endfor %}],
+                tools=[{% for tool_name in tools.keys() if tool_name != "final_answer_tool" %}{{ tool_name }}{% if not loop.last %}, {% endif %}{% endfor %}],
                 managed_agents=[{% for subagent_name in managed_agents.keys() %}agent_{{ subagent_name }}{% if not loop.last %}, {% endif %}{% endfor %}],
                 {% for attribute_name, value in agent_dict.items() if attribute_name not in ["model", "tools", "prompt_templates", "authorized_imports", "managed_agents", "requirements"] -%}
                 {{ attribute_name }}={{ value|repr }},

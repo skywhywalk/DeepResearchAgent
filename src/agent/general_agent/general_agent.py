@@ -42,11 +42,11 @@ from src.utils.agent_types import (
     AgentAudio,
     AgentImage,
 )
-from src.registry import register_agent
+from src.registry import AGENT
 from src.utils import assemble_project_path
 
 
-@register_agent("general_agent")
+@AGENT.register_module(name="general_agent", force=True)
 class GeneralAgent(AsyncMultiStepAgent):
     def __init__(
             self,
@@ -215,7 +215,7 @@ class GeneralAgent(AsyncMultiStepAgent):
             model_outputs.append(str(f"Called Tool: '{tool_name}' with arguments: {tool_arguments}"))
             tool_calls.append(ToolCall(name=tool_name, arguments=tool_arguments, id=tool_call.id))
             # Track final_answer separately, add others to parallel processing list
-            if tool_name == "final_answer":
+            if tool_name == "final_answer_tool":
                 final_answer_call = (tool_name, tool_arguments)
                 break  # Stop: final answer reached, no further tool calls
             else:
@@ -285,7 +285,7 @@ class GeneralAgent(AsyncMultiStepAgent):
                 )
             else:
                 # Allow arbitrary keywords
-                final_answer = await self.execute_tool_call("final_answer", tool_arguments)
+                final_answer = await self.execute_tool_call("final_answer_tool", tool_arguments)
                 self.logger.log(
                     Text(f"Final answer: {final_answer}", style=f"bold {YELLOW_HEX}"),
                     level=LogLevel.INFO,

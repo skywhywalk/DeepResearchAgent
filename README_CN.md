@@ -41,6 +41,7 @@
 * 支持信息分析、研究与网页交互
 
 ## 更新日志
+* **2025.07.07**：由于TOML文件配置灵活度有限，现改成mmengine支持的config配置。
 * **2025.06.20**：支持 MCP 架构，包括本地MCP和远程MCP.
 * **2025.06.17**：更新技术报告https://arxiv.org/abs/2506.12508.
 * **2025.06.01**：升级 browser-use 至 v0.1.48
@@ -76,23 +77,9 @@ playwright install chromium --with-deps --no-shell
 
 ### 设置 `.env` 文件
 
-`.env` 示例：
-
-```bash
-PYTHONWARNINGS=ignore
-ANONYMIZED_TELEMETRY=false
-HUGGINEFACE_API_KEY=abcabcabc
-OPENAI_API_BASE=https://api.openai.com/v1
-OPENAI_API_KEY=abcabcabc
-ANTHROPIC_API_BASE=https://api.anthropic.com
-ANTHROPIC_API_KEY=abcabcabc
-GOOGLE_APPLICATION_CREDENTIALS=/your/user/path/.config/gcloud/application_default_credentials.json
-GOOGLE_API_BASE=https://generativelanguage.googleapis.com
-GOOGLE_API_KEY=abcabcabc
-```
+请参考 `.env.template` 文件，在项目根目录创建 `.env` 文件。该文件用于配置 API 密钥和其他环境变量。
 
 如需使用 Google 模型：
-
 * 获取 API Key：[https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
 * 获取 application\_default\_credentials.json：
 
@@ -104,10 +91,17 @@ gcloud auth application-default login
 
 ## 使用说明
 
-### 示例 1：研究 "AI Agent" 主题
+### 示例 1：运行主示例
+这是一个简单的示例，演示如何使用 DeepResearchAgent 框架。
+```bash
+python main.py
+```
+
+### 示例 2：运行单智能体
+一个简单示例，用于演示单一Agent的用法，比如一个能够调用通用工具的Agent。
 
 ```bash
-python examples/run_example.py
+python examples/run_general.py
 ```
 
 ### 示例 2：评估 GAIA 数据集

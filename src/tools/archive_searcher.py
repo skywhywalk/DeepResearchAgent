@@ -1,10 +1,13 @@
+import requests
+
 from src.tools import AsyncTool, ToolResult
 from src.tools.web_fetcher import WebFetcherTool
-import requests
 from src.logger import logger
+from src.registry import TOOL
 
+@TOOL.register_module(name="archive_searcher_tool", force=True)
 class ArchiveSearcherTool(AsyncTool):
-    name: str = "archive_searcher"
+    name: str = "archive_searcher_tool"
     description: str = "Given a url, searches the Wayback Machine and returns the archived version of the url that's closest in time to the desired date."
 
     parameters: dict = {

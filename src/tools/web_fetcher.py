@@ -4,11 +4,13 @@ from markitdown._base_converter import DocumentConverterResult
 from src.tools import AsyncTool
 from src.utils import fetch_url
 from src.logger import logger
+from src.registry import TOOL
 
 _WEB_FETCHER_DESCRIPTION = """Visit a webpage at a given URL and return its text. """
 
+@TOOL.register_module(name="web_fetcher_tool", force=True)
 class WebFetcherTool(AsyncTool):
-    name = "web_fetcher"
+    name = "web_fetcher_tool"
     description = _WEB_FETCHER_DESCRIPTION
     parameters = {
         "type": "object",

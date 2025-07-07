@@ -123,7 +123,7 @@ class WebSearcherTool(AsyncTool):
                  *args,
                  engine: str = "Firecrawl",
                  fallback_engines=["DuckDuckGo", "Baidu", "Bing"],
-                 max_length: int = 16384,
+                 max_length: int = 4096,
                  retry_delay: int = 10,
                  max_retries: int = 3,
                  lang: str = "en",
@@ -149,7 +149,6 @@ class WebSearcherTool(AsyncTool):
 
         self._search_engine: dict[str, WebSearchEngine] = {
             "firecrawl": FirecrawlSearchEngine(),
-            "google": GoogleSearchEngine(),
         }
         self.content_fetcher: WebFetcherTool = WebFetcherTool()
 

@@ -2,7 +2,7 @@ _base_ = './base.py'
 
 # General Config
 tag = "gaia"
-concurrency = 4
+concurrency = 1
 workdir = "workdir"
 log_path = "log.txt"
 save_path = "dra.jsonl"

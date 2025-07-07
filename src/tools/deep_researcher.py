@@ -278,20 +278,20 @@ class DeepResearcherTool(AsyncTool):
         context = ResearchContext(query=query, max_depth=max_depth)
         deadline = time.time() + self.time_limit_seconds
 
-        # try:
-        optimized_query, filter_year = await self._generate_optimized_query(query)
-        await self._research_graph(context=context,
-                             query=optimized_query,
-                             filter_year=filter_year,
-                             deadline=deadline
-                             )
-        # except Exception as e:
-        #     res_str = f"DeepResearchTool failed to complete the research cycle: {str(e)}"
-        #     logger.error(res_str)
-        #     return ToolResult(
-        #         output=None,
-        #         error=res_str,
-        #     )
+        try:
+            optimized_query, filter_year = await self._generate_optimized_query(query)
+            await self._research_graph(context=context,
+                                 query=optimized_query,
+                                 filter_year=filter_year,
+                                 deadline=deadline
+                                 )
+        except Exception as e:
+            res_str = f"DeepResearchTool failed to complete the research cycle: {str(e)}"
+            logger.error(res_str)
+            return ToolResult(
+                output=None,
+                error=res_str,
+            )
 
         # Prepare final summary reference
         reference = ResearchSummary(

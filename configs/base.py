@@ -9,7 +9,6 @@ web_searcher_tool_config = dict(
     max_retries = 3,
     lang = "en",
     country = "us",
-    filter_year = 0,
     num_results = 5,
     fetch_content = True,
     max_length = 4096,

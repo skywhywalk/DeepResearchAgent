@@ -2,10 +2,10 @@ _base_ = './base.py'
 
 # General Config
 tag = "gaia"
-concurrency = 1
+concurrency = 4
 workdir = "workdir"
 log_path = "log.txt"
-save_path = "dra.json"
+save_path = "dra.jsonl"
 use_local_proxy = False # True for local proxy, False for public proxy
 
 use_hierarchical_agent = True

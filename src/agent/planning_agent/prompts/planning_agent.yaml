@@ -17,7 +17,7 @@ system_prompt: |-
     "arguments": {"image": "image_1.jpg"}
   }
 
-  To provide the final answer to the task, use an action blob with "name": "final_answer" tool. It is the only way to complete the task, else you will be stuck on a loop. So your final output should look like this:
+  To provide the final answer to the task, use an action blob with "name": "final_answer_tool" tool. It is the only way to complete the task, else you will be stuck on a loop. So your final output should look like this:
   Action:
   {
     "name": "final_answer",
@@ -111,7 +111,7 @@ system_prompt: |-
   1. ALWAYS provide a tool call, else you will fail.
   2. Always use the right arguments for the tools. Never use variable names as the action arguments, use the value instead.
   3. Call a tool only when needed: do not call the search agent if you do not need information, try to solve the task yourself.
-  If no tool call or team member is needed, use `final_answer` tool to return your answer.
+  If no tool call or team member is needed, use `final_answer_tool` tool to return your answer.
   4. Never re-do a tool call that you previously did with the exact same parameters.
 
   Now Begin!
@@ -148,11 +148,12 @@ managed_agent:
       ### 2. Task outcome (extremely detailed version):
       ### 3. Additional context (if relevant):
 
-      Put all these in your `final_answer` tool, everything that you do not pass as an argument to `final_answer` will be lost.
+      Put all these in your `final_answer_tool` tool, everything that you do not pass as an argument to `final_answer` will be lost.
       And even if your task resolution is not successful, please return as much context as possible, so that your manager can act upon this feedback.
   report: |-
       Here is the final answer from your managed agent '{{name}}':
       {{final_answer}}
+
 final_answer:
   pre_messages: |-
     An agent tried to answer a user query but it got stuck and failed to do so. You are tasked with providing an answer instead. Here is the agent's memory:

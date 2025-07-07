@@ -8,7 +8,6 @@ from src.models.base import MessageRole
 from src.tools.markdown.mdconvert import MarkitdownConverter
 from src.logger import logger
 from src.registry import TOOL
-from src.config import config
 
 
 _DEEP_ANALYZER_DESCRIPTION = """A tool that performs systematic, step-by-step analysis or calculation of a given task, optionally leveraging information from external resources such as attached file or uri to provide comprehensive reasoning and answers.
@@ -102,7 +101,11 @@ class DeepAnalyzerTool(AsyncTool):
                     }
                 )
             else:
-                extracted_content = self.converter.convert(source).text_content
+                try:
+                    extracted_content = self.converter.convert(source).text_content
+                except Exception as e:
+                    extracted_content = f"Failed to extract content from {source}. Error: {e}"
+
                 content.append(
                     {
                         "type": "text",

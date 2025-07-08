@@ -57,7 +57,7 @@ The system adopts a two-layer structure:
 ## TODO List
 
 * [x] Asynchronous feature completed
-* [x] Image Generatior Tool completed
+* [x] Image Generator Tool completed
 * [x] MCP in progress
 * [ ] AI4Research Agent to be developed
 * [ ] Novel Writing Agent to be developed

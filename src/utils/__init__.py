@@ -1,6 +1,6 @@
 from .path_utils import assemble_project_path
 from .token_utils import get_token_count
-from .image_utils import encode_image, download_image
+from .image_utils import download_image
 from .utils import (escape_code_brackets,
                              _is_package_available,
                              BASE_BUILTIN_MODULES,
@@ -31,7 +31,6 @@ from .url_utils import fetch_url
 __all__ = [
     "assemble_project_path",
     "get_token_count",
-    "encode_image",
     "download_image",
     "escape_code_brackets",
     "_is_package_available",

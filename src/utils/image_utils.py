@@ -30,7 +30,3 @@ def download_image(image_url, download_path):
             fh.write(chunk)
 
     return download_image_path
-
-def encode_image(image_path):
-    with open(image_path, "rb") as image_file:
-        return base64.b64encode(image_file.read()).decode("utf-8")

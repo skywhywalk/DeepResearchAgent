@@ -2,14 +2,17 @@ from typing import Dict, List, Optional, Any
 from collections.abc import Generator
 from openai.types.chat import ChatCompletion
 import requests
+import os
 
 from src.models.base import (ApiModel,
+                             Model,
                              ChatMessage,
                              tool_role_conversions,
                              ChatMessageStreamDelta,
                              ChatMessageToolCallStreamDelta)
 from src.models.message_manager import MessageManager
-from src.logger import TokenUsage
+from src.logger import TokenUsage, logger
+from src.utils import encode_image_base64
 
 
 class RestfulClient():
@@ -115,6 +118,101 @@ class RestfulImagenClient():
             "parameters": {
                 "sampleCount": 1
             }
+        }
+
+        # Add any additional kwargs to the data
+        if kwargs:
+            data.update(kwargs)
+
+        response = requests.post(
+            f"{self.api_base}/{self.api_type}",
+            json=data,
+            headers=headers,
+        )
+
+        return response.json()
+
+
+class RestfulVeoPredictClient():
+    def __init__(self,
+                 api_base: str,
+                 api_key: str,
+                 api_type: str = "veo/predict",
+                 model_id: str = "veo3",
+                 http_client=None):
+        self.api_base = api_base
+        self.api_key = api_key
+        self.api_type = api_type
+        self.model_id = model_id
+
+        self.http_client = http_client
+
+    def completion(self,
+                   model,
+                   prompt: str,
+                   image: str = None,
+                   **kwargs):
+        headers = {
+            "app_key": self.api_key,
+            "Content-Type": "application/json"
+        }
+
+        data = {
+            "model": model,
+            "instances": [
+                {
+                    "prompt": prompt
+                }
+            ],
+            "parameters": {
+                "sampleCount": 1
+            }
+        }
+
+        if image and os.path.exists(image):
+            image_data = {
+                "bytesBase64Encoded": encode_image_base64(image),
+                "mimeType": "image/png"
+            }
+            data["instances"][0]["image"] = image_data
+
+        # Add any additional kwargs to the data
+        if kwargs:
+            data.update(kwargs)
+
+        response = requests.post(
+            f"{self.api_base}/{self.api_type}",
+            json=data,
+            headers=headers,
+        )
+
+        return response.json()
+
+class RestfulVeoFetchClient():
+    def __init__(self,
+                 api_base: str,
+                 api_key: str,
+                 api_type: str = "veo/fetch",
+                 model_id: str = "veo3",
+                 http_client=None):
+        self.api_base = api_base
+        self.api_key = api_key
+        self.api_type = api_type
+        self.model_id = model_id
+
+        self.http_client = http_client
+
+    def completion(self,
+                   model,
+                   name: str,
+                   **kwargs):
+        headers = {
+            "app_key": self.api_key,
+            "Content-Type": "application/json"
+        }
+
+        data = {
+            "operationName": name,
         }
 
         # Add any additional kwargs to the data
@@ -472,6 +570,152 @@ class RestfulImagenModel(ApiModel):
         )
 
         base64 = response['resp_data']['predictions'][0]["bytesBase64Encoded"]
+
+        return base64
+
+    def __call__(self, *args, **kwargs) -> str:
+        """
+        Call the model with the given arguments.
+        This is a convenience method that calls `generate` with the same arguments.
+        """
+        return self.generate(*args, **kwargs)
+
+
+class RestfulVeoPridictModel(ApiModel):
+    """This model connects to an OpenAI-compatible API server for transcription.
+
+    Parameters:
+        model_id (`str`):
+            The model identifier to use on the server (e.g. "veo-3").
+        api_base (`str`, *optional*):
+            The base URL of the OpenAI-compatible API server.
+        api_key (`str`, *optional*):
+            The API key to use for authentication.
+        **kwargs:
+            Additional keyword arguments to pass to the OpenAI API.
+    """
+
+    def __init__(self,
+                 model_id: str,
+                 api_base: Optional[str] = None,
+                 api_key: Optional[str] = None,
+                 api_type: str = "veo/predict",
+                 http_client=None,
+                 **kwargs):
+
+
+        self.model_id = model_id
+        self.api_base = api_base
+        self.api_key = api_key
+        self.api_type = api_type
+
+        self.http_client = http_client
+
+        super().__init__(model_id=model_id, **kwargs)
+
+    def create_client(self):
+        return RestfulVeoPredictClient(api_base=self.api_base,
+                                       api_key=self.api_key,
+                                       api_type=self.api_type,
+                                       model_id=self.model_id,
+                                       http_client=self.http_client)
+
+    def generate(
+        self,
+        prompt: str,
+        image: str = None,
+        **kwargs,
+    ) -> str:
+        """
+        Generate a transcription from the given file stream.
+
+        Parameters:
+            file_stream (Any): The file stream to transcribe.
+            **kwargs: Additional keyword arguments for the transcription request.
+
+        Returns:
+            ChatMessage: The transcription result.
+        """
+        logger.info(f"Generating with model {self.model_id} using prompt: {prompt} and image: {image}, please wait...")
+        response = self.client.completion(
+            model=self.model_id,
+            prompt=prompt,
+            image=image,
+            **kwargs,
+        )
+
+        name = response['resp_data']['name']
+
+        return name
+
+    def __call__(self, *args, **kwargs) -> str:
+        """
+        Call the model with the given arguments.
+        This is a convenience method that calls `generate` with the same arguments.
+        """
+        return self.generate(*args, **kwargs)
+
+class RestfulVeoFetchModel(ApiModel):
+    """This model connects to an OpenAI-compatible API server for transcription.
+
+    Parameters:
+        model_id (`str`):
+            The model identifier to use on the server (e.g. "veo-3").
+        api_base (`str`, *optional*):
+            The base URL of the OpenAI-compatible API server.
+        api_key (`str`, *optional*):
+            The API key to use for authentication.
+        **kwargs:
+            Additional keyword arguments to pass to the OpenAI API.
+    """
+
+    def __init__(self,
+                 model_id: str,
+                 api_base: Optional[str] = None,
+                 api_key: Optional[str] = None,
+                 api_type: str = "veo/fetch",
+                 http_client=None,
+                 **kwargs):
+
+        self.model_id = model_id
+        self.api_base = api_base
+        self.api_key = api_key
+        self.api_type = api_type
+
+        self.http_client = http_client
+
+        super().__init__(model_id=model_id, **kwargs)
+
+    def create_client(self):
+        return RestfulVeoFetchClient(api_base=self.api_base,
+                                       api_key=self.api_key,
+                                       api_type=self.api_type,
+                                       model_id=self.model_id,
+                                       http_client=self.http_client)
+
+    def generate(
+        self,
+        name: str,
+        **kwargs,
+    ) -> str:
+        """
+        Generate a transcription from the given file stream.
+
+        Parameters:
+            file_stream (Any): The file stream to transcribe.
+            **kwargs: Additional keyword arguments for the transcription request.
+
+        Returns:
+            ChatMessage: The transcription result.
+        """
+        logger.info(f"Fetching with model {self.model_id} using name: {name}, please wait...")
+        response = self.client.completion(
+            model=self.model_id,
+            name=name,
+            **kwargs,
+        )
+
+        base64 = response['resp_data']['response']["videos"][0]["bytesBase64Encoded"]
 
         return base64
 

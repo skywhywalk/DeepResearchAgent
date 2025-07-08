@@ -11,7 +11,11 @@ from src.logger import logger
 from src.models.litellm import LiteLLMModel
 from src.models.openaillm import OpenAIServerModel
 from src.models.hfllm import InferenceClientModel
-from src.models.restful import RestfulModel, RestfulTranscribeModel, RestfulImagenModel
+from src.models.restful import (RestfulModel,
+                                RestfulTranscribeModel,
+                                RestfulImagenModel,
+                                RestfulVeoPridictModel,
+                                RestfulVeoFetchModel)
 from src.utils import Singleton
 from src.proxy.local_proxy import HTTP_CLIENT, ASYNC_HTTP_CLIENT
 
@@ -307,6 +311,34 @@ class ModelManager(metaclass=Singleton):
                 custom_role_conversions=custom_role_conversions,
             )
             self.registed_models[model_name] = model
+
+            # veo3
+            model_name = "veo3-predict"
+            model_id = "veo-3.0-generate-preview"
+            model = RestfulVeoPridictModel(
+                api_base=self._check_local_api_base(local_api_base_name="SKYWORK_GOOGLE_API_BASE",
+                                                    remote_api_base_name="GOOGLE_API_BASE"),
+                api_key=api_key,
+                api_type="veo/predict",
+                model_id=model_id,
+                http_client=HTTP_CLIENT,
+                custom_role_conversions=custom_role_conversions,
+            )
+            self.registed_models[model_name] = model
+
+            model_name = "veo3-fetch"
+            model_id = "veo-3.0-generate-preview"
+            model = RestfulVeoFetchModel(
+                api_base=self._check_local_api_base(local_api_base_name="SKYWORK_GOOGLE_API_BASE",
+                                                    remote_api_base_name="GOOGLE_API_BASE"),
+                api_key=api_key,
+                api_type="veo/fetch",
+                model_id=model_id,
+                http_client=HTTP_CLIENT,
+                custom_role_conversions=custom_role_conversions,
+            )
+            self.registed_models[model_name] = model
+
             
         else:
             logger.info("Using remote API for Google models")

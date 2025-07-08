@@ -47,6 +47,28 @@ if __name__ == "__main__":
     model_manager.init_models(use_local_proxy=True)
     logger.info("Registed models: %s", ", ".join(model_manager.registed_models.keys()))
 
+
+    # Video Generation with Veo3: Step1: Veo3 Predict, Step2: Veo3 Fetch
+    # Veo3 Predict
+    response = model_manager.registed_models["veo3-predict"](
+        prompt="Please generate a video of a dancing girl.",
+    )
+    name = response
+    logger.info(f"Veo3 Predict operation name: {name}.")
+
+    # Wait for the operation to complete
+    asyncio.sleep(60) # Adjust the sleep time as necessary for your use case
+
+    # Veo3 Fetch
+    response = model_manager.registed_models["veo3-fetch"](
+        # name="projects/veo-ai-video-463310/locations/us-central1/publishers/google/models/veo-3.0-generate-preview/operations/7ed511e2-7aef-4714-952f-e03467db1d4d",
+        name=name,
+    )
+    video_data = base64.b64decode(response)
+    with open("test_case_video.mp4", "wb") as f:
+        f.write(video_data)
+    logger.info("Video saved as test_case_video.mp4")
+
     response = model_manager.registed_models["imagen"](
         prompt="Generate an image of a futuristic city skyline at sunset.",
     )

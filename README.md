@@ -54,7 +54,7 @@ The system adopts a two-layer structure:
 Image and Video Examples:
 <p align="center">
   <img src="./docs/cat_yarn_playful_reference.png" alt="Image Example" width="300"/>
-    <img src="./docs/cat_playing_with_yarn_video.gif" alt="Video Example" width="300"/>
+    <img src="./docs/cat_playing_with_yarn_video.gif" alt="Video Example" width="600"/>
 </p>
 
 ## Updates

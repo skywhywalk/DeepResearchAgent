@@ -69,7 +69,7 @@ class RestfulTranscribeClient():
 
         self.http_client = http_client
 
-    def transcribe(self,
+    def completion(self,
                    model,
                    file_stream,
                    **kwargs):
@@ -79,6 +79,53 @@ class RestfulTranscribeClient():
             "app_key": self.api_key,
         }
         response = requests.post(f"{self.api_base}/{self.api_type}", headers=headers, files=files)
+
+        return response.json()
+
+class RestfulImagenClient():
+    def __init__(self,
+                 api_base: str,
+                 api_key: str,
+                 api_type: str = "imagen",
+                 model_id: str = "imagen",
+                 http_client=None):
+        self.api_base = api_base
+        self.api_key = api_key
+        self.api_type = api_type
+        self.model_id = model_id
+
+        self.http_client = http_client
+
+    def completion(self,
+                   model,
+                   prompt: str,
+                   **kwargs):
+        headers = {
+            "app_key": self.api_key,
+            "Content-Type": "application/json"
+        }
+
+        data = {
+            "model": model,
+            "instances": [
+                {
+                    "prompt": prompt
+                }
+            ],
+            "parameters": {
+                "sampleCount": 1
+            }
+        }
+
+        # Add any additional kwargs to the data
+        if kwargs:
+            data.update(kwargs)
+
+        response = requests.post(
+            f"{self.api_base}/{self.api_type}",
+            json=data,
+            headers=headers,
+        )
 
         return response.json()
 
@@ -350,13 +397,83 @@ class RestfulTranscribeModel(ApiModel):
         Returns:
             ChatMessage: The transcription result.
         """
-        response = self.client.transcribe(
+        response = self.client.completion(
             model=self.model_id,
             file_stream=file_stream,
             **kwargs,
         )
 
         return response.get("text", "No transcription available.")
+
+    def __call__(self, *args, **kwargs) -> str:
+        """
+        Call the model with the given arguments.
+        This is a convenience method that calls `generate` with the same arguments.
+        """
+        return self.generate(*args, **kwargs)
+
+
+class RestfulImagenModel(ApiModel):
+    """This model connects to an OpenAI-compatible API server for transcription.
+
+    Parameters:
+        model_id (`str`):
+            The model identifier to use on the server (e.g. "whisper-1").
+        api_base (`str`, *optional*):
+            The base URL of the OpenAI-compatible API server.
+        api_key (`str`, *optional*):
+            The API key to use for authentication.
+        **kwargs:
+            Additional keyword arguments to pass to the OpenAI API.
+    """
+
+    def __init__(self,
+                 model_id: str,
+                 api_base: Optional[str] = None,
+                 api_key: Optional[str] = None,
+                 api_type: str = "imagen",
+                 http_client=None,
+                 **kwargs):
+        self.model_id = model_id
+        self.api_base = api_base
+        self.api_key = api_key
+        self.api_type = api_type
+
+        self.http_client = http_client
+
+        super().__init__(model_id=model_id, **kwargs)
+
+    def create_client(self):
+        return RestfulImagenClient(api_base=self.api_base,
+                                   api_key=self.api_key,
+                                   api_type=self.api_type,
+                                   model_id=self.model_id,
+                                   http_client=self.http_client)
+
+    def generate(
+        self,
+        prompt: str,
+        **kwargs,
+    ) -> str:
+        """
+        Generate a transcription from the given file stream.
+
+        Parameters:
+            file_stream (Any): The file stream to transcribe.
+            **kwargs: Additional keyword arguments for the transcription request.
+
+        Returns:
+            ChatMessage: The transcription result.
+        """
+        response = self.client.completion(
+            model=self.model_id,
+            prompt=prompt,
+            **kwargs,
+        )
+
+        base64 = response['resp_data']['predictions'][0]["bytesBase64Encoded"]
+
+        return base64
 
     def __call__(self, *args, **kwargs) -> str:
         """

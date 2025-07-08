@@ -11,7 +11,7 @@ from src.logger import logger
 from src.models.litellm import LiteLLMModel
 from src.models.openaillm import OpenAIServerModel
 from src.models.hfllm import InferenceClientModel
-from src.models.restful import RestfulModel, RestfulTranscribeModel
+from src.models.restful import RestfulModel, RestfulTranscribeModel, RestfulImagenModel
 from src.utils import Singleton
 from src.proxy.local_proxy import HTTP_CLIENT, ASYNC_HTTP_CLIENT
 
@@ -30,6 +30,7 @@ class ModelManager(metaclass=Singleton):
         self._register_qwen_models(use_local_proxy=use_local_proxy)
         self._register_langchain_models(use_local_proxy=use_local_proxy)
         self._register_vllm_models(use_local_proxy=use_local_proxy)
+        self._register_deepseek_models(use_local_proxy=use_local_proxy)
 
     def _check_local_api_key(self, local_api_key_name: str, remote_api_key_name: str) -> str:
         api_key = os.getenv(local_api_key_name, PLACEHOLDER)
@@ -272,7 +273,6 @@ class ModelManager(metaclass=Singleton):
                 self.registed_models[model_name] = model
             
     def _register_google_models(self, use_local_proxy: bool = False):
-        # gemini-2.5-pro
         if use_local_proxy:
             logger.info("Using local proxy for Google models")
             api_key = self._check_local_api_key(local_api_key_name="SKYWORK_API_KEY", 
@@ -290,6 +290,20 @@ class ModelManager(metaclass=Singleton):
             model = OpenAIServerModel(
                 model_id=model_id,
                 http_client=client,
+                custom_role_conversions=custom_role_conversions,
+            )
+            self.registed_models[model_name] = model
+
+            # imagen
+            model_name = "imagen"
+            model_id = "imagen-3.0-generate-001"
+            model = RestfulImagenModel(
+                api_base=self._check_local_api_base(local_api_base_name="SKYWORK_GOOGLE_API_BASE",
+                                                    remote_api_base_name="GOOGLE_API_BASE"),
+                api_key=api_key,
+                api_type="imagen",
+                model_id=model_id,
+                http_client=HTTP_CLIENT,
                 custom_role_conversions=custom_role_conversions,
             )
             self.registed_models[model_name] = model
@@ -451,3 +465,49 @@ class ModelManager(metaclass=Singleton):
                 custom_role_conversions=custom_role_conversions,
             )
             self.registed_models[model_name] = model
+
+    def _register_deepseek_models(self, use_local_proxy: bool = False):
+        # deepseek models
+        if use_local_proxy:
+            # deepseek-chat
+            logger.info("Using local proxy for DeepSeek models")
+            api_key = self._check_local_api_key(local_api_key_name="SKYWORK_API_KEY",
+                                                remote_api_key_name="SKYWORK_API_KEY")
+            api_base = self._check_local_api_base(local_api_base_name="SKYWORK_DEEPSEEK_API_BASE",
+                                                  remote_api_base_name="SKYWORK_API_BASE")
+
+            model_name = "deepseek-chat"
+            model_id = "deepseek-chat"
+            client = AsyncOpenAI(
+                api_key=api_key,
+                base_url=api_base,
+                http_client=ASYNC_HTTP_CLIENT,
+            )
+            model = OpenAIServerModel(
+                model_id=model_id,
+                http_client=client,
+                custom_role_conversions=custom_role_conversions,
+            )
+            self.registed_models[model_name] = model
+
+            # deepseek-reasoner
+            api_key = self._check_local_api_key(local_api_key_name="SKYWORK_API_KEY",
+                                                remote_api_key_name="SKYWORK_API_KEY")
+            api_base = self._check_local_api_base(local_api_base_name="SKYWORK_DEEPSEEK_API_BASE",
+                                                    remote_api_base_name="SKYWORK_API_BASE")
+
+            model_name = "deepseek-reasoner"
+            model_id = "deepseek-reasoner"
+            client = AsyncOpenAI(
+                api_key=api_key,
+                base_url=api_base,
+                http_client=ASYNC_HTTP_CLIENT,
+            )
+            model = OpenAIServerModel(
+                model_id=model_id,
+                http_client=client,
+                custom_role_conversions=custom_role_conversions,
+            )
+            self.registed_models[model_name] = model
+        else:
+            logger.warning("DeepSeek models are not supported in remote API mode.")

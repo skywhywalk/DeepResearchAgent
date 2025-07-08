@@ -46,6 +46,7 @@ The system adopts a two-layer structure:
   
 
 ## Updates
+* **2025.07.08**: Add the image generator tool, which can generate images based on the input text. The image generator tool is based on the Imagen model.
 * **2025.07.07**: Due to the limited flexibility of TOML configuration files, we have switched to using the config format supported by mmengine.
 * **2025.06.20**: Add the support for the mcp (Both the local mcp and remote mcp).
 * **2025.06.17**: Update technical report https://arxiv.org/pdf/2506.12508.
@@ -56,7 +57,7 @@ The system adopts a two-layer structure:
 ## TODO List
 
 * [x] Asynchronous feature completed
-* [ ] Image Generation Agent to be developed
+* [x] Image Generatior Tool completed
 * [x] MCP in progress
 * [ ] AI4Research Agent to be developed
 * [ ] Novel Writing Agent to be developed

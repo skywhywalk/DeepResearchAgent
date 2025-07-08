@@ -4,6 +4,7 @@ import sys
 import asyncio
 from pathlib import Path
 from mmengine import DictAction
+import base64
 
 root = str(Path(__file__).resolve().parents[1])
 sys.path.append(root)
@@ -46,9 +47,27 @@ if __name__ == "__main__":
     model_manager.init_models(use_local_proxy=True)
     logger.info("Registed models: %s", ", ".join(model_manager.registed_models.keys()))
 
+    response = model_manager.registed_models["imagen"](
+        prompt="Generate an image of a futuristic city skyline at sunset.",
+    )
+    img_data = base64.b64decode(response)
+    with open("test_case_image.png", "wb") as f:
+        f.write(img_data)
+    logger.info("Image saved as test_case_image.png")
+
     messages = [
         ChatMessage(role="user", content="What is the capital of France?"),
     ]
+
+    response = asyncio.run(model_manager.registed_models["deepseek-chat"](
+        messages=messages,
+    ))
+    print(response)
+
+    response = asyncio.run(model_manager.registed_models["deepseek-reasoner"](
+        messages=messages,
+    ))
+    print(response)
 
     response = asyncio.run(model_manager.registed_models["o3"](
         messages=messages,

@@ -4,6 +4,7 @@ from src.tools.deep_researcher import DeepResearcherTool
 from src.tools.python_interpreter import PythonInterpreterTool
 from src.tools.auto_browser import AutoBrowserUseTool
 from src.tools.planning import PlanningTool
+from src.tools.image_generator import ImageGeneratorTool
 
 
 __all__ = [
@@ -15,5 +16,6 @@ __all__ = [
     "PythonInterpreterTool",
     "AutoBrowserUseTool",
     "PlanningTool",
+    "ImageGeneratorTool",
     "make_tool_instance",
 ]

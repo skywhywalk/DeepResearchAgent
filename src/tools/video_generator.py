@@ -156,20 +156,20 @@ class VideoGeneratorTool(AsyncTool):
                 arguments = json5.loads(response.tool_calls[0].function.arguments)
                 optimized_prompt = arguments.get("optimized_prompt", "")
             else:
-                res = f"ImageGeneratorTool failed to generate an optimized prompt: {response}"
+                res = f"VideoGeneratorTool failed to generate an optimized prompt: {response}"
                 logger.warning(res)
                 return prompt
 
             if not optimized_prompt:
-                res = f"ImageGeneratorTool returned an empty optimized prompt."
+                res = f"VideoGeneratorTool returned an empty optimized prompt."
                 logger.warning(res)
                 return prompt
 
-            logger.info(f"ImageGeneratorTool generated optimized query: {optimized_prompt}")
+            logger.info(f"VideoGeneratorTool generated optimized query: {optimized_prompt}")
 
             return optimized_prompt
         except Exception as e:
-            res = f"ImageGeneratorTool failed to generate an optimized prompt: {e}"
+            res = f"VideoGeneratorTool failed to generate an optimized prompt: {e}"
             logger.error(res)
             return prompt
 

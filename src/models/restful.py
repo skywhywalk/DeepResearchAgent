@@ -3,6 +3,7 @@ from collections.abc import Generator
 from openai.types.chat import ChatCompletion
 import requests
 import os
+from PIL import Image
 
 from src.models.base import (ApiModel,
                              Model,
@@ -170,8 +171,9 @@ class RestfulVeoPredictClient():
         }
 
         if image and os.path.exists(image):
+            img = Image.open(image)
             image_data = {
-                "bytesBase64Encoded": encode_image_base64(image),
+                "bytesBase64Encoded": encode_image_base64(img),
                 "mimeType": "image/png"
             }
             data["instances"][0]["image"] = image_data

@@ -1,7 +1,7 @@
 import argparse
 import os
-import sys
 import asyncio
+import sys
 from pathlib import Path
 from mmengine import DictAction
 
@@ -10,8 +10,8 @@ sys.path.append(root)
 
 from src.logger import logger
 from src.config import config
-from src.models import model_manager
-from src.agent import create_agent
+from src.registry import TOOL
+from src.models import model_manager, ChatMessage
 
 def parse_args():
     parser = argparse.ArgumentParser(description='main')
@@ -30,8 +30,8 @@ def parse_args():
     args = parser.parse_args()
     return args
 
+if __name__ == "__main__":
 
-async def main():
     # Parse command line arguments
     args = parse_args()
 
@@ -45,19 +45,19 @@ async def main():
 
     # Registed models
     model_manager.init_models(use_local_proxy=True)
-    logger.info("| Registed models: %s", ", ".join(model_manager.registed_models.keys()))
+    logger.info("Registed models: %s", ", ".join(model_manager.registed_models.keys()))
 
-    # Create agent
-    agent = await create_agent(config)
-    logger.visualize_agent_tree(agent)
+    # Registed tools
+    logger.info(f"| {TOOL}")
 
-    # Run example
-    # task = "Use the python interpreter tool to calculate 2 + 3 and return the result."
-    # task = "Please generate an image of a futuristic city skyline at sunset, with flying cars and neon lights."
-    # task = "Please generate a video of a cat playing with a ball of yarn, with a playful and energetic atmosphere."
-    task = "Please generate a video of Charmander evolving into Charmeleon, and then further evolving into Charizard."
-    res = await agent.run(task)
-    logger.info(f"| Result: {res}")
+    video_generator_tool_config = config.video_generator_tool_config
+    video_generator_tool = TOOL.build(video_generator_tool_config)
 
-if __name__ == '__main__':
-    asyncio.run(main())
+    image_path = os.path.join(config.exp_path, "img.png")
+    prompt = "Please generate a video of Charmander evolving into Charmeleon, and then further evolving into Charizard."
+    prompt += f"Refer to the image at {image_path} for inspiration."
+
+    content = asyncio.run(video_generator_tool.forward(prompt=prompt,
+                                                       image_path=image_path,
+                                                       save_name="generated_video.mp4"))
+    print(content)

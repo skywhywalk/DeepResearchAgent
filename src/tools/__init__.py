@@ -5,6 +5,7 @@ from src.tools.python_interpreter import PythonInterpreterTool
 from src.tools.auto_browser import AutoBrowserUseTool
 from src.tools.planning import PlanningTool
 from src.tools.image_generator import ImageGeneratorTool
+from src.tools.video_generator import VideoGeneratorTool
 
 
 __all__ = [
@@ -17,5 +18,6 @@ __all__ = [
     "AutoBrowserUseTool",
     "PlanningTool",
     "ImageGeneratorTool",
+    "VideoGeneratorTool",
     "make_tool_instance",
 ]

@@ -17,7 +17,7 @@ general_agent_config = dict(
     max_steps = 20,
     template_path = "src/agent/general_agent/prompts/general_agent.yaml",
     provide_run_summary = True,
-    tools = ["python_interpreter_tool", "image_generator_tool"],
+    tools = ["python_interpreter_tool", "image_generator_tool", "video_generator_tool"],
     mcp_tools = ["get_weather_tool"],
 )
 

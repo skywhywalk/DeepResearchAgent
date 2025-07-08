@@ -67,7 +67,7 @@ class ImageGeneratorTool(AsyncTool):
                 "default": "generated_image.png"
             }
         },
-        "required": ["prompt"],
+        "required": ["prompt", "save_name"],
     }
     output_type = "any"
 
@@ -101,7 +101,7 @@ class ImageGeneratorTool(AsyncTool):
         return result
 
     async def _generate_optimized_prompt(self, prompt: str) -> str:
-        # try:
+        try:
             prompt = OPTIMIZE_PROMPT_INSTRUCTION.format(prompt=prompt)
 
             messages = [
@@ -116,7 +116,6 @@ class ImageGeneratorTool(AsyncTool):
                 messages=messages,
                 tools_to_call_from=tools
             )
-
 
             # Extract the query from the tool_call response
             if response and response.tool_calls and len(response.tool_calls) > 0:
@@ -135,10 +134,10 @@ class ImageGeneratorTool(AsyncTool):
             logger.info(f"ImageGeneratorTool generated optimized query: {optimized_prompt}")
 
             return optimized_prompt
-        # except Exception as e:
-        #     res = f"ImageGeneratorTool failed to generate an optimized prompt: {e}"
-        #     logger.error(res)
-        #     return prompt
+        except Exception as e:
+            res = f"ImageGeneratorTool failed to generate an optimized prompt: {e}"
+            logger.error(res)
+            return prompt
 
     async def _generate_image(self, prompt: str, save_name: str = "generated_image.png") -> ToolResult:
 

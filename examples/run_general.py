@@ -53,7 +53,8 @@ async def main():
 
     # Run example
     # task = "Use the python interpreter tool to calculate 2 + 3 and return the result."
-    task = "Please generate an image of a futuristic city skyline at sunset, with flying cars and neon lights."
+    # task = "Please generate an image of a futuristic city skyline at sunset, with flying cars and neon lights."
+    task = "Please generate a video of a cat playing with a ball of yarn, with a playful and energetic atmosphere."
     res = await agent.run(task)
     logger.info(f"| Result: {res}")
 

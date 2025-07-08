@@ -55,3 +55,10 @@ image_generator_tool_config = dict(
     analyzer_model_id = "o3",
     generator_model_id = "imagen",
 )
+
+video_generator_tool_config = dict(
+    type="video_generator_tool",
+    analyzer_model_id = "o3",
+    predict_model_id = "veo3-predict",
+    fetch_model_id = "veo3-fetch",
+)

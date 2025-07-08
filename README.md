@@ -37,15 +37,28 @@ The system adopts a two-layer structure:
   * Automates browser operations, supporting web search, information extraction, and data collection tasks.
   * Assists the Deep Researcher in acquiring up-to-date information from the internet.
 
+* **General Tool Calling Agent**
+  * Provides a general-purpose interface for invoking various tools and APIs.
+  * Supports function calling, allowing the agent to execute specific tasks or retrieve information from external services.
+
 ## Features
 
 - Hierarchical agent collaboration for complex and dynamic task scenarios
 - Extensible agent system, allowing easy integration of additional specialized agents
 - Automated information analysis, research, and web interaction capabilities
 - Secure Python code execution environment for tools, featuring configurable import controls, restricted built-ins, attribute access limitations, and resource limits. (See [PythonInterpreterTool Sandboxing](./docs/python_interpreter_sandbox.md) for details).
-  
+- Support for asynchronous operations, enabling efficient handling of multiple tasks and agents
+- Support for local and remote model inference, including OpenAI, Anthropic, Google LLMs, and local Qwen models via vLLM
+- Support for image and video generation tools based on the Imagen and Veo3 models, respectively
+
+Image and Video Examples:
+<p align="center">
+  <img src="./docs/cat_yarn_playful_reference.png" alt="Image Example" width="300"/>
+  <video src="./docs/cat_playing_with_yarn_video.mp4" width="300" poster="./docs/cat_yarn_playful_reference.png" controls></video>
+</p>
 
 ## Updates
+* **2025.07.08**: Add the video generator tool, which can generate a video based on the input text and/or image. The video generator tool is based on the Veo3 model.
 * **2025.07.08**: Add the image generator tool, which can generate images based on the input text. The image generator tool is based on the Imagen model.
 * **2025.07.07**: Due to the limited flexibility of TOML configuration files, we have switched to using the config format supported by mmengine.
 * **2025.06.20**: Add the support for the mcp (Both the local mcp and remote mcp).
@@ -58,6 +71,7 @@ The system adopts a two-layer structure:
 
 * [x] Asynchronous feature completed
 * [x] Image Generator Tool completed
+* [x] Video Generator Tool completed
 * [x] MCP in progress
 * [ ] AI4Research Agent to be developed
 * [ ] Novel Writing Agent to be developed

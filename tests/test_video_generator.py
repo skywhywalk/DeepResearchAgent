@@ -53,11 +53,8 @@ if __name__ == "__main__":
     video_generator_tool_config = config.video_generator_tool_config
     video_generator_tool = TOOL.build(video_generator_tool_config)
 
-    image_path = os.path.join(config.exp_path, "img.png")
-    prompt = "Please generate a video of Charmander evolving into Charmeleon, and then further evolving into Charizard."
-    prompt += f"Refer to the image at {image_path} for inspiration."
+    prompt = "Generate a cute little kitten wearing a pink dress and playing with a cat teaser toy."
 
     content = asyncio.run(video_generator_tool.forward(prompt=prompt,
-                                                       image_path=image_path,
                                                        save_name="generated_video.mp4"))
     print(content)

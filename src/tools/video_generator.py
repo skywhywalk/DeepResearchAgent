@@ -181,38 +181,38 @@ class VideoGeneratorTool(AsyncTool):
         prompt = _GENEATOR_DESCRIPTION + "\n" + prompt
 
         # Use the generator model to create the image
-        # try:
+        try:
             # Veo3 Predict
-        response = self.predict_model(
-            prompt=prompt,
-            image=image_path,  # Optional image reference
-        )
-        name = response
-        logger.info(f"Veo3 Predict operation name: {name}.")
+            response = self.predict_model(
+                prompt=prompt,
+                image=image_path,  # Optional image reference
+            )
+            name = response
+            logger.info(f"Veo3 Predict operation name: {name}.")
 
-        video_data = None
-        while video_data is None:
-            try:
-                # Veo3 Fetch
-                response = model_manager.registed_models["veo3-fetch"](
-                    name=name,
-                )
-                video_data = base64.b64decode(response)
-            except Exception as e:
-                logger.warning("Failed to fetch video data. Retrying in 60 seconds...")
-                await asyncio.sleep(60)  # Wait for 60 seconds before retrying
+            video_data = None
+            while video_data is None:
+                try:
+                    # Veo3 Fetch
+                    response = model_manager.registed_models["veo3-fetch"](
+                        name=name,
+                    )
+                    video_data = base64.b64decode(response)
+                except Exception as e:
+                    logger.warning(f"Failed to fetch video data: {e}, retrying in 60 seconds...")
+                    await asyncio.sleep(60)  # Wait for 60 seconds before retrying
 
-        if video_data:
-            save_path = os.path.join(config.exp_path, save_name)
-            with open(save_path, "wb") as f:
-                f.write(video_data)
-            output = f"Video generated successfully and saved as {save_path}."
-            return ToolResult(output=output, error=None)
-        else:
-            error_message = "Video generation returned no response."
-            logger.error(error_message)
-            return ToolResult(output=None, error=error_message)
-        #
-        # except Exception as e:
-        #     logger.error(f"Video generation failed: {e}")
-        #     return ToolResult(output=None, error=str(e))
+            if video_data:
+                save_path = os.path.join(config.exp_path, save_name)
+                with open(save_path, "wb") as f:
+                    f.write(video_data)
+                output = f"Video generated successfully and saved as {save_path}."
+                return ToolResult(output=output, error=None)
+            else:
+                error_message = "Video generation returned no response."
+                logger.error(error_message)
+                return ToolResult(output=None, error=error_message)
+
+        except Exception as e:
+            logger.error(f"Video generation failed: {e}")
+            return ToolResult(output=None, error=str(e))

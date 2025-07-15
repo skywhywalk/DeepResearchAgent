@@ -144,6 +144,8 @@ We evaluated our agent on the GAIA validation set and achieved state-of-the-art 
   <img src="./docs/gaia_benchmark.png" alt="GAIA Example Result" width="700"/>
 </p>
 
+The preview version of our agent achieved pass@1 results on the test set of 65.45 (average), 87.1 (Level 1), 63.52 (Level 2), and 30.61 (Level 3). We have so far identified some shortcomings in the agent, such as dynamic interactions on Google Street View and video‑audio analysis, and will continue to optimize its performance. Stay tuned for the next updated version.
+
 ## Questions
 
 ### 1. About Qwen Models

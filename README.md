@@ -144,7 +144,7 @@ We evaluated our agent on the GAIA validation set and achieved state-of-the-art 
   <img src="./docs/gaia_benchmark.png" alt="GAIA Example Result" width="700"/>
 </p>
 
-The preview version of our agent achieved pass@1 results on the test set of 65.45 (average), 87.1 (Level 1), 63.52 (Level 2), and 30.61 (Level 3). We have so far identified some shortcomings in the agent, such as dynamic interactions on Google Street View and video‑audio analysis, and will continue to optimize its performance. Stay tuned for the next updated version.
+With the integration of the Computer Use Agent, which now enables pixel-level control of the browser, our system's performance on the test set has significantly improved. The latest results show a notable increase to 79.07 (average), with 91.4 on Level 1, 77.36 on Level 2, and 61.22 on Level 3. We’re continuing to refine and optimize the agent, and a new version will be released in the coming days
 
 ## Questions
 

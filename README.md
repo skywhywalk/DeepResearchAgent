@@ -58,6 +58,7 @@ Image and Video Examples:
 </p>
 
 ## Updates
+* **2025.08.04**: Add the support for loading mcp tools from the local json file.
 * **2025.07.08**: Add the video generator tool, which can generate a video based on the input text and/or image. The video generator tool is based on the Veo3 model.
 * **2025.07.08**: Add the image generator tool, which can generate images based on the input text. The image generator tool is based on the Imagen model.
 * **2025.07.07**: Due to the limited flexibility of TOML configuration files, we have switched to using the config format supported by mmengine.
@@ -73,6 +74,7 @@ Image and Video Examples:
 * [x] Image Generator Tool completed
 * [x] Video Generator Tool completed
 * [x] MCP in progress
+* [x] Load local MCP tools from JSON file completed
 * [ ] AI4Research Agent to be developed
 * [ ] Novel Writing Agent to be developed
 

@@ -38,6 +38,9 @@ async def main():
     async with Client("server.py") as client:
         tools = await client.list_tools()
         tools = [convert2function(tool) for tool in tools]
+        for item in tools:
+            print('"' + item["name"] + '",')
+        exit()
 
         model_client = OpenAI("<your-api-key>")
 

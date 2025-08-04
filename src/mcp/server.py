@@ -1,55 +1,80 @@
 import os
-from typing import Dict
+import sys
+
 from fastmcp import FastMCP
 from dotenv import load_dotenv
-from aiohttp import ClientSession
+import asyncio
+from pathlib import Path
+
+root = str(Path(__file__).resolve().parents[2])
+sys.path.append(root)
+
+from src.utils import assemble_project_path
+from src.logger import logger
 
 # Load environment variables
-load_dotenv()
+load_dotenv(override=True)
 
 # Initialize FastMCP
 mcp = FastMCP("LocalMCP")
+_mcp_tools_namespace = {}
 
-weather_api_url = "https://wttr.in"
-
-@mcp.tool(name = "get_weather_tool", description="Get current weather information for a given city.")
-async def get_weather_tool(city: str) -> Dict:
+async def register_tool_from_script(script_info):
     """
-    Get current weather information for a given city.
-
-    Args:
-        city (str): The name of the city for which to fetch the weather information.
+    Register a tool from a script content.
     """
-    url = f"{weather_api_url}/{city}"
-    params = {
-        "format": "j1"  # JSON format
-    }
 
-    return await get_with_json_response(url, params)
+    name = script_info.get("name", "UnnamedTool")
+    description = script_info.get("description", "No description provided.")
+    script_content = script_info.get("script_content", "")
 
+    if script_content.startswith('```python'):
+        script_content = script_content.replace('```python', '')
+    if script_content.endswith('```'):
+        script_content = script_content.replace('```', '')
 
-async def get_with_json_response(url: str, params: Dict) -> Dict:
-    async with ClientSession() as session:
-        try:
-            async with session.get(url, params=params) as response:
-                res = await response.json()
+    try:
+        exec(script_content, _mcp_tools_namespace)
+    except Exception as e:
+        logger.error(f"Error executing script for tool '{name}': {e}")
+        return
 
-            # You can structure the weather response as needed
-            current = res.get("current_condition", [{}])[0]
-            return {
-                "status": "success",
-                "weather": {
-                    "temperature_C": current.get("temp_C"),
-                    "humidity": current.get("humidity"),
-                    "description": current.get("weatherDesc", [{}])[0].get("value"),
-                    "wind_kmph": current.get("windspeedKmph")
-                }
-            }
-        except Exception as e:
-            return {
-                "status": "failed",
-                "error": str(e)
-            }
+    tool_function = _mcp_tools_namespace.get(name, None)
+    if tool_function is None:
+        logger.error(f"Tool function '{name}' not found in script content.")
+        return
+    else:
+        mcp.tool(
+            tool_function,
+            name=name,
+            description=description,
+        )
+        logger.info(f"Tool '{name}' registered successfully.")
+
+async def register_tools(script_info_path):
+    """
+    Register tools from a JSON file containing script information.
+    """
+    import json
+
+    try:
+        with open(script_info_path, 'r') as f:
+            script_info_list = json.load(f)
+
+        for script_info in script_info_list:
+            await register_tool_from_script(script_info)
+
+    except FileNotFoundError:
+        logger.info(f"Script info file not found: {script_info_path}")
+    except json.JSONDecodeError:
+        logger.error(f"Error decoding JSON from script info file: {script_info_path}")
+
+    logger.info("All tools registered successfully.")
+
+    mcp_tools = await mcp.get_tools()
+    logger.info(f"Registered tools: {', '.join([tool for tool in mcp_tools])}")
 
 if __name__ == "__main__":
+    script_info_path = assemble_project_path(os.path.join("src", "mcp", "local", "mcp_tools_registry.json"))
+    asyncio.run(register_tools(script_info_path))
     mcp.run()

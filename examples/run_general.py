@@ -55,7 +55,7 @@ async def main():
     # task = "Use the python interpreter tool to calculate 2 + 3 and return the result."
     # task = "Please generate an image of a futuristic city skyline at sunset, with flying cars and neon lights."
     # task = "Please generate a video of a cat playing with a ball of yarn, with a playful and energetic atmosphere."
-    task = "Please generate a video of Charmander evolving into Charmeleon, and then further evolving into Charizard."
+    task = "Find the 2023 last revision of 'English Wikipedia' with url 'https://en.wikipedia.org/wiki/English_Wikipedia' and return the result."
     res = await agent.run(task)
     logger.info(f"| Result: {res}")
 

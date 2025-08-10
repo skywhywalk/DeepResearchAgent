@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgentOrchestra: A Hierarchical Multi-Agent Framework for General-Purpose Task Solving</title>
+  <meta name="description" content="AgentOrchestra is a hierarchical multi-agent framework for general-purpose task solving that integrates high-level planning with modular agent collaboration.">
+  <meta name="keywords" content="AI, Agent, Multi-Agent, LLM, Deep Learning, Research">
+  <meta name="author" content="Wentao Zhang, Ce Cui, Yilei Zhao, Rui Hu, Yang Liu, Yahui Zhou, Bo An">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://skyworkai.github.io/DeepResearchAgent/">
+  <meta property="og:title" content="AgentOrchestra: A Hierarchical Multi-Agent Framework">
+  <meta property="og:description" content="A hierarchical multi-agent framework for general-purpose task solving">
+  <meta property="og:image" content="https://skyworkai.github.io/DeepResearchAgent/docs/assets/architecture.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://skyworkai.github.io/DeepResearchAgent/">
+  <meta property="twitter:title" content="AgentOrchestra: A Hierarchical Multi-Agent Framework">
+  <meta property="twitter:description" content="A hierarchical multi-agent framework for general-purpose task solving">
+  <meta property="twitter:image" content="https://skyworkai.github.io/DeepResearchAgent/docs/assets/architecture.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              200: '#bfdbfe',
+              300: '#93c5fd',
+              400: '#60a5fa',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            },
+            secondary: {
+              50: '#f8fafc',
+              100: '#f1f5f9',
+              200: '#e2e8f0',
+              300: '#cbd5e1',
+              400: '#94a3b8',
+              500: '#64748b',
+              600: '#475569',
+              700: '#334155',
+              800: '#1e293b',
+              900: '#0f172a',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.5s ease-in-out',
+            'slide-up': 'slideUp 0.5s ease-out',
+            'float': 'float 6s ease-in-out infinite',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-20px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <!-- Navigation -->
+  <nav class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex items-center">
+          <h1 class="text-xl font-bold text-primary-600">AgentOrchestra</h1>
+        </div>
+        <div class="flex items-center space-x-8">
+          <a href="#introduction" class="text-gray-700 hover:text-primary-600 transition-colors">Introduction</a>
+          <a href="#architecture" class="text-gray-700 hover:text-primary-600 transition-colors">Architecture</a>
+          <a href="#experiments" class="text-gray-700 hover:text-primary-600 transition-colors">Experiments</a>
+          <a href="#paper" class="text-gray-700 hover:text-primary-600 transition-colors">Paper</a>
+          <a href="https://github.com/SkyworkAI/DeepResearchAgent" target="_blank" class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-br from-primary-50 to-blue-50 py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-5xl font-bold text-gray-900 mb-6 animate-fade-in">
+        AgentOrchestra
+      </h1>
+      <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto animate-slide-up">
+        A Hierarchical Multi-Agent Framework for General-Purpose Task Solving
+      </p>
+      <div class="flex justify-center space-x-4">
+        <a href="#paper" class="bg-primary-600 text-white px-8 py-3 rounded-lg hover:bg-primary-700 transition-colors">
+          Read Paper
+        </a>
+        <a href="https://github.com/SkyworkAI/DeepResearchAgent" target="_blank" class="border border-primary-600 text-primary-600 px-8 py-3 rounded-lg hover:bg-primary-50 transition-colors">
+          View Code
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Introduction Section -->
+  <section id="introduction" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">1. Introduction</h2>
+        <div class="w-24 h-1 bg-primary-600 mx-auto"></div>
+      </div>
+      
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div class="space-y-6">
+          <p class="text-lg text-gray-700 leading-relaxed">
+            Recent advances in Large Language Models (LLMs) or Large Multimodal Models (LMMs) have led to a shift from simple dialogue to models capable of performing sophisticated reasoning, enabling progress from answering straightforward questions to responding to complex, multi-step queries.
+          </p>
+          <p class="text-lg text-gray-700 leading-relaxed">
+            However, current LLMs remain largely disconnected from real-world environments due to the absence of interactive tool integration, which constrains their ability to perform grounded, general-purpose, and complex tasks.
+          </p>
+          <p class="text-lg text-gray-700 leading-relaxed">
+            AgentOrchestra addresses these challenges through a hierarchical multi-agent framework that integrates high-level planning with modular agent collaboration, inspired by the way a conductor orchestrates a symphony.
+          </p>
+        </div>
+        <div class="bg-gradient-to-br from-primary-100 to-blue-100 p-8 rounded-2xl">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Key Principles</h3>
+          <ul class="space-y-3">
+            <li class="flex items-center">
+              <div class="w-2 h-2 bg-primary-600 rounded-full mr-3"></div>
+              <span class="text-gray-700">Extensibility</span>
+            </li>
+            <li class="flex items-center">
+              <div class="w-2 h-2 bg-primary-600 rounded-full mr-3"></div>
+              <span class="text-gray-700">Multimodality</span>
+            </li>
+            <li class="flex items-center">
+              <div class="w-2 h-2 bg-primary-600 rounded-full mr-3"></div>
+              <span class="text-gray-700">Modularity</span>
+            </li>
+            <li class="flex items-center">
+              <div class="w-2 h-2 bg-primary-600 rounded-full mr-3"></div>
+              <span class="text-gray-700">Coordination</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture Section -->
+  <section id="architecture" class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">2. Architecture</h2>
+        <div class="w-24 h-1 bg-primary-600 mx-auto"></div>
+      </div>
+      
+      <!-- Architecture Diagram -->
+      <div class="text-center mb-16">
+        <img src="assets/architecture.png" alt="AgentOrchestra Architecture" class="max-w-4xl mx-auto rounded-lg shadow-lg animate-float">
+      </div>
+      
+      <!-- Architecture Components -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Planning Agent -->
+        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">Planning Agent</h3>
+          <p class="text-gray-600">Central coordinator that decomposes complex objectives and delegates sub-tasks to specialized agents.</p>
+        </div>
+        
+        <!-- Deep Researcher -->
+        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">Deep Researcher</h3>
+          <p class="text-gray-600">Conducts thorough research on specified topics, retrieving and synthesizing high-quality information.</p>
+        </div>
+        
+        <!-- Browser Use -->
+        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">Browser Use</h3>
+          <p class="text-gray-600">Automates browser operations, supporting web search, information extraction, and data collection.</p>
+        </div>
+        
+        <!-- Deep Analyzer -->
+        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">Deep Analyzer</h3>
+          <p class="text-gray-600">Performs in-depth analysis of input information, extracting key insights and potential requirements.</p>
+        </div>
+        
+        <!-- General Tool Calling -->
+        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">General Tool Calling</h3>
+          <p class="text-gray-600">Provides a general-purpose interface for invoking various tools and APIs with function calling support.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experiments Section -->
+  <section id="experiments" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">3. Experiments</h2>
+        <div class="w-24 h-1 bg-primary-600 mx-auto"></div>
+      </div>
+      
+      <!-- Benchmarks -->
+      <div class="grid lg:grid-cols-3 gap-8 mb-16">
+        <div class="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl">
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">SimpleQA Benchmark</h3>
+          <p class="text-gray-600 mb-4">Evaluation on simple question-answering tasks to assess basic reasoning capabilities.</p>
+          <div class="text-2xl font-bold text-green-600">High Performance</div>
+        </div>
+        
+        <div class="bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-xl">
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">GAIA Benchmark</h3>
+          <p class="text-gray-600 mb-4">Comprehensive evaluation on real-world tasks requiring web search and reasoning.</p>
+          <div class="text-2xl font-bold text-blue-600">79.07 Average</div>
+        </div>
+        
+        <div class="bg-gradient-to-br from-purple-50 to-violet-50 p-6 rounded-xl">
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">HLE Benchmark</h3>
+          <p class="text-gray-600 mb-4">Human-level evaluation benchmark for complex reasoning and planning tasks.</p>
+          <div class="text-2xl font-bold text-purple-600">State-of-the-Art</div>
+        </div>
+      </div>
+      
+      <!-- Results -->
+      <div class="bg-gray-50 p-8 rounded-xl">
+        <h3 class="text-2xl font-semibold text-gray-900 mb-6">Key Results</h3>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div>
+            <h4 class="text-lg font-semibold text-gray-900 mb-3">Performance Improvements</h4>
+            <ul class="space-y-2 text-gray-600">
+              <li>• Consistently outperforms flat-agent and monolithic baselines</li>
+              <li>• Superior task success rate and adaptability</li>
+              <li>• Effective hierarchical organization and role specialization</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-lg font-semibold text-gray-900 mb-3">Scalability Benefits</h4>
+            <ul class="space-y-2 text-gray-600">
+              <li>• Modular design enables easy integration of new agents</li>
+              <li>• Flexible orchestration through explicit sub-goal formulation</li>
+              <li>• Adaptive role allocation for dynamic task requirements</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Paper Section -->
+  <section id="paper" class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Paper & Resources</h2>
+        <div class="w-24 h-1 bg-primary-600 mx-auto"></div>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="bg-white p-8 rounded-xl shadow-sm">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Research Paper</h3>
+          <p class="text-gray-600 mb-6">
+            Read our full research paper "AgentOrchestra: A Hierarchical Multi-Agent Framework for General-Purpose Task Solving" published on arXiv.
+          </p>
+          <div class="space-y-3">
+            <a href="https://arxiv.org/abs/2506.12508" target="_blank" class="block bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors text-center">
+              View on arXiv
+            </a>
+            <a href="https://arxiv.org/pdf/2506.12508" target="_blank" class="block border border-primary-600 text-primary-600 px-6 py-3 rounded-lg hover:bg-primary-50 transition-colors text-center">
+              Download PDF
+            </a>
+          </div>
+        </div>
+        
+        <div class="bg-white p-8 rounded-xl shadow-sm">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Code Repository</h3>
+          <p class="text-gray-600 mb-6">
+            Access the complete implementation, examples, and documentation on GitHub.
+          </p>
+          <div class="space-y-3">
+            <a href="https://github.com/SkyworkAI/DeepResearchAgent" target="_blank" class="block bg-gray-900 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors text-center">
+              View on GitHub
+            </a>
+            <a href="https://github.com/SkyworkAI/DeepResearchAgent/blob/main/README.md" target="_blank" class="block border border-gray-600 text-gray-600 px-6 py-3 rounded-lg hover:bg-gray-50 transition-colors text-center">
+              Documentation
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Authors Section -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Authors</h2>
+        <div class="w-24 h-1 bg-primary-600 mx-auto"></div>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="text-center">
+          <div class="w-20 h-20 bg-primary-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+            <span class="text-primary-600 font-semibold">WZ</span>
+          </div>
+          <h3 class="font-semibold text-gray-900">Wentao Zhang</h3>
+          <p class="text-gray-600 text-sm">Skywork AI</p>
+        </div>
+        
+        <div class="text-center">
+          <div class="w-20 h-20 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+            <span class="text-green-600 font-semibold">CC</span>
+          </div>
+          <h3 class="font-semibold text-gray-900">Ce Cui</h3>
+          <p class="text-gray-600 text-sm">Skywork AI</p>
+        </div>
+        
+        <div class="text-center">
+          <div class="w-20 h-20 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+            <span class="text-blue-600 font-semibold">YZ</span>
+          </div>
+          <h3 class="font-semibold text-gray-900">Yilei Zhao</h3>
+          <p class="text-gray-600 text-sm">Nanyang Technological University</p>
+        </div>
+        
+        <div class="text-center">
+          <div class="w-20 h-20 bg-purple-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+            <span class="text-purple-600 font-semibold">BA</span>
+          </div>
+          <h3 class="font-semibold text-gray-900">Bo An</h3>
+          <p class="text-gray-600 text-sm">Nanyang Technological University</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-3 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4">AgentOrchestra</h3>
+          <p class="text-gray-400">
+            A hierarchical multi-agent framework for general-purpose task solving that integrates high-level planning with modular agent collaboration.
+          </p>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold mb-4">Quick Links</h4>
+          <ul class="space-y-2 text-gray-400">
+            <li><a href="#introduction" class="hover:text-white transition-colors">Introduction</a></li>
+            <li><a href="#architecture" class="hover:text-white transition-colors">Architecture</a></li>
+            <li><a href="#experiments" class="hover:text-white transition-colors">Experiments</a></li>
+            <li><a href="#paper" class="hover:text-white transition-colors">Paper</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold mb-4">Resources</h4>
+          <ul class="space-y-2 text-gray-400">
+            <li><a href="https://arxiv.org/abs/2506.12508" target="_blank" class="hover:text-white transition-colors">arXiv Paper</a></li>
+            <li><a href="https://github.com/SkyworkAI/DeepResearchAgent" target="_blank" class="hover:text-white transition-colors">GitHub Repository</a></li>
+            <li><a href="https://github.com/SkyworkAI/DeepResearchAgent/blob/main/README.md" target="_blank" class="hover:text-white transition-colors">Documentation</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+        <p>&copy; 2025 AgentOrchestra. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Custom JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>

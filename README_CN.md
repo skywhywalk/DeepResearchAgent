@@ -8,7 +8,7 @@
 ## 系统架构
 
 <p align="center">
-  <img src="./docs/architecture.png" alt="Architecture" width="700"/>
+  <img src="./docs/assets/architecture.png" alt="Architecture" width="700"/>
 </p>
 
 本系统采用两层结构：
@@ -118,7 +118,7 @@ python examples/run_gaia.py
 我们在 GAIA 验证集上进行了评估，并于 5 月 10 日达到最先进性能：
 
 <p align="center">
-  <img src="./docs/gaia_benchmark.png" alt="GAIA Example Result" width="700"/>
+  <img src="./docs/assets/gaia_benchmark.png" alt="GAIA Example Result" width="700"/>
 </p>
 
 ## 常见问题

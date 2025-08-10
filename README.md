@@ -1,6 +1,6 @@
 # DeepResearchAgent
 
-English | [简体中文](README_CN.md)
+English | [简体中文](README_CN.md) | [🌐 Website](https://skyworkai.github.io/DeepResearchAgent/)
 
 ## Introduction
 
@@ -10,7 +10,7 @@ DeepResearchAgent is a hierarchical multi-agent system designed not only for dee
 
 <p align="center">
 
-  <img src="./docs/architecture.png" alt="Architecture" width="700"/>
+  <img src="./docs/assets/architecture.png" alt="Architecture" width="700"/>
 
 </p>
 
@@ -53,8 +53,8 @@ The system adopts a two-layer structure:
 
 Image and Video Examples:
 <p align="center">
-  <img src="./docs/cat_yarn_playful_reference.png" alt="Image Example" width="300"/>
-    <img src="./docs/cat_playing_with_yarn_video.gif" alt="Video Example" width="600"/>
+  <img src="./docs/assets/cat_yarn_playful_reference.png" alt="Image Example" width="300"/>
+    <img src="./docs/assets/cat_playing_with_yarn_video.gif" alt="Video Example" width="600"/>
 </p>
 
 ## Updates
@@ -143,7 +143,7 @@ python examples/run_gaia.py
 We evaluated our agent on the GAIA validation set and achieved state-of-the-art performance on May 10th.
 
 <p align="center">
-  <img src="./docs/gaia_benchmark.png" alt="GAIA Example Result" width="700"/>
+  <img src="./docs/assets/gaia_benchmark.png" alt="GAIA Example Result" width="700"/>
 </p>
 
 With the integration of the Computer Use Agent, which now enables pixel-level control of the browser, our system's performance on the test set has significantly improved. The latest results show a notable increase to 79.07 (average), with 91.4 on Level 1, 77.36 on Level 2, and 61.22 on Level 3. We’re continuing to refine and optimize the agent, and a new version will be released in the coming days

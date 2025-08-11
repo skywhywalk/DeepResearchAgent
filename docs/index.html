@@ -100,6 +100,7 @@
         <div class="flex items-center space-x-8">
           <a href="#introduction" class="text-gray-700 hover:text-primary-600 transition-colors">Introduction</a>
           <a href="#architecture" class="text-gray-700 hover:text-primary-600 transition-colors">Architecture</a>
+          <a href="#mcp-manager" class="text-gray-700 hover:text-primary-600 transition-colors">MCP Manager</a>
           <a href="#experiments" class="text-gray-700 hover:text-primary-600 transition-colors">Experiments</a>
           <a href="#paper" class="text-gray-700 hover:text-primary-600 transition-colors">Paper</a>
           <a href="https://github.com/SkyworkAI/DeepResearchAgent" target="_blank" class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors">GitHub</a>
@@ -242,6 +243,124 @@
           </div>
           <h3 class="text-xl font-semibold text-gray-900 mb-3">General Tool Calling</h3>
           <p class="text-gray-600">Provides a general-purpose interface for invoking various tools and APIs with function calling support.</p>
+        </div>
+        
+        <!-- MCP Manager Agent -->
+        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">MCP Manager Agent</h3>
+          <p class="text-gray-600">Enables intelligent tool evolution through automated creation, dynamic retrieval, and systematic reuse of MCP tools.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MCP Manager Agent Section -->
+  <section id="mcp-manager" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">MCP Manager Agent</h2>
+        <div class="w-24 h-1 bg-primary-600 mx-auto"></div>
+      </div>
+      
+      <div class="grid lg:grid-cols-2 gap-12 items-start">
+        <div class="space-y-6">
+          <div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">Problem Statement</h3>
+            <p class="text-gray-700 leading-relaxed">
+              The rapid expansion of AI agent applications has led to exponential growth in the complexity and diversity of required Model Context Protocol (MCP) tools. Traditional approaches relying on manual tool development face significant challenges including development inefficiency, version inconsistency, and limited adaptability to emerging requirements.
+            </p>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">Solution</h3>
+            <p class="text-gray-700 leading-relaxed">
+              The MCP Manager Agent addresses these limitations through intelligent tool evolution via automated creation, dynamic retrieval, and systematic reuse mechanisms. This represents a paradigm shift from static tool provisioning to adaptive tool ecosystem management.
+            </p>
+          </div>
+        </div>
+        
+        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 p-8 rounded-2xl">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Core Capabilities</h3>
+          <div class="space-y-4">
+            <div class="flex items-start">
+              <div class="w-8 h-8 bg-teal-100 rounded-lg flex items-center justify-center mr-3 mt-1">
+                <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-900">Tool Retrieval</h4>
+                <p class="text-sm text-gray-600">Keyword pre-filtering strategy to efficiently match tasks with relevant tools from the library.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <div class="w-8 h-8 bg-teal-100 rounded-lg flex items-center justify-center mr-3 mt-1">
+                <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"></path>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-900">Tool Creation</h4>
+                <p class="text-sm text-gray-600">Automated generation of MCP-compliant tools through intent analysis, synthesis, and validation phases.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <div class="w-8 h-8 bg-teal-100 rounded-lg flex items-center justify-center mr-3 mt-1">
+                <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-900">Tool Reuse</h4>
+                <p class="text-sm text-gray-600">Comprehensive tool registry with persistence, versioning, and lifecycle tracking capabilities.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Workflow Process -->
+      <div class="mt-16">
+        <h3 class="text-2xl font-semibold text-gray-900 mb-8 text-center">Tool Creation Workflow</h3>
+        <div class="grid md:grid-cols-4 gap-6">
+          <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-blue-500">
+            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
+              <span class="text-blue-600 font-bold">1</span>
+            </div>
+            <h4 class="text-lg font-semibold text-gray-900 mb-2 text-center">Intent Analysis</h4>
+            <p class="text-gray-600 text-sm text-center">Parse user task intentions and extract functional requirements, input-output specifications, and operational constraints.</p>
+          </div>
+          
+          <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-green-500">
+            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
+              <span class="text-green-600 font-bold">2</span>
+            </div>
+            <h4 class="text-lg font-semibold text-gray-900 mb-2 text-center">Tool Synthesis</h4>
+            <p class="text-gray-600 text-sm text-center">Generate executable MCP-compliant tool implementations with parameterized scripts and error handling.</p>
+          </div>
+          
+          <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-purple-500">
+            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
+              <span class="text-purple-600 font-bold">3</span>
+            </div>
+            <h4 class="text-lg font-semibold text-gray-900 mb-2 text-center">Validation</h4>
+            <p class="text-gray-600 text-sm text-center">Multi-stage evaluation protocol assessing tool correctness, performance characteristics, and integration compatibility.</p>
+          </div>
+          
+          <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-orange-500">
+            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
+              <span class="text-orange-600 font-bold">4</span>
+            </div>
+            <h4 class="text-lg font-semibold text-gray-900 mb-2 text-center">Registration</h4>
+            <p class="text-gray-600 text-sm text-center">Register validated tools in the system's tool registry with comprehensive metadata and usage examples.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -428,6 +547,7 @@
           <ul class="space-y-2 text-gray-400">
             <li><a href="#introduction" class="hover:text-white transition-colors">Introduction</a></li>
             <li><a href="#architecture" class="hover:text-white transition-colors">Architecture</a></li>
+            <li><a href="#mcp-manager" class="hover:text-white transition-colors">MCP Manager</a></li>
             <li><a href="#experiments" class="hover:text-white transition-colors">Experiments</a></li>
             <li><a href="#paper" class="hover:text-white transition-colors">Paper</a></li>
           </ul>

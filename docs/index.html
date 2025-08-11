@@ -374,24 +374,135 @@
         <div class="w-24 h-1 bg-primary-600 mx-auto"></div>
       </div>
       
-      <!-- Benchmarks -->
+      <!-- GAIA Benchmark Chart -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-semibold text-gray-900 mb-8 text-center">GAIA Benchmark Test Results</h3>
+        <div class="bg-white p-8 rounded-xl shadow-sm">
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center space-x-4">
+              <div class="flex items-center space-x-2">
+                <div class="w-4 h-4 bg-gradient-to-r from-blue-400 to-cyan-400 rounded"></div>
+                <span class="text-sm text-gray-600">Skywork Deep Research Agent (Our)</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <div class="w-4 h-4 bg-gray-400 rounded"></div>
+                <span class="text-sm text-gray-600">Other Models</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <!-- Skywork DRA -->
+            <div class="flex items-center">
+              <div class="w-48 text-sm text-gray-600">Skywork DRA</div>
+              <div class="flex-1 bg-gray-200 rounded-full h-8 relative">
+                <div class="bg-gradient-to-r from-blue-400 to-cyan-400 h-8 rounded-full flex items-center justify-end pr-3" style="width: 97.6%">
+                  <span class="text-white font-semibold text-sm">83.06</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Skywork DRA (w/o MCP) -->
+            <div class="flex items-center">
+              <div class="w-48 text-sm text-gray-600">Skywork DRA (w/o MCP)</div>
+              <div class="flex-1 bg-gray-200 rounded-full h-8 relative">
+                <div class="bg-gradient-to-r from-blue-400 to-cyan-400 h-8 rounded-full flex items-center justify-end pr-3" style="width: 93.0%">
+                  <span class="text-white font-semibold text-sm">79.07</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Aworld -->
+            <div class="flex items-center">
+              <div class="w-48 text-sm text-gray-600">Aworld</div>
+              <div class="flex-1 bg-gray-200 rounded-full h-8 relative">
+                <div class="bg-gray-400 h-8 rounded-full flex items-center justify-end pr-3" style="width: 96.1%">
+                  <span class="text-white font-semibold text-sm">81.73</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Su Zero Ultra -->
+            <div class="flex items-center">
+              <div class="w-48 text-sm text-gray-600">Su Zero Ultra</div>
+              <div class="flex-1 bg-gray-200 rounded-full h-8 relative">
+                <div class="bg-gray-400 h-8 rounded-full flex items-center justify-end pr-3" style="width: 94.6%">
+                  <span class="text-white font-semibold text-sm">80.40</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- h2oGPTe Agent -->
+            <div class="flex items-center">
+              <div class="w-48 text-sm text-gray-600">h2oGPTe Agent</div>
+              <div class="flex-1 bg-gray-200 rounded-full h-8 relative">
+                <div class="bg-gray-400 h-8 rounded-full flex items-center justify-end pr-3" style="width: 93.8%">
+                  <span class="text-white font-semibold text-sm">79.73</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- desearch -->
+            <div class="flex items-center">
+              <div class="w-48 text-sm text-gray-600">desearch</div>
+              <div class="flex-1 bg-gray-200 rounded-full h-8 relative">
+                <div class="bg-gray-400 h-8 rounded-full flex items-center justify-end pr-3" style="width: 91.8%">
+                  <span class="text-white font-semibold text-sm">78.07</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Alita -->
+            <div class="flex items-center">
+              <div class="w-48 text-sm text-gray-600">Alita</div>
+              <div class="flex-1 bg-gray-200 rounded-full h-8 relative">
+                <div class="bg-gray-400 h-8 rounded-full flex items-center justify-end pr-3" style="width: 88.7%">
+                  <span class="text-white font-semibold text-sm">75.42</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Langfun Agent -->
+            <div class="flex items-center">
+              <div class="w-48 text-sm text-gray-600">Langfun Agent</div>
+              <div class="flex-1 bg-gray-200 rounded-full h-8 relative">
+                <div class="bg-gray-400 h-8 rounded-full flex items-center justify-end pr-3" style="width: 85.9%">
+                  <span class="text-white font-semibold text-sm">73.09</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- JoyAgent-Genie -->
+            <div class="flex items-center">
+              <div class="w-48 text-sm text-gray-600">JoyAgent-Genie</div>
+              <div class="flex-1 bg-gray-200 rounded-full h-8 relative">
+                <div class="bg-gray-400 h-8 rounded-full flex items-center justify-end pr-3" style="width: 76.6%">
+                  <span class="text-white font-semibold text-sm">65.12</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Benchmark Summary -->
       <div class="grid lg:grid-cols-3 gap-8 mb-16">
         <div class="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl">
           <h3 class="text-xl font-semibold text-gray-900 mb-3">SimpleQA Benchmark</h3>
           <p class="text-gray-600 mb-4">Evaluation on simple question-answering tasks to assess basic reasoning capabilities.</p>
-          <div class="text-2xl font-bold text-green-600">High Performance</div>
+          <div class="text-2xl font-bold text-green-600">95.3</div>
         </div>
         
         <div class="bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-xl">
-          <h3 class="text-xl font-semibold text-gray-900 mb-3">GAIA Benchmark</h3>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">GAIA Benchmark Validation</h3>
           <p class="text-gray-600 mb-4">Comprehensive evaluation on real-world tasks requiring web search and reasoning.</p>
-          <div class="text-2xl font-bold text-blue-600">79.07 Average</div>
+          <div class="text-2xl font-bold text-blue-600">82.42</div>
         </div>
         
         <div class="bg-gradient-to-br from-purple-50 to-violet-50 p-6 rounded-xl">
           <h3 class="text-xl font-semibold text-gray-900 mb-3">HLE Benchmark</h3>
           <p class="text-gray-600 mb-4">Human-level evaluation benchmark for complex reasoning and planning tasks.</p>
-          <div class="text-2xl font-bold text-purple-600">State-of-the-Art</div>
+          <div class="text-2xl font-bold text-purple-600">25.9</div>
         </div>
       </div>
       

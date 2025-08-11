@@ -190,7 +190,7 @@
       <!-- Architecture Components -->
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         <!-- Planning Agent -->
-        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer" onclick="togglePlanningFlowchart()">
           <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">
             <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
@@ -198,10 +198,11 @@
           </div>
           <h3 class="text-xl font-semibold text-gray-900 mb-3">Planning Agent</h3>
           <p class="text-gray-600">Central coordinator that decomposes complex objectives and delegates sub-tasks to specialized agents.</p>
+          <div class="mt-3 text-primary-600 text-sm font-medium">Click to view workflow →</div>
         </div>
         
         <!-- Deep Researcher -->
-        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer" onclick="toggleDeepResearcherFlowchart()">
           <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
             <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -209,10 +210,11 @@
           </div>
           <h3 class="text-xl font-semibold text-gray-900 mb-3">Deep Researcher</h3>
           <p class="text-gray-600">Conducts thorough research on specified topics, retrieving and synthesizing high-quality information.</p>
+          <div class="mt-3 text-green-600 text-sm font-medium">Click to view workflow →</div>
         </div>
         
         <!-- Browser Use -->
-        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer" onclick="toggleBrowserUseFlowchart()">
           <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
             <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"></path>
@@ -220,10 +222,11 @@
           </div>
           <h3 class="text-xl font-semibold text-gray-900 mb-3">Browser Use</h3>
           <p class="text-gray-600">Automates browser operations, supporting web search, information extraction, and data collection.</p>
+          <div class="mt-3 text-blue-600 text-sm font-medium">Click to view workflow →</div>
         </div>
         
         <!-- Deep Analyzer -->
-        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer" onclick="toggleDeepAnalyzerFlowchart()">
           <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
             <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
@@ -231,10 +234,11 @@
           </div>
           <h3 class="text-xl font-semibold text-gray-900 mb-3">Deep Analyzer</h3>
           <p class="text-gray-600">Performs in-depth analysis of input information, extracting key insights and potential requirements.</p>
+          <div class="mt-3 text-purple-600 text-sm font-medium">Click to view workflow →</div>
         </div>
         
         <!-- General Tool Calling -->
-        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer" onclick="toggleGeneralToolCallingFlowchart()">
           <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
             <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
@@ -243,10 +247,11 @@
           </div>
           <h3 class="text-xl font-semibold text-gray-900 mb-3">General Tool Calling</h3>
           <p class="text-gray-600">Provides a general-purpose interface for invoking various tools and APIs with function calling support.</p>
+          <div class="mt-3 text-orange-600 text-sm font-medium">Click to view workflow →</div>
         </div>
         
         <!-- MCP Manager Agent -->
-        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer" onclick="toggleMCPFlowchart()">
           <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mb-4">
             <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
@@ -254,6 +259,7 @@
           </div>
           <h3 class="text-xl font-semibold text-gray-900 mb-3">MCP Manager Agent</h3>
           <p class="text-gray-600">Enables intelligent tool evolution through automated creation, dynamic retrieval, and systematic reuse of MCP tools.</p>
+          <div class="mt-3 text-teal-600 text-sm font-medium">Click to view workflow →</div>
         </div>
       </div>
     </div>
@@ -543,7 +549,7 @@
         <div class="bg-white p-8 rounded-xl shadow-sm">
           <h3 class="text-xl font-semibold text-gray-900 mb-4">Research Paper</h3>
           <p class="text-gray-600 mb-6">
-            Read our full research paper "AgentOrchestra: A Hierarchical Multi-Agent Framework for General-Purpose Task Solving" published on arXiv.
+            Read our full paper "AgentOrchestra: A Hierarchical Multi-Agent Framework for General-Purpose Task Solving" published on arXiv.
           </p>
           <div class="space-y-3">
             <a href="https://arxiv.org/abs/2506.12508" target="_blank" class="block bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors text-center">
@@ -680,7 +686,1719 @@
     </div>
   </footer>
 
+  <!-- MCP Manager Agent Flowchart Modal -->
+  <div id="mcpModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+        <h2 class="text-2xl font-bold text-gray-900">MCP Manager Agent Workflow</h2>
+        <button onclick="closeMCPModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="p-6">
+        <div class="flowchart-container bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-8">
+          <div class="flowchart">
+            <!-- Row 1: Start -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content start-end">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                  Task Input
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 2: Requirements Analysis -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content process">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/>
+                  </svg>
+                  Analyze MCP Tool Requirements
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 3: Decision Point -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content decision">
+                  <span>Are Existing MCP Tools Available?</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 4: Branch -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label yes">YES</div>
+                </div>
+                <div class="flow-content action">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                  </svg>
+                  Filter Required MCP Tools from Repository
+                </div>
+              </div>
+              
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label no">NO</div>
+                </div>
+                <div class="flow-content action">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                  </svg>
+                  Create Missing MCP Tools
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 5: Tool Creation Flow -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                  </svg>
+                </div>
+                <div class="flow-content process">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  MCP Tool Evaluation
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 6: Evaluation Decision -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label yes">PASS</div>
+                </div>
+                <div class="flow-content success">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                  </svg>
+                  Add to Tool Registry
+                </div>
+              </div>
+              
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label no">FAIL</div>
+                </div>
+                <div class="flow-content failure">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                  </svg>
+                  Discard Tool
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 7: Execution -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                </div>
+                <div class="flow-content process">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                  Execute MCP Tools
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 8: Completion -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                  </svg>
+                </div>
+                <div class="flow-content start-end">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                  Task Completed
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Planning Agent Flowchart Modal -->
+  <div id="planningModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+        <h2 class="text-2xl font-bold text-gray-900">Planning Agent Workflow</h2>
+        <button onclick="closePlanningModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="p-6">
+        <div class="flowchart-container bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-8">
+          <div class="flowchart">
+            <!-- Row 1: Start -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content start-end">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                  User Objective Input
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 2: Objective Analysis -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content process">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/>
+                  </svg>
+                  Analyze User Objective & Context
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 3: Task Decomposition -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content process">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                  </svg>
+                  Decompose Complex Task into Sub-tasks
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 4: Plan Creation -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content process">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                  </svg>
+                  Create Execution Plan with Steps
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 5: Agent Assignment -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content action">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                  Assign Sub-tasks to Specialized Agents
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 6: Execution Monitoring -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content process">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                  Monitor Execution Progress & Collect Feedback
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 7: Decision Point -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content decision">
+                  <span>Need Plan Adaptation?</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 8: Branch -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label yes">YES</div>
+                </div>
+                <div class="flow-content action">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"/>
+                  </svg>
+                  Update Plan & Reassign Tasks
+                </div>
+              </div>
+              
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label no">NO</div>
+                </div>
+                <div class="flow-content action">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Continue Current Execution
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 9: Progress Check -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                  </svg>
+                </div>
+                <div class="flow-content decision">
+                  <span>All Tasks Completed?</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 10: Final Branch -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label yes">YES</div>
+                </div>
+                <div class="flow-content success">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                  </svg>
+                  Aggregate Results & Complete
+                </div>
+              </div>
+              
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label no">NO</div>
+                </div>
+                <div class="flow-content action">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                  </svg>
+                  Return to Monitoring
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 11: Completion -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                  </svg>
+                </div>
+                <div class="flow-content start-end">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                  Objective Achieved
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Deep Researcher Agent Flowchart Modal -->
+  <div id="deepResearcherModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+        <h2 class="text-2xl font-bold text-gray-900">Deep Researcher Agent Workflow</h2>
+        <button onclick="closeDeepResearcherModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="p-6">
+        <div class="flowchart-container bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-8">
+          <div class="flowchart">
+            <!-- Row 1: Start -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content start-end">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                  Research Query Input
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 2: Query Optimization -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content process">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/>
+                  </svg>
+                  Optimize Query with LLM
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 3: Multi-Engine Search -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content process">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                  </svg>
+                  Breadth-First Search Across Multiple Engines
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 4: Content Analysis -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content action">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                  </svg>
+                  Extract Key Insights & Assign Relevance Scores
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 5: Follow-up Generation -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content process">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"/>
+                  </svg>
+                  Generate Follow-up Queries
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 6: Depth Check -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content decision">
+                  <span>Reached Depth/Time Limit?</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 7: Branch -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label yes">YES</div>
+                </div>
+                <div class="flow-content action">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Proceed to Synthesis
+                </div>
+              </div>
+              
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label no">NO</div>
+                </div>
+                <div class="flow-content action">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                  </svg>
+                  Continue Recursive Search
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 8: Python Processing Decision -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                  </svg>
+                </div>
+                <div class="flow-content decision">
+                  <span>Need Data Processing?</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 9: Python Branch -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label yes">YES</div>
+                </div>
+                <div class="flow-content process">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                  </svg>
+                  Python Interpreter for Data Processing
+                </div>
+              </div>
+              
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label no">NO</div>
+                </div>
+                <div class="flow-content action">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Skip Data Processing
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 10: Synthesis -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                  </svg>
+                </div>
+                <div class="flow-content success">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                  </svg>
+                  Generate Structured Summary with Citations
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 10: Completion -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content start-end">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                  Research Complete
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Browser Use Agent Flowchart Modal -->
+  <div id="browserUseModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+        <h2 class="text-2xl font-bold text-gray-900">Browser Use Agent Workflow</h2>
+        <button onclick="closeBrowserUseModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="p-6">
+        <div class="flowchart-container bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-8">
+          <div class="flowchart">
+            <!-- Row 1: Start -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content start-end">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                  Browser Task Request
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 2: Action Registry -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content process">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                  </svg>
+                  Parse Action from Central Registry
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 3: Session Management -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content action">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                  Initialize Browser Session & State Management
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 4: Action Execution -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content process">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                  Execute Parameterized Browser Action
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 5: Action Types -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content decision">
+                  <span>Action Type?</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 6: Action Categories -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label yes">Navigation</div>
+                </div>
+                <div class="flow-content action">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"/>
+                  </svg>
+                  URL Navigation & Tab Management
+                </div>
+              </div>
+              
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label no">Interaction</div>
+                </div>
+                <div class="flow-content action">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5-7-7 4-11-2 5z"/>
+                  </svg>
+                  DOM Manipulation & Form Filling
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 7: Content Processing -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                  </svg>
+                </div>
+                <div class="flow-content process">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Content Extraction & Media Control
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 8: Error Handling -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content decision">
+                  <span>Execution Successful?</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 9: Error Branch -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label yes">YES</div>
+                </div>
+                <div class="flow-content success">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                  </svg>
+                  Return Results & Update State
+                </div>
+              </div>
+              
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label no">NO</div>
+                </div>
+                <div class="flow-content failure">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                  </svg>
+                  Handle Error & Retry Logic
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 10: Python Integration Decision -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                  </svg>
+                </div>
+                <div class="flow-content decision">
+                  <span>Need Advanced Scripting?</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 11: Python Branch -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label yes">YES</div>
+                </div>
+                <div class="flow-content process">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                  </svg>
+                  Python Interpreter for Advanced Scripting
+                </div>
+              </div>
+              
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label no">NO</div>
+                </div>
+                <div class="flow-content action">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Skip Python Processing
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 12: Completion -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                  </svg>
+                </div>
+                <div class="flow-content start-end">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                  Task Completed
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Deep Analyzer Agent Flowchart Modal -->
+  <div id="deepAnalyzerModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+        <h2 class="text-2xl font-bold text-gray-900">Deep Analyzer Agent Workflow</h2>
+        <button onclick="closeDeepAnalyzerModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="p-6">
+        <div class="flowchart-container bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl p-8">
+          <div class="flowchart">
+            <!-- Row 1: Start -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content start-end">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                  Analysis Task & Source Materials
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 2: Data Format Detection -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content process">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/>
+                  </svg>
+                  Detect & Extract Multi-format Data
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 3: Data Types -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content decision">
+                  <span>Data Type?</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 4: Data Type Branch -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label yes">Text/Image</div>
+                </div>
+                <div class="flow-content action">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                  Process Text & Visual Content
+                </div>
+              </div>
+              
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label no">Audio/Video</div>
+                </div>
+                <div class="flow-content action">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                  </svg>
+                  Process Audio & Video Content
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 5: Content Structuring -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                  </svg>
+                </div>
+                <div class="flow-content process">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                  </svg>
+                  Structure Content for Analysis
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 6: LLM Analysis -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content process">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                  </svg>
+                  Step-by-step LLM Reasoning
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 7: Multi-Model Synthesis -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content decision">
+                  <span>Multiple Models?</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 8: Synthesis Branch -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label yes">YES</div>
+                </div>
+                <div class="flow-content action">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                  </svg>
+                  Synthesize Results from Multiple Models
+                </div>
+              </div>
+              
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label no">NO</div>
+                </div>
+                <div class="flow-content action">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Use Single Model Results
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 9: Python Processing Decision -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                  </svg>
+                </div>
+                <div class="flow-content decision">
+                  <span>Need Custom Analysis?</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 10: Python Branch -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label yes">YES</div>
+                </div>
+                <div class="flow-content process">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                  </svg>
+                  Python Interpreter for Custom Analysis
+                </div>
+              </div>
+              
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label no">NO</div>
+                </div>
+                <div class="flow-content action">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Skip Custom Analysis
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 11: Summarization -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                  </svg>
+                </div>
+                <div class="flow-content success">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                  </svg>
+                  Generate Coherent Analysis Summary
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 11: Completion -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content start-end">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                  Analysis Complete
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- General Tool Calling Agent Flowchart Modal -->
+  <div id="generalToolCallingModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+        <h2 class="text-2xl font-bold text-gray-900">General Tool Calling Agent Workflow</h2>
+        <button onclick="closeGeneralToolCallingModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="p-6">
+        <div class="flowchart-container bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl p-8">
+          <div class="flowchart">
+            <!-- Row 1: Start -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content start-end">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                  Tool Call Request
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 2: Function Analysis -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content process">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/>
+                  </svg>
+                  Parse Function Call & Parameters
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 3: Tool Registry -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content process">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                  </svg>
+                  Lookup Tool in Registry
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vertical Arrow -->
+            <div class="flow-arrow">
+              <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <!-- Row 4: Tool Found Check -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-content decision">
+                  <span>Tool Found?</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 5: Tool Branch -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label yes">YES</div>
+                </div>
+                <div class="flow-content action">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Validate Parameters
+                </div>
+              </div>
+              
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label no">NO</div>
+                </div>
+                <div class="flow-content failure">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                  </svg>
+                  Return Tool Not Found Error
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 6: Parameter Validation -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                  </svg>
+                </div>
+                <div class="flow-content decision">
+                  <span>Parameters Valid?</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 7: Validation Branch -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label yes">YES</div>
+                </div>
+                <div class="flow-content action">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                  Execute Tool Function
+                </div>
+              </div>
+              
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label no">NO</div>
+                </div>
+                <div class="flow-content failure">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                  </svg>
+                  Return Parameter Error
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 8: Execution Result -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                  </svg>
+                </div>
+                <div class="flow-content decision">
+                  <span>Execution Successful?</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 9: Execution Branch -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label yes">YES</div>
+                </div>
+                <div class="flow-content success">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                  </svg>
+                  Return Tool Results
+                </div>
+              </div>
+              
+              <div class="flow-node">
+                <div class="flow-arrow-horizontal">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                  <div class="arrow-label no">NO</div>
+                </div>
+                <div class="flow-content failure">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                  </svg>
+                  Return Execution Error
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row 10: Completion -->
+            <div class="flow-row">
+              <div class="flow-node">
+                <div class="flow-arrow">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                  </svg>
+                </div>
+                <div class="flow-content start-end">
+                  <svg class="flow-icon" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                  Tool Call Complete
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Custom JavaScript -->
   <script src="script.js"></script>
+  
+  <style>
+    /* Flowchart Styles */
+    .flowchart-container {
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    
+    .flowchart {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+    }
+    
+    .flow-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+    
+    .flow-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+    }
+    
+    .flow-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 24px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 13px;
+      color: white;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      min-width: 200px;
+      text-align: center;
+      line-height: 1.4;
+    }
+    
+    .flow-content:hover {
+      transform: translateY(-3px);
+    }
+    
+    .start-end {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 40px;
+      padding: 18px 36px;
+    }
+    
+    .process {
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+    }
+    
+    .decision {
+      background: linear-gradient(135deg, #fa709a, #fee140);
+      transform: rotate(45deg);
+      width: 120px;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .decision span {
+      transform: rotate(-45deg);
+      font-size: 12px;
+      line-height: 1.3;
+      text-align: center;
+    }
+    
+    .action {
+      background: linear-gradient(135deg, #a8edea, #fed6e3);
+      color: #2c3e50;
+    }
+    
+    .success {
+      background: linear-gradient(135deg, #56ab2f, #a8e6cf);
+      color: white;
+    }
+    
+    .failure {
+      background: linear-gradient(135deg, #ff416c, #ff4b2b);
+      color: white;
+    }
+    
+    .flow-arrow {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .flow-arrow svg {
+      width: 30px;
+      height: 30px;
+      fill: #667eea;
+    }
+    
+    .flow-arrow-horizontal {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    
+    .flow-arrow-horizontal svg {
+      width: 35px;
+      height: 35px;
+      fill: #667eea;
+    }
+    
+    .arrow-label {
+      position: absolute;
+      background: #667eea;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+    
+    .arrow-label.yes {
+      top: -12px;
+      right: -12px;
+    }
+    
+    .arrow-label.no {
+      bottom: -12px;
+      left: -12px;
+    }
+    
+    .flow-icon {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+  </style>
+  
+  <script>
+    function toggleMCPFlowchart() {
+      const modal = document.getElementById('mcpModal');
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeMCPModal() {
+      const modal = document.getElementById('mcpModal');
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+    
+    // Close modal when clicking outside
+    document.getElementById('mcpModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeMCPModal();
+      }
+    });
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeMCPModal();
+        closePlanningModal();
+        closeDeepResearcherModal();
+        closeBrowserUseModal();
+        closeDeepAnalyzerModal();
+        closeGeneralToolCallingModal();
+      }
+    });
+    
+    // Planning Agent Modal Functions
+    function togglePlanningFlowchart() {
+      const modal = document.getElementById('planningModal');
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closePlanningModal() {
+      const modal = document.getElementById('planningModal');
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+    
+    // Close planning modal when clicking outside
+    document.getElementById('planningModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closePlanningModal();
+      }
+    });
+    
+    // Deep Researcher Agent Modal Functions
+    function toggleDeepResearcherFlowchart() {
+      const modal = document.getElementById('deepResearcherModal');
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeDeepResearcherModal() {
+      const modal = document.getElementById('deepResearcherModal');
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+    
+    // Close deep researcher modal when clicking outside
+    document.getElementById('deepResearcherModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeDeepResearcherModal();
+      }
+    });
+    
+    // Browser Use Agent Modal Functions
+    function toggleBrowserUseFlowchart() {
+      const modal = document.getElementById('browserUseModal');
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeBrowserUseModal() {
+      const modal = document.getElementById('browserUseModal');
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+    
+    // Close browser use modal when clicking outside
+    document.getElementById('browserUseModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeBrowserUseModal();
+      }
+    });
+    
+    // Deep Analyzer Agent Modal Functions
+    function toggleDeepAnalyzerFlowchart() {
+      const modal = document.getElementById('deepAnalyzerModal');
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeDeepAnalyzerModal() {
+      const modal = document.getElementById('deepAnalyzerModal');
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+    
+    // Close deep analyzer modal when clicking outside
+    document.getElementById('deepAnalyzerModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeDeepAnalyzerModal();
+      }
+    });
+    
+    // General Tool Calling Agent Modal Functions
+    function toggleGeneralToolCallingFlowchart() {
+      const modal = document.getElementById('generalToolCallingModal');
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeGeneralToolCallingModal() {
+      const modal = document.getElementById('generalToolCallingModal');
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+    
+    // Close general tool calling modal when clicking outside
+    document.getElementById('generalToolCallingModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeGeneralToolCallingModal();
+      }
+    });
+  </script>
 </body>
 </html>

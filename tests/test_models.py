@@ -76,19 +76,23 @@ if __name__ == "__main__":
     logger.info("Registed models: %s", ", ".join(model_manager.registed_models.keys()))
 
     # Test video generation
-    asyncio.run(video_generation())
-
-    response = model_manager.registed_models["imagen"](
-        prompt="Generate an image of a futuristic city skyline at sunset.",
-    )
-    img_data = base64.b64decode(response)
-    with open("test_case_image.png", "wb") as f:
-        f.write(img_data)
-    logger.info("Image saved as test_case_image.png")
+    # asyncio.run(video_generation())
+    #
+    # response = model_manager.registed_models["imagen"](
+    #     prompt="Generate an image of a futuristic city skyline at sunset.",
+    # )
+    # img_data = base64.b64decode(response)
+    # with open("test_case_image.png", "wb") as f:
+    #     f.write(img_data)
+    # logger.info("Image saved as test_case_image.png")
 
     messages = [
         ChatMessage(role="user", content="What is the capital of France?"),
     ]
+
+    response = asyncio.run(model_manager.registed_models["o3-deep-research"](
+        messages=messages,
+    ))
 
     response = asyncio.run(model_manager.registed_models["deepseek-chat"](
         messages=messages,

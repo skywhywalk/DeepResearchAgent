@@ -15,7 +15,8 @@ from src.models.restful import (RestfulModel,
                                 RestfulTranscribeModel,
                                 RestfulImagenModel,
                                 RestfulVeoPridictModel,
-                                RestfulVeoFetchModel)
+                                RestfulVeoFetchModel,
+                                RestfulResponseModel)
 from src.utils import Singleton
 from src.proxy.local_proxy import HTTP_CLIENT, ASYNC_HTTP_CLIENT
 
@@ -144,6 +145,33 @@ class ModelManager(metaclass=Singleton):
                                                     remote_api_base_name="OPENAI_API_BASE"),
                 api_key=api_key,
                 api_type="whisper",
+                model_id=model_id,
+                http_client=HTTP_CLIENT,
+                custom_role_conversions=custom_role_conversions,
+            )
+            self.registed_models[model_name] = model
+
+            # deep research
+            model_name = "o3-deep-research"
+            model_id = "o3-deep-research"
+            model = RestfulResponseModel(
+                api_base=self._check_local_api_base(local_api_base_name="SKYWORK_SHUBIAOBIAO_API_BASE",
+                                                    remote_api_base_name="OPENAI_API_BASE"),
+                api_type="responses",
+                api_key=api_key,
+                model_id=model_id,
+                http_client=HTTP_CLIENT,
+                custom_role_conversions=custom_role_conversions,
+            )
+            self.registed_models[model_name] = model
+
+            model_name = "o4-mini-deep-research"
+            model_id = "o4-mini-deep-research"
+            model = RestfulResponseModel(
+                api_base=self._check_local_api_base(local_api_base_name="SKYWORK_SHUBIAOBIAO_API_BASE",
+                                                    remote_api_base_name="OPENAI_API_BASE"),
+                api_type="responses",
+                api_key=api_key,
                 model_id=model_id,
                 http_client=HTTP_CLIENT,
                 custom_role_conversions=custom_role_conversions,

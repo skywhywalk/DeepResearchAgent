@@ -89,6 +89,10 @@ if __name__ == "__main__":
     messages = [
         ChatMessage(role="user", content="What is the capital of France?"),
     ]
+    
+    response = asyncio.run(model_manager.registed_models["gpt-5"](
+        messages=messages,
+    ))
 
     response = asyncio.run(model_manager.registed_models["o3-deep-research"](
         messages=messages,

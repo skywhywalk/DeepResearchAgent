@@ -154,26 +154,31 @@ class ModelManager(metaclass=Singleton):
             # deep research
             model_name = "o3-deep-research"
             model_id = "o3-deep-research"
-            model = RestfulResponseModel(
-                api_base=self._check_local_api_base(local_api_base_name="SKYWORK_SHUBIAOBIAO_API_BASE",
-                                                    remote_api_base_name="OPENAI_API_BASE"),
-                api_type="responses",
+            client = AsyncOpenAI(
                 api_key=api_key,
+                base_url=self._check_local_api_base(local_api_base_name="SKYWORK_API_BASE",
+                                                    remote_api_base_name="SKYWORK_API_BASE"),
+                http_client=ASYNC_HTTP_CLIENT,
+            )
+            model = LiteLLMModel(
                 model_id=model_id,
-                http_client=HTTP_CLIENT,
+                http_client=client,
                 custom_role_conversions=custom_role_conversions,
             )
             self.registed_models[model_name] = model
-
-            model_name = "o4-mini-deep-research"
-            model_id = "o4-mini-deep-research"
-            model = RestfulResponseModel(
-                api_base=self._check_local_api_base(local_api_base_name="SKYWORK_SHUBIAOBIAO_API_BASE",
-                                                    remote_api_base_name="OPENAI_API_BASE"),
-                api_type="responses",
+            
+            # gpt-5
+            model_name = "gpt-5"
+            model_id = "openai/gpt-5"
+            client = AsyncOpenAI(
                 api_key=api_key,
+                base_url=self._check_local_api_base(local_api_base_name="SKYWORK_AZURE_US_API_BASE",
+                                                    remote_api_base_name="OPENAI_API_BASE"),
+                http_client=ASYNC_HTTP_CLIENT,
+            )
+            model = LiteLLMModel(
                 model_id=model_id,
-                http_client=HTTP_CLIENT,
+                http_client=client,
                 custom_role_conversions=custom_role_conversions,
             )
             self.registed_models[model_name] = model

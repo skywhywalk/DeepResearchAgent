@@ -36,6 +36,7 @@ class LiteLLMModel(ApiModel):
         self,
         model_id: Optional[str] = None,
         api_base=None,
+        api_type: str = "chat/completions",
         api_key=None,
         custom_role_conversions: dict[str, str] | None = None,
         flatten_messages_as_text: bool | None = None,
@@ -52,6 +53,7 @@ class LiteLLMModel(ApiModel):
             model_id = "anthropic/claude-3-5-sonnet-20240620"
         self.model_id = model_id
         self.api_base = api_base
+        self.api_type = api_type
         self.api_key = api_key
         flatten_messages_as_text = (
             flatten_messages_as_text

@@ -6,11 +6,12 @@ from .base import (
                   Model,
                   parse_json_if_needed,
                   agglomerate_stream_deltas,
-                  CODEAGENT_RESPONSE_FORMAT
+                  CODEAGENT_RESPONSE_FORMAT,
                   )
 from .litellm import LiteLLMModel
 from .openaillm import OpenAIServerModel
 from .models import ModelManager
+from .message_manager import MessageManager
 
 model_manager = ModelManager()
 
@@ -23,4 +24,5 @@ __all__ = [
     "parse_json_if_needed",
     "model_manager",
     "ModelManager",
+    "MessageManager",
 ]

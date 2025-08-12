@@ -984,8 +984,6 @@ class RestfulResponseModel(ApiModel):
 
         # Async call to the LiteLLM client for completion
         response = self.client.completion(**completion_kwargs)
-        print(response)
-        exit()
 
         response = ChatCompletion.model_validate(response)
 

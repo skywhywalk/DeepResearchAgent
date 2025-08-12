@@ -1,6 +1,97 @@
 // AgentOrchestra Website JavaScript
 
+// 页面加载动画处理 - 添加在文件开头
+window.addEventListener('load', function() {
+    setTimeout(() => {
+        const loader = document.getElementById('pageLoader');
+        if (loader) {
+            loader.style.opacity = '0';
+            loader.style.visibility = 'hidden';
+            document.body.classList.add('loaded');
+        }
+    }, 1500);
+});
+
+// 如果页面已经加载完成，立即隐藏加载器
+if (document.readyState === 'complete') {
+    const loader = document.getElementById('pageLoader');
+    if (loader) {
+        loader.style.opacity = '0';
+        loader.style.visibility = 'hidden';
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    // 鼠标跟随效果
+    function createMouseFollower() {
+        const follower = document.getElementById('mouseFollower');
+        if (!follower) return;
+        
+        document.addEventListener('mousemove', (e) => {
+            follower.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
+        });
+
+        // 悬停效果
+        const hoverElements = document.querySelectorAll('a, button, .card-3d');
+        hoverElements.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                follower.classList.add('hover');
+            });
+            element.addEventListener('mouseleave', () => {
+                follower.classList.remove('hover');
+            });
+        });
+    }
+
+    // 粒子背景效果
+    function createParticles() {
+        const container = document.getElementById('particlesBg');
+        if (!container) return;
+        
+        const particleCount = 50;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            // 随机大小和位置
+            const size = Math.random() * 4 + 2;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.top = `${Math.random() * 100}%`;
+            particle.style.animationDelay = `${Math.random() * 6}s`;
+            particle.style.animationDuration = `${Math.random() * 3 + 3}s`;
+            
+            container.appendChild(particle);
+        }
+    }
+
+    // 滚动动画观察器
+    function initScrollAnimations() {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, observerOptions);
+
+        // 观察所有需要动画的元素
+        const animatedElements = document.querySelectorAll('.scroll-animate, .scroll-animate-left, .scroll-animate-right');
+        animatedElements.forEach(el => observer.observe(el));
+    }
+
+    // 初始化动态效果
+    createMouseFollower();
+    createParticles();
+    initScrollAnimations();
+
     // Smooth scrolling for navigation links
     const navLinks = document.querySelectorAll('a[href^="#"]');
     navLinks.forEach(link => {
@@ -75,11 +166,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Typing animation for hero title
-    const heroTitle = document.querySelector('.text-5xl');
+    const heroTitle = document.getElementById('heroTitle');
     if (heroTitle) {
         const text = heroTitle.textContent;
         heroTitle.textContent = '';
-        heroTitle.style.borderRight = '2px solid #3b82f6';
+        heroTitle.classList.add('typewriter-cursor');
         
         let i = 0;
         function typeWriter() {
@@ -88,12 +179,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 i++;
                 setTimeout(typeWriter, 100);
             } else {
-                heroTitle.style.borderRight = 'none';
+                setTimeout(() => {
+                    heroTitle.classList.remove('typewriter-cursor');
+                }, 1000);
             }
         }
         
-        // Start typing animation after a delay
-        setTimeout(typeWriter, 500);
+        // 延迟开始打字效果
+        setTimeout(typeWriter, 2000);
     }
 
     // Counter animation for statistics
@@ -249,4 +342,114 @@ document.addEventListener('DOMContentLoaded', function() {
     
     Happy exploring! 🚀
     `);
+
+    // 柱状图动画函数
+    function animateCharts() {
+      const chartRows = document.querySelectorAll('.chart-row');
+      
+      // 创建观察器来触发动画
+      const chartObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            const row = entry.target;
+            const bar = row.querySelector('.chart-bar');
+            const value = row.querySelector('.chart-value');
+            const targetWidth = bar.getAttribute('data-width');
+            const score = row.getAttribute('data-score');
+            
+            // 延迟动画，让每行依次出现
+            setTimeout(() => {
+              // 显示行
+              row.classList.add('animate');
+              
+              // 延迟后开始填充柱状图
+              setTimeout(() => {
+                // 设置目标宽度
+                bar.style.setProperty('--target-width', targetWidth + '%');
+                bar.classList.add('animate');
+                
+                // 数字计数动画
+                animateCounter(value, score);
+                
+              }, 300);
+            }, index * 200);
+            
+            chartObserver.unobserve(row);
+          }
+        });
+      }, {
+        threshold: 0.3,
+        rootMargin: '0px 0px -50px 0px'
+      });
+      
+      // 观察所有图表行
+      chartRows.forEach(row => {
+        chartObserver.observe(row);
+      });
+    }
+
+    // 数字计数动画函数
+    function animateCounter(element, targetValue) {
+      const target = parseFloat(targetValue);
+      const duration = 1500;
+      const step = target / (duration / 16);
+      let current = 0;
+      
+      const timer = setInterval(() => {
+        current += step;
+        if (current >= target) {
+          current = target;
+          clearInterval(timer);
+          element.classList.add('show');
+        }
+        element.textContent = current.toFixed(2);
+      }, 16);
+    }
+
+    // 在 DOMContentLoaded 事件中调用动画函数
+    animateCharts();
+
+    // 添加重新播放动画的功能
+    function replayChartAnimation() {
+      const chartRows = document.querySelectorAll('.chart-row');
+      const chartBars = document.querySelectorAll('.chart-bar');
+      const chartValues = document.querySelectorAll('.chart-value');
+      
+      // 重置所有元素
+      chartRows.forEach(row => {
+        row.classList.remove('animate');
+      });
+      
+      chartBars.forEach(bar => {
+        bar.classList.remove('animate');
+        bar.style.width = '0%';
+      });
+      
+      chartValues.forEach(value => {
+        value.classList.remove('show');
+        value.style.opacity = '0';
+      });
+      
+      // 重新开始动画
+      setTimeout(() => {
+        animateCharts();
+      }, 500);
+    }
+
+    // 添加点击重新播放功能（可选）
+    document.addEventListener('DOMContentLoaded', function() {
+      const chartContainer = document.querySelector('.bg-white.p-8.rounded-xl.shadow-sm');
+      if (chartContainer) {
+        chartContainer.addEventListener('click', function(e) {
+          // 如果点击的是图表区域但不是具体的柱状图，则重新播放动画
+          if (e.target === this || e.target.classList.contains('space-y-4')) {
+            replayChartAnimation();
+          }
+        });
+        
+        // 添加提示
+        chartContainer.style.cursor = 'pointer';
+        chartContainer.title = '点击重新播放动画';
+      }
+    });
 });

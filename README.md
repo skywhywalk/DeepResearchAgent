@@ -42,6 +42,11 @@ The system adopts a two-layer structure:
 
   * Automates browser operations, supporting web search, information extraction, and data collection tasks.
   * Assists the Deep Researcher in acquiring up-to-date information from the internet.
+  
+* **MCP Manager Agent**
+  * Manages and orchestrates Model Context Protocol (MCP) tools and services.
+  * Enables dynamic tool discovery, registration, and execution through MCP standards.
+  * Supports both local and remote MCP tool integration for enhanced agent capabilities.
 
 * **General Tool Calling Agent**
   * Provides a general-purpose interface for invoking various tools and APIs.
@@ -146,13 +151,16 @@ python examples/run_gaia.py
 
 ## Experiments
 
-We evaluated our agent on the GAIA validation set and achieved state-of-the-art performance on May 10th.
+We evaluated our agent on both GAIA validation and test sets, achieving state-of-the-art performance. Our system demonstrates superior performance across all difficulty levels.
 
 <p align="center">
-  <img src="./docs/assets/gaia_benchmark.png" alt="GAIA Example Result" width="700"/>
+  <img src="./docs/assets/gaia_test.png" alt="GAIA Test Results" width="300"/>
+  <img src="./docs/assets/gaia_validation.png" alt="GAIA Validation Results" width="300"/>
 </p>
 
-With the integration of the Computer Use Agent, which now enables pixel-level control of the browser, our system's performance on the test set has significantly improved. The latest results show a notable increase to 79.07 (average), with 91.4 on Level 1, 77.36 on Level 2, and 61.22 on Level 3. We’re continuing to refine and optimize the agent, and a new version will be released in the coming days
+With the integration of the Computer Use and MCP Manager Agent, which now enables pixel-level control of the browser, our system demonstrates remarkable evolutionary capabilities. The agents can dynamically acquire and enhance their abilities through learning and adaptation, leading to significantly improved performance. The latest results show:
+- **Test Set**: 83.39 (average), with 93.55 on Level 1, 83.02 on Level 2, and 65.31 on Level 3
+- **Validation Set**: 82.4 (average), with 92.5 on Level 1, 83.7 on Level 2, and 57.7 on Level 3
 
 ## Questions
 

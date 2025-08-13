@@ -87,16 +87,14 @@ if __name__ == "__main__":
     # logger.info("Image saved as test_case_image.png")
 
     messages = [
-        ChatMessage(role="user", content="What is the capital of France?"),
+        ChatMessage(role="user", content="Riddle solution: 200 coins, 30 face-up, must divide into two piles with equal face-down coins, unable to distinguish coin sides in darkness. Picks 30 coins, flips all, rest 170 untouched. Larger pile has 14 face-down coins. What is the outcome for the adventurer? Number of coins won or if he died."),
     ]
-    
-    response = asyncio.run(model_manager.registed_models["gpt-5"](
-        messages=messages,
-    ))
 
     response = asyncio.run(model_manager.registed_models["o3-deep-research"](
         messages=messages,
     ))
+    print(response)
+    exit()
 
     response = asyncio.run(model_manager.registed_models["deepseek-chat"](
         messages=messages,

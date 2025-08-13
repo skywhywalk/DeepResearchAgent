@@ -107,10 +107,9 @@ class RestfulResponseClient():
             if line.strip():
                 try:
                     json_line = line.strip()
-                    print(json_line)
                     if json_line.startswith("data: ") and "response.completed" in json_line:
                         json_line = json_line.replace("data: ", "").strip()
-                        res = json.loads(json_line)
+                        res = json.loads(json_line)['response']
                         return res
                 except Exception as e:
                     logger.error(f"Error parsing line: {line}, error: {e}")
@@ -889,6 +888,14 @@ class RestfulResponseModel(ApiModel):
         if response_format is not None:
             completion_kwargs["response_format"] = response_format
 
+        completion_kwargs['tools'] = [
+            {"type": "web_search_preview"},
+            {
+                "type": "code_interpreter",
+                "container": {"type": "auto"}
+            }
+        ]
+
         # Handle tools parameter
         if tools_to_call_from:
             tools_config = {
@@ -978,23 +985,22 @@ class RestfulResponseModel(ApiModel):
             **kwargs,
         )
 
-        completion_kwargs['tools'] = [
-            {"type": "web_search_preview"},
-        ]
-
         # Async call to the LiteLLM client for completion
         response = self.client.completion(**completion_kwargs)
 
-        response = ChatCompletion.model_validate(response)
+        self._last_input_token_count = response["usage"]["input_tokens"]
+        self._last_output_token_count = response["usage"]["output_tokens"]
 
-        self._last_input_token_count = response.usage.prompt_tokens
-        self._last_output_token_count = response.usage.completion_tokens
+        res_dict = response["output"][-1]
+        res_dict['content'] = res_dict['content'][-1]['text']
+        res_dict['tool_calls'] = []
+
         return ChatMessage.from_dict(
-            response.choices[0].message.model_dump(include={"role", "content", "tool_calls"}),
+            res_dict,
             raw=response,
             token_usage=TokenUsage(
-                input_tokens=response.usage.prompt_tokens,
-                output_tokens=response.usage.completion_tokens,
+                input_tokens=response["usage"]["input_tokens"],
+                output_tokens=response["usage"]["output_tokens"],
             ),
         )
 

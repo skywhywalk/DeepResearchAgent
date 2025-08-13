@@ -154,15 +154,14 @@ class ModelManager(metaclass=Singleton):
             # deep research
             model_name = "o3-deep-research"
             model_id = "o3-deep-research"
-            client = AsyncOpenAI(
+
+            model = RestfulResponseModel(
+                api_base=self._check_local_api_base(local_api_base_name="SKYWORK_SHUBIAOBIAO_API_BASE",
+                                                    remote_api_base_name="OPENAI_API_BASE"),
                 api_key=api_key,
-                base_url=self._check_local_api_base(local_api_base_name="SKYWORK_API_BASE",
-                                                    remote_api_base_name="SKYWORK_API_BASE"),
-                http_client=ASYNC_HTTP_CLIENT,
-            )
-            model = LiteLLMModel(
+                api_type="responses",
                 model_id=model_id,
-                http_client=client,
+                http_client=HTTP_CLIENT,
                 custom_role_conversions=custom_role_conversions,
             )
             self.registed_models[model_name] = model

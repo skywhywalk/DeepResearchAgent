@@ -6,6 +6,8 @@ from src.tools.auto_browser import AutoBrowserUseTool
 from src.tools.planning import PlanningTool
 from src.tools.image_generator import ImageGeneratorTool
 from src.tools.video_generator import VideoGeneratorTool
+from src.tools.file_reader import FileReaderTool
+from src.tools.oai_deep_research import OAIDeepResearchTool
 
 
 __all__ = [
@@ -20,4 +22,6 @@ __all__ = [
     "ImageGeneratorTool",
     "VideoGeneratorTool",
     "make_tool_instance",
+    "FileReaderTool",
+    "OAIDeepResearchTool"
 ]

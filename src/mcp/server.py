@@ -68,6 +68,8 @@ async def register_tools(script_info_path):
         logger.info(f"Script info file not found: {script_info_path}")
     except json.JSONDecodeError:
         logger.error(f"Error decoding JSON from script info file: {script_info_path}")
+    except Exception as e:
+        logger.error(f"An unexpected error occurred while registering tools: {e}")
 
     logger.info("All tools registered successfully.")
 

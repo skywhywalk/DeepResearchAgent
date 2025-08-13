@@ -62,3 +62,12 @@ video_generator_tool_config = dict(
     predict_model_id = "veo3-predict",
     fetch_model_id = "veo3-fetch",
 )
+
+file_reader_tool_config = dict(
+    type="file_reader_tool"
+)
+
+oai_deep_research_tool_config = dict(
+    type="oai_deep_research_tool",
+    model_id = "o3-deep-research",
+)

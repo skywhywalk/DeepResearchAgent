@@ -8,8 +8,8 @@ English | [简体中文](README_CN.md) | [🌐 **Website**](https://skyworkai.gi
 
 > ⚡️🚀 **Important**: We have developed a new agent protocol called **Tool-Environment-Agent (TEA)**, which allows you to build agents as flexibly as brewing tea. It’s still in the testing phase — if you’re interested, please check it out:
 >
-> 👉 [Github Repo](https://github.com/DVampire/AgentWorld)  
-> 📄 [Updated Report](https://arxiv.org/abs/2506.12508)
+> 👉 [https://github.com/DVampire/AgentWorld](https://github.com/DVampire/AgentWorld)  
+> 📄 [https://arxiv.org/abs/2506.12508](https://arxiv.org/abs/2506.12508)
 ## Introduction
 image.png
 DeepResearchAgent is a hierarchical multi-agent system designed not only for deep research tasks but also for general-purpose task solving. The framework leverages a top-level planning agent to coordinate multiple specialized lower-level agents, enabling automated task decomposition and efficient execution across diverse and complex domains.

